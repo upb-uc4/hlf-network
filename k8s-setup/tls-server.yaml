@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: tls-ca
+    labels:
+        app: ca
+spec:
+    selector:
+        matchLabels:
+            app: ca
+    template:
+        metadata: 
+            labels:
+                app: ca
+        spec:
+            containers:
+              - name: tls-ca
+                image: hyperledger/fabric-ca
+                command: ["fabric-ca-server", "start", "-b", "tls-admin:tls-adminpw"]
+
