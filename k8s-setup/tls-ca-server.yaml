@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: tls-ca
+    name: ca-tls
     labels:
         app: ca
 spec:
@@ -14,7 +14,27 @@ spec:
                 app: ca
         spec:
             containers:
-              - name: tls-ca
+              - name: ca-tls
                 image: hyperledger/fabric-ca
-                command: ["fabric-ca-server", "start", "-b", "tls-admin:tls-adminpw"]
+                command: ["fabric-ca-server", "start", "-b", "tls-ca-admin:tls-ca-adminpw", "--port", "7052"]
+                env:
+                - name: FABRIC_CA_HOME
+                  value: "/etc/hyperledger/fabric-ca-server"
+                - name: FABRIC_CA_SERVER_TLS_ENABLED
+                  value: "true"
+                - name: FABRIC_CA_SERVER_CSR_CN
+                  value: "ca-tls"
+                - name: FABRIC_CA_SERVER_CSR_HOSTS
+                  value: "0.0.0.0"
+                - name: FABRIC_CA_SERVER_DEBUG
+                  value: "true"
+
+                volumeMounts:
+                   - mountPath: /etc/hyperleger/fabric-ca-server-config
+                     name: tls-ca-volume
+            volumes:
+            - name: tls-ca-volume
+              hostPath: 
+                path: /home/paul/k8s-tmp/tls-ca
+
 
