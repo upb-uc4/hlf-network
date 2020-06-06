@@ -29,12 +29,3 @@ spec:
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
 
-                volumeMounts:
-                   - mountPath: /etc/hyperleger/fabric-ca-server-config
-                     name: tls-ca-volume
-            volumes:
-            - name: tls-ca-volume
-              hostPath: 
-                path: /home/paul/k8s-tmp/tls-ca
-
-
