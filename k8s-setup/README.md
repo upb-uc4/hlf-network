@@ -1,5 +1,7 @@
 # Kubernetes Hyperledger Config
 
-To start the TLS CA server make sure minikube is running `minikube start` and `kubectl` is installed.
+To start the TLS CA server execute `./startNetwork.sh`.
 
-Execute `kubectl apply -f tls-ca-server.yaml` to start the TLS CA server.
+The TLS Root CA public key is copied to the temp folder specified in the `env.sh` file.
+
+To reset and shutdown the network, execute `./deleteNetwork.sh`.
