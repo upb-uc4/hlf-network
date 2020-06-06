@@ -9,6 +9,8 @@ sep() {
 }
 
 
+# Setting environment variables
+source ./env.sh
 
 # Starting the Network
 echo Starting Network
@@ -24,7 +26,6 @@ get_pods
 sep
 
 echo Copy TLS certificate to local folder 
-export TMP_FOLDER=tmp-certificates
 mkdir -p $TMP_FOLDER
 # kubectl cp default/<some-pod>:/tmp/foo $TMP_FOLDER
 

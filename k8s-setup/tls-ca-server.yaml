@@ -3,15 +3,15 @@ kind: Deployment
 metadata:
     name: ca-tls
     labels:
-        app: ca
+        app: ca-tls-root
 spec:
     selector:
         matchLabels:
-            app: ca
+            app: ca-tls-root
     template:
         metadata: 
             labels:
-                app: ca
+                app: ca-tls-root
         spec:
             containers:
               - name: ca-tls
