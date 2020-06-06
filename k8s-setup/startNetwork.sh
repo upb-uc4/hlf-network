@@ -22,10 +22,13 @@ kubectl apply -f tls-ca-server.yaml
 sep
 
 echo Pod Names
-get_pods
+TLS_CA_NAME=$(get_pods)
 sep
 
 echo Copy TLS certificate to local folder 
 mkdir -p $TMP_FOLDER
-# kubectl cp default/<some-pod>:/tmp/foo $TMP_FOLDER
+
+
+echo $POD
+kubectl cp default/$TLS_CA_NAME:etc/hyperledger/fabric-ca-server/ca-cert.pem $TMP_FOLDER/ca-cert.pem
 
