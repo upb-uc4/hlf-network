@@ -32,6 +32,11 @@ echo TLS CA service exposed on $CA_SERVER_HOST
 
 sep
 
+echo Waiting for pod
+kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=60s
+
+sep
+
 echo Copy TLS certificate to local folder
 mkdir -p $TMP_FOLDER
 kubectl cp default/$TLS_CA_NAME:etc/hyperledger/fabric-ca-server/ca-cert.pem $TMP_FOLDER/ca-cert.pem
