@@ -4,8 +4,12 @@ get_pods() {
     kubectl get pods -l app=ca-tls-root --field-selector status.phase=Running  --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
 }
 
-sep() {
+small_sep() {
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+}
+
+sep() {
+    printf '%*s\n' "${COLUMN:-$(tput cols)}" '' | tr ' ' =
 }
 
 
@@ -64,9 +68,20 @@ sep
 echo Use CA-client to enroll admin
 cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
 echo $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
-echo ./$CA_CLIENT enroll -d -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
 ./$CA_CLIENT enroll -d -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
+sep
 
+# Query TLS CA server to register other identities
+echo Use CA-client to register identities
+small_sep
+# The id.secret password ca be used to enroll the registered users lateron
+./$CA_CLIENT register --id.name orderer1-uc4 --id.secret ordererPW --id.type orderer -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
+small_sep
+./$CA_CLIENT register --id.name peer1-uc4 --id.secret peerPW --id.type peer -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
+sep
+
+
+echo -e "Done. Execute \e[2mminikube dashboard\e[22m to open the dashboard or run \e[2m./deleteNetwork.sh\e[22m to shutdown and delete the network."
 
 
 
