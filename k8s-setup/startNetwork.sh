@@ -24,7 +24,7 @@ fi
 # Create deployment for tls root ca
 if (($(kubectl get deployment -l app=ca-tls-root --ignore-not-found | wc -l) < 2)); then
   echo Creating TLS CA deployment
-  kubectl create -f tls-ca.yaml
+  kubectl create -f tls-ca/tls-ca.yaml
 else
   echo TLS CA deployment already exists
 fi
@@ -34,7 +34,7 @@ fi
 # Expose service for tls root ca
 if (($(kubectl get service -l app=ca-tls-root --ignore-not-found | wc -l) < 2)); then
   echo Creating TLS CA service
-  kubectl create -f tls-ca-service.yaml
+  kubectl create -f tls-ca/tls-ca-service.yaml
 else
   echo TLS CA service already exists
 fi
