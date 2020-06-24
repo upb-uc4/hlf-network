@@ -13,6 +13,8 @@ sep() {
 }
 
 
+
+
 # Set environment variables
 source ./env.sh
 
@@ -58,6 +60,10 @@ sep
 
 # Copy TLS certificate into local tmp folder
 echo Copy TLS certificate to local folder
+export FABRIC_CA_CLIENT_TLS_CERTFILES=tls-ca-cert.pem
+export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/tls-ca/admin
+echo $FABRIC_CA_CLIENT_TLS_CERTFILES
+echo $FABRIC_CA_CLIENT_HOME
 mkdir -p $TMP_FOLDER
 mkdir -p $FABRIC_CA_CLIENT_HOME
 kubectl cp default/$TLS_CA_NAME:etc/hyperledger/fabric-ca-server/ca-cert.pem $TMP_FOLDER/ca-cert.pem
@@ -79,9 +85,70 @@ small_sep
 small_sep
 ./$CA_CLIENT register --id.name peer1-uc4 --id.secret peerPW --id.type peer -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
 sep
+sep
+sep; sep
+
+
+# Create deployment for orderer org ca
+if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found | wc -l) < 2)); then
+  echo Creating Orderer Org CA deployment
+  kubectl create -f orderer-org-ca/orderer-org-ca.yaml
+else
+  echo Orderer Org CA deployment already exists
+fi
+
+
+
+# Expose service for orderer org ca
+if (($(kubectl get service -l app=rca-org0-root --ignore-not-found | wc -l) < 2)); then
+  echo Creating Orderer Org CA service
+  kubectl create -f orderer-org-ca/orderer-org-ca-service.yaml
+else
+  echo Orderer Org CA service already exists
+fi
+# lokale Variable?
+CA_ORDERER_HOST=$(minikube service rca-org0 --url | cut -c 8-)
+echo Orderer Org CA service exposed on $CA_ORDERER_HOST
+sep
+
+
+# Wait until pod is ready
+echo Waiting for pod
+kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=60s
+ORDERER_ORG_CA_NAME=$(get_pods)
+echo Using pod $ORDERER_ORG_CA_NAME
+sep
+
+
+# Enroll Orderer Org's CA Admin
+
+export FABRIC_CA_CLIENT_TLS_CERTFILES=ca-cert.pem
+export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org0/ca/admin
+echo $FABRIC_CA_CLIENT_TLS_CERTFILES
+echo $FABRIC_CA_CLIENT_HOME
+
+mkdir -p $FABRIC_CA_CLIENT_HOME
+
+# Query TLS CA server to enroll an admin identity
+echo Use CA-client to enroll admin
+cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
+echo $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
+./$CA_CLIENT enroll -d -u https://rca-org0-admin:rca-org0-adminpw@$CA_ORDERER_HOST
+sep
+
+# Query TLS CA server to register other identities
+echo Use CA-client to register identities
+small_sep
+# The id.secret password ca be used to enroll the registered users lateron
+./$CA_CLIENT register -d --id.name orderer1-org0 --id.secret ordererpw --id.type orderer -u https://$CA_ORDERER_HOST
+small_sep
+./$CA_CLIENT register -d --id.name admin-org0 --id.secret org0adminpw --id.type admin --id.attrs "hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert" -u https://$CA_ORDERER_HOST
+sep
 
 
 echo -e "Done. Execute \e[2mminikube dashboard\e[22m to open the dashboard or run \e[2m./deleteNetwork.sh\e[22m to shutdown and delete the network."
+
+
 
 
 
