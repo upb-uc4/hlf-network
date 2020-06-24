@@ -4,7 +4,7 @@ NORMAL=$(tput sgr0)
 
 # Function definitions
 get_pods() {
-    kubectl get pods -l app=ca-tls-root --field-selector status.phase=Running  --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
+    kubectl get pods -l app=$1 --field-selector status.phase=Running  --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
 }
 
 small_sep() {
@@ -68,7 +68,7 @@ small_sep
 # Wait until pod is ready
 command "Waiting for pod"
 kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=60s
-TLS_CA_NAME=$(get_pods)
+TLS_CA_NAME=$(get_pods "ca-tls-root")
 command "Using pod $TLS_CA_NAME"
 small_sep
 
@@ -129,7 +129,7 @@ small_sep
 # Wait until pod is ready
 command "Waiting for pod"
 kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=60s
-ORDERER_ORG_CA_NAME=$(get_pods)
+ORDERER_ORG_CA_NAME=$(get_pods "rca-org0-root")
 command "Using pod $ORDERER_ORG_CA_NAME"
 small_sep
 
@@ -188,7 +188,7 @@ small_sep
 # Wait until pod is ready
 command "Waiting for pod"
 kubectl wait --for=condition=ready pod -l app=rca-org1-root --timeout=60s
-ORG1_CA_NAME=$(get_pods)
+ORG1_CA_NAME=$(get_pods "rca-org1-root")
 command "Using pod $ORG1_CA_NAME"
 small_sep
 
@@ -252,7 +252,7 @@ small_sep
 # Wait until pod is ready
 command "Waiting for pod"
 kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=60s
-ORG1_CA_NAME=$(get_pods)
+ORG2_CA_NAME=$(get_pods "rca-org2-root")
 command "Using pod $ORG2_CA_NAME"
 small_sep
 

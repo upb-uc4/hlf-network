@@ -13,6 +13,7 @@ delete-ca() {
   kubectl wait --for=delete pod -l app=$3 --timeout=60s
   echo Deleting $1 service
   kubectl delete -f $4
+  echo ""
 }
 
 # Delete CA servers and corresponding services
