@@ -24,7 +24,7 @@ command() {
 }
 
 # Debug commands using -d flag
-DEBUG=${}
+export DEBUG=""
 if  [[ $1 = "-d" ]]; then
     command "Debug mode activated"
     export DEBUG="-d"
