@@ -23,7 +23,12 @@ command() {
   echo "${CYAN}$1${NORMAL}"
 }
 
-
+# Debug commands using -d flag
+DEBUG=${}
+if  [[ $1 = "-d" ]]; then
+    command "Debug mode activated"
+    export DEBUG="-d"
+fi
 
 # Set environment variables
 source ./env.sh
@@ -83,7 +88,7 @@ small_sep
 command "Use CA-client to enroll admin"
 small_sep
 cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
-./$CA_CLIENT enroll -d -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
+./$CA_CLIENT enroll $DEBUG -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
 small_sep
 
 # Query TLS CA server to register other identities
@@ -139,16 +144,16 @@ mkdir -p $FABRIC_CA_CLIENT_HOME
 command "Use CA-client to enroll admin"
 small_sep
 cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
-./$CA_CLIENT enroll -d -u https://rca-org0-admin:rca-org0-adminpw@$CA_ORDERER_HOST
+./$CA_CLIENT enroll $DEBUG -u https://rca-org0-admin:rca-org0-adminpw@$CA_ORDERER_HOST
 small_sep
 
 # Query TLS CA server to register other identities
 command "Use CA-client to register identities"
 small_sep
 # The id.secret password ca be used to enroll the registered users lateron
-./$CA_CLIENT register -d --id.name orderer1-org0 --id.secret ordererpw --id.type orderer -u https://$CA_ORDERER_HOST
+./$CA_CLIENT register $DEBUG --id.name orderer1-org0 --id.secret ordererpw --id.type orderer -u https://$CA_ORDERER_HOST
 small_sep
-./$CA_CLIENT register -d --id.name admin-org0 --id.secret org0adminpw --id.type admin --id.attrs "hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert" -u https://$CA_ORDERER_HOST
+./$CA_CLIENT register $DEBUG --id.name admin-org0 --id.secret org0adminpw --id.type admin --id.attrs "hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert" -u https://$CA_ORDERER_HOST
 
 sep
 
@@ -198,20 +203,20 @@ mkdir -p $FABRIC_CA_CLIENT_HOME
 command "Use CA-client to enroll admin"
 small_sep
 cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
-./$CA_CLIENT enroll -d -u https://rca-org1-admin:rca-org1-adminpw@$CA_ORG1_HOST
+./$CA_CLIENT enroll $DEBUG -u https://rca-org1-admin:rca-org1-adminpw@$CA_ORG1_HOST
 small_sep
 
 # Query TLS CA server to register other identities
 command "Use CA-client to register identities"
 small_sep
 # The id.secret password ca be used to enroll the registered users lateron
-./$CA_CLIENT register -d --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://$CA_ORG1_HOST
+./$CA_CLIENT register $DEBUG --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://$CA_ORG1_HOST
 small_sep
-./$CA_CLIENT register -d --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://$CA_ORG1_HOST
+./$CA_CLIENT register $DEBUG --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://$CA_ORG1_HOST
 small_sep
-./$CA_CLIENT register -d --id.name admin-org1 --id.secret org1AdminPW --id.type user -u https://$CA_ORG1_HOST
+./$CA_CLIENT register $DEBUG --id.name admin-org1 --id.secret org1AdminPW --id.type user -u https://$CA_ORG1_HOST
 small_sep
-./$CA_CLIENT register -d --id.name user-org1 --id.secret org1UserPW --id.type user -u https://$CA_ORG1_HOST
+./$CA_CLIENT register $DEBUG --id.name user-org1 --id.secret org1UserPW --id.type user -u https://$CA_ORG1_HOST
 
 
 sep
@@ -262,20 +267,20 @@ mkdir -p $FABRIC_CA_CLIENT_HOME
 command "Use CA-client to enroll admin"
 small_sep
 cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
-./$CA_CLIENT enroll -d -u https://rca-org2-admin:rca-org2-adminpw@$CA_ORG2_HOST
+./$CA_CLIENT enroll $DEBUG -u https://rca-org2-admin:rca-org2-adminpw@$CA_ORG2_HOST
 small_sep
 
 # Query TLS CA server to register other identities
 command "Use CA-client to register identities"
 small_sep
 # The id.secret password ca be used to enroll the registered users lateron
-./$CA_CLIENT register -d --id.name peer1-org2 --id.secret peer1PW --id.type peer -u https://$CA_ORG2_HOST
+./$CA_CLIENT register $DEBUG --id.name peer1-org2 --id.secret peer1PW --id.type peer -u https://$CA_ORG2_HOST
 small_sep
-./$CA_CLIENT register -d --id.name peer2-org2 --id.secret peer2PW --id.type peer -u https://$CA_ORG2_HOST
+./$CA_CLIENT register $DEBUG --id.name peer2-org2 --id.secret peer2PW --id.type peer -u https://$CA_ORG2_HOST
 small_sep
-./$CA_CLIENT register -d --id.name admin-org2 --id.secret org2AdminPW --id.type user -u https://$CA_ORG2_HOST
+./$CA_CLIENT register $DEBUG --id.name admin-org2 --id.secret org2AdminPW --id.type user -u https://$CA_ORG2_HOST
 small_sep
-./$CA_CLIENT register -d --id.name user-org2 --id.secret org2UserPW --id.type user -u https://$CA_ORG2_HOST
+./$CA_CLIENT register $DEBUG --id.name user-org2 --id.secret org2UserPW --id.type user -u https://$CA_ORG2_HOST
 
 
 sep
