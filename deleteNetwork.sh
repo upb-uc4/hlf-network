@@ -17,11 +17,11 @@ delete-ca() {
 }
 
 # Delete CA servers and corresponding services
-delete-ca "TLS root CA" "tls-ca/tls-ca.yaml" "ca-tls-root" "tls-ca/tls-ca-service.yaml"
-delete-ca "Orderer Org CA" "orderer-org-ca/orderer-org-ca.yaml" "rca-org0-root" "orderer-org-ca/orderer-org-ca-service.yaml"
-delete-ca "Org1 CA" "org1-ca/org1-ca.yaml" "rca-org1-root" "org1-ca/org1-ca-service.yaml"
-delete-ca "Org2 CA" "org2-ca/org2-ca.yaml" "rca-org2-root" "org2-ca/org2-ca-service.yaml"
+delete-ca "TLS root CA" "$K8S/tls-ca/tls-ca.yaml" "ca-tls-root" "$K8S/tls-ca/tls-ca-service.yaml"
+delete-ca "Orderer Org CA" "$K8S/orderer-org-ca/orderer-org-ca.yaml" "rca-org0-root" "$K8S/orderer-org-ca/orderer-org-ca-service.yaml"
+delete-ca "Org1 CA" "$K8S/org1-ca/org1-ca.yaml" "rca-org1-root" "$K8S/org1-ca/org1-ca-service.yaml"
+delete-ca "Org2 CA" "$K8S/org2-ca/org2-ca.yaml" "rca-org2-root" "$K8S/org2-ca/org2-ca-service.yaml"
 
-# Remove tmp dir
-echo Deleting tmp directory
+echo Deleting temporary directories
 rm -rf $TMP_FOLDER
+rm -rf $K8S

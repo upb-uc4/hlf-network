@@ -1,4 +1,6 @@
 tmp/
+user-settings.sh
+k8s/
 
 
 *.iml
