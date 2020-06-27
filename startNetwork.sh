@@ -246,7 +246,9 @@ setup-org2-ca() {
   ./$CA_CLIENT register $DEBUG --id.name user-org2 --id.secret org2UserPW --id.type user -u https://$CA_ORG2_HOST
 }
 
-setup-org1-peer1() {
+enroll-org1() {
+  # Enroll peer 1
+
   sep
   command "Org1 Peer1"
   sep
@@ -275,9 +277,11 @@ setup-org1-peer1() {
 
   export FABRIC_CA_CLIENT_MSPDIR=tls-msp
   ./$CA_CLIENT enroll $DEBUG -u https://peer1-org1:peer1PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer1-org1
-}
 
-setup-org1-peer2() {
+
+
+  # Enroll peer 2
+
   sep
   command "Org1 Peer2"
   sep
@@ -329,8 +333,7 @@ setup-tls-ca
 setup-orderer-org-ca
 setup-org1-ca
 setup-org2-ca
-setup-org1-peer1
-setup-org1-peer2
+enroll-org1
 
 sep
 
