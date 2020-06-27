@@ -33,7 +33,7 @@ setup-tls-ca() {
   # Create deployment for tls root ca
   if (($(kubectl get deployment -l app=ca-tls-root --ignore-not-found | wc -l) < 2)); then
     command "Creating TLS CA deployment"
-    kubectl create -f tls-ca/tls-ca.yaml
+    kubectl create -f $K8S/tls-ca/tls-ca.yaml
   else
     command "TLS CA deployment already exists"
   fi
@@ -41,7 +41,7 @@ setup-tls-ca() {
   # Expose service for tls root ca
   if (($(kubectl get service -l app=ca-tls-root --ignore-not-found | wc -l) < 2)); then
     command "Creating TLS CA service"
-    kubectl create -f tls-ca/tls-ca-service.yaml
+    kubectl create -f $K8S/tls-ca/tls-ca-service.yaml
   else
     command "TLS CA service already exists"
   fi
@@ -93,7 +93,7 @@ setup-orderer-org-ca() {
   # Create deployment for orderer org ca
   if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found | wc -l) < 2)); then
     command "Creating Orderer Org CA deployment"
-    kubectl create -f orderer-org-ca/orderer-org-ca.yaml
+    kubectl create -f $K8S/orderer-org-ca/orderer-org-ca.yaml
   else
     command "Orderer Org CA deployment already exists"
   fi
@@ -101,7 +101,7 @@ setup-orderer-org-ca() {
   # Expose service for orderer org ca
   if (($(kubectl get service -l app=rca-org0-root --ignore-not-found | wc -l) < 2)); then
     command "Creating Orderer Org CA service"
-    kubectl create -f orderer-org-ca/orderer-org-ca-service.yaml
+    kubectl create -f $K8S/orderer-org-ca/orderer-org-ca-service.yaml
   else
     command "Orderer Org CA service already exists"
   fi
@@ -144,7 +144,7 @@ setup-org1-ca() {
   # Create deployment for org1 ca
   if (($(kubectl get deployment -l app=rca-org1-root --ignore-not-found | wc -l) < 2)); then
     command "Creating Org1 CA deployment"
-    kubectl create -f org1-ca/org1-ca.yaml
+    kubectl create -f $K8S/org1-ca/org1-ca.yaml
   else
     command "Org1 CA deployment already exists"
   fi
@@ -152,7 +152,7 @@ setup-org1-ca() {
   # Expose service for org1 ca
   if (($(kubectl get service -l app=rca-org1-root --ignore-not-found | wc -l) < 2)); then
     command "Creating Org1 CA service"
-    kubectl create -f org1-ca/org1-ca-service.yaml
+    kubectl create -f $K8S/org1-ca/org1-ca-service.yaml
   else
     command "Org1 CA service already exists"
   fi
@@ -199,7 +199,7 @@ setup-org2-ca() {
   # Create deployment for org2 ca
   if (($(kubectl get deployment -l app=rca-org2-root --ignore-not-found | wc -l) < 2)); then
     command "Creating Org2 CA deployment"
-    kubectl create -f org2-ca/org2-ca.yaml
+    kubectl create -f $K8S/org2-ca/org2-ca.yaml
   else
     command "Org2 CA deployment already exists"
   fi
@@ -207,7 +207,7 @@ setup-org2-ca() {
   # Expose service for org2 ca
   if (($(kubectl get service -l app=rca-org2-root --ignore-not-found | wc -l) < 2)); then
     command "Creating Org2 CA service"
-    kubectl create -f org2-ca/org2-ca-service.yaml
+    kubectl create -f $K8S/org2-ca/org2-ca-service.yaml
   else
     command "Org2 CA service already exists"
   fi
@@ -349,6 +349,9 @@ fi
 
 # Set environment variables
 source ./env.sh
+
+# Use configuration file to generate kubernetes setup from the template
+./apply-config.sh
 
 # Start minikube
 if minikube status | grep -q 'host: Stopped'; then
