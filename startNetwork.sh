@@ -45,8 +45,8 @@ setup-tls-ca() {
   else
     command "TLS CA service already exists"
   fi
-  CA_SERVER_HOST=$(minikube service ca-tls --url | cut -c 8-)
-  command "TLS CA service exposed on $CA_SERVER_HOST"
+  CA_TLS_HOST=$(minikube service ca-tls --url | cut -c 8-)
+  command "TLS CA service exposed on $CA_TLS_HOST"
   small_sep
 
   # Wait until pod and service are ready
@@ -68,16 +68,21 @@ setup-tls-ca() {
   command "Use CA-client to enroll admin"
   small_sep
   cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
-  ./$CA_CLIENT enroll $DEBUG -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
+  ./$CA_CLIENT enroll $DEBUG -u https://tls-ca-admin:tls-ca-adminpw@$CA_TLS_HOST
   small_sep
 
   # Query TLS CA server to register other identities
   command "Use CA-client to register identities"
   small_sep
-  # The id.secret password ca be used to enroll the registered users lateron
-  ./$CA_CLIENT register --id.name orderer1-uc4 --id.secret ordererPW --id.type orderer -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
+  ./$CA_CLIENT register $DEBUG --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://$CA_TLS_HOST
   small_sep
-  ./$CA_CLIENT register --id.name peer1-uc4 --id.secret peerPW --id.type peer -u https://tls-ca-admin:tls-ca-adminpw@$CA_SERVER_HOST
+  ./$CA_CLIENT register $DEBUG --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://$CA_TLS_HOST
+  small_sep
+  ./$CA_CLIENT register $DEBUG --id.name peer1-org2 --id.secret peer1PW --id.type peer -u https://$CA_TLS_HOST
+  small_sep
+  ./$CA_CLIENT register $DEBUG --id.name peer2-org2 --id.secret peer2PW --id.type peer -u https://$CA_TLS_HOST
+  small_sep
+  ./$CA_CLIENT register $DEBUG --id.name orderer1-org0 --id.secret ordererPW --id.type orderer -u https://$CA_TLS_HOST
 }
 
 setup-orderer-org-ca() {
@@ -241,6 +246,100 @@ setup-org2-ca() {
   ./$CA_CLIENT register $DEBUG --id.name user-org2 --id.secret org2UserPW --id.type user -u https://$CA_ORG2_HOST
 }
 
+enroll-org1() {
+  # Enroll peer 1
+
+  sep
+  command "Org1 Peer1"
+  sep
+
+  command "Enroll Peer1 at Org1-CA"
+
+  export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/peer1
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org1-ca-cert.pem
+  export FABRIC_CA_CLIENT_MSPDIR=msp
+
+  # We need to copy the certificate of Org1-CA into our tmp directory
+  mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
+  kubectl cp default/$ORG1_CA_NAME:etc/hyperledger/fabric-ca-server/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
+
+  ./$CA_CLIENT enroll $DEBUG -u https://peer1-org1:peer1PW@$CA_ORG1_HOST
+
+  small_sep
+
+  command "Enroll Peer1 at TLS-CA"
+
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/tls-ca/tls-ca-cert.pem
+
+  # We need to copy the certificate of the TLS CA into our tmp directory
+  mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
+  cp $TMP_FOLDER/hyperledger/tls-ca/admin/tls-ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
+
+  export FABRIC_CA_CLIENT_MSPDIR=tls-msp
+  ./$CA_CLIENT enroll $DEBUG -u https://peer1-org1:peer1PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer1-org1
+
+
+
+  # Enroll peer 2
+
+  sep
+  command "Org1 Peer2"
+  sep
+
+  command "Enroll Peer2 at Org1-CA"
+
+  export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/peer2
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org1-ca-cert.pem
+  export FABRIC_CA_CLIENT_MSPDIR=msp
+
+  # We need to copy the certificate of Org1-CA into our tmp directory
+  mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
+  kubectl cp default/$ORG1_CA_NAME:etc/hyperledger/fabric-ca-server/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
+
+  ./$CA_CLIENT enroll $DEBUG -u https://peer2-org1:peer2PW@$CA_ORG1_HOST
+
+  small_sep
+
+  command "Enroll Peer2 at TLS-CA"
+
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/tls-ca/tls-ca-cert.pem
+
+  # We need to copy the certificate of the TLS CA into our tmp directory
+  mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
+  cp $TMP_FOLDER/hyperledger/tls-ca/admin/tls-ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
+
+  export FABRIC_CA_CLIENT_MSPDIR=tls-msp
+  ./$CA_CLIENT enroll $DEBUG -u https://peer2-org1:peer2PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer2-org1
+
+
+
+  # Enroll Org1 admin
+
+  sep
+  command "Org1 Admin"
+  sep
+
+  command "Enroll org1 admin identity"
+
+  # Note that we assume that peer 1 holds the admin identity
+  export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/admin
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=../../org1/peer1/assets/ca/org1-ca-cert.pem
+  export FABRIC_CA_CLIENT_MSPDIR=msp
+  ./$CA_CLIENT enroll $DEBUG -u https://admin-org1:org1AdminPW@$CA_ORG1_HOST
+
+  small_sep
+
+  command "Distribute admin certificate across peers"
+
+  mkdir $TMP_FOLDER/hyperledger/org1/peer1/msp/admincerts
+  cp $TMP_FOLDER/hyperledger/org1/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org1/peer1/msp/admincerts/org1-admin-cert.pem
+
+  # usually this would happen out-of-band
+  mkdir $TMP_FOLDER/hyperledger/org1/peer2/msp/admincerts
+  cp $TMP_FOLDER/hyperledger/org1/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org1/peer2/msp/admincerts/org1-admin-cert.pem
+}
+
+
 # Debug commands using -d flag
 export DEBUG=""
 if [[ $1 == "-d" ]]; then
@@ -261,6 +360,7 @@ setup-tls-ca
 setup-orderer-org-ca
 setup-org1-ca
 setup-org2-ca
+enroll-org1
 
 sep
 
