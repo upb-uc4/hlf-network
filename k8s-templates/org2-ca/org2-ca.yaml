@@ -25,6 +25,6 @@ spec:
                 - name: FABRIC_CA_SERVER_CSR_CN
                   value: "rca-org2"
                 - name: FABRIC_CA_SERVER_CSR_HOSTS
-                  value: "172.17.0.2"   # TODO: This is hardcoded at the moment
+                  value: "${IP}"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
