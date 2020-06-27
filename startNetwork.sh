@@ -74,10 +74,15 @@ setup-tls-ca() {
   # Query TLS CA server to register other identities
   command "Use CA-client to register identities"
   small_sep
-  # The id.secret password ca be used to enroll the registered users lateron
-  ./$CA_CLIENT register --id.name orderer1-uc4 --id.secret ordererPW --id.type orderer -u https://tls-ca-admin:tls-ca-adminpw@$CA_TLS_HOST
+  ./$CA_CLIENT register $DEBUG --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://$CA_TLS_HOST
   small_sep
-  ./$CA_CLIENT register --id.name peer1-uc4 --id.secret peerPW --id.type peer -u https://tls-ca-admin:tls-ca-adminpw@$CA_TLS_HOST
+  ./$CA_CLIENT register $DEBUG --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://$CA_TLS_HOST
+  small_sep
+  ./$CA_CLIENT register $DEBUG --id.name peer1-org2 --id.secret peer1PW --id.type peer -u https://$CA_TLS_HOST
+  small_sep
+  ./$CA_CLIENT register $DEBUG --id.name peer2-org2 --id.secret peer2PW --id.type peer -u https://$CA_TLS_HOST
+  small_sep
+  ./$CA_CLIENT register $DEBUG --id.name orderer1-org0 --id.secret ordererPW --id.type orderer -u https://$CA_TLS_HOST
 }
 
 setup-orderer-org-ca() {
