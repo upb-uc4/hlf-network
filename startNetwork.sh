@@ -310,6 +310,33 @@ enroll-org1() {
 
   export FABRIC_CA_CLIENT_MSPDIR=tls-msp
   ./$CA_CLIENT enroll $DEBUG -u https://peer2-org1:peer2PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer2-org1
+
+
+
+  # Enroll Org1 admin
+
+  sep
+  command "Org1 Admin"
+  sep
+
+  command "Enroll org1 admin identity"
+
+  # Note that we assume that peer 1 holds the admin identity
+  export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/admin
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=../../org1/peer1/assets/ca/org1-ca-cert.pem
+  export FABRIC_CA_CLIENT_MSPDIR=msp
+  ./$CA_CLIENT enroll $DEBUG -u https://admin-org1:org1AdminPW@$CA_ORG1_HOST
+
+  small_sep
+
+  command "Distribute admin certificate across peers"
+
+  mkdir $TMP_FOLDER/hyperledger/org1/peer1/msp/admincerts
+  cp $TMP_FOLDER/hyperledger/org1/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org1/peer1/msp/admincerts/org1-admin-cert.pem
+
+  # usually this would happen out-of-band
+  mkdir $TMP_FOLDER/hyperledger/org1/peer2/msp/admincerts
+  cp $TMP_FOLDER/hyperledger/org1/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org1/peer2/msp/admincerts/org1-admin-cert.pem
 }
 
 
