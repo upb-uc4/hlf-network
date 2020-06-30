@@ -1,0 +1,2 @@
+./deleteNetwork.sh
+./startNetwork.sh

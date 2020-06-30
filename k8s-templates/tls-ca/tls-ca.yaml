@@ -34,4 +34,4 @@ spec:
             volumes:
               - name: ca-mount
                 hostPath:
-                  path: /hyperledger/tls/ca
+                  path: /hyperledger/tls-ca

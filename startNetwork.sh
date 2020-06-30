@@ -62,7 +62,7 @@ setup-tls-ca() {
   export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/tls-ca/admin
   mkdir -p $TMP_FOLDER
   mkdir -p $FABRIC_CA_CLIENT_HOME
-  cp $TMP_FOLDER/hyperledger/tls/ca/crypto/ca-cert.pem $TMP_FOLDER/ca-cert.pem
+  cp $TMP_FOLDER/hyperledger/tls-ca/crypto/ca-cert.pem $TMP_FOLDER/ca-cert.pem
 
   # Query TLS CA server to enroll an admin identity
   command "Use CA-client to enroll admin"
@@ -258,7 +258,7 @@ enroll-org1() {
 
   # We need to copy the certificate of Org1-CA into our tmp directory
   mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
-  kubectl cp default/$ORG1_CA_NAME:etc/hyperledger/fabric-ca-server/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
+  cp $TMP_FOLDER/hyperledger/org1/ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
 
   ./$CA_CLIENT enroll $DEBUG -u https://peer1-org1:peer1PW@$CA_ORG1_HOST
 
@@ -291,7 +291,7 @@ enroll-org1() {
 
   # We need to copy the certificate of Org1-CA into our tmp directory
   mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
-  kubectl cp default/$ORG1_CA_NAME:etc/hyperledger/fabric-ca-server/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
+  cp $TMP_FOLDER/hyperledger/org1/ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
 
   ./$CA_CLIENT enroll $DEBUG -u https://peer2-org1:peer2PW@$CA_ORG1_HOST
 
