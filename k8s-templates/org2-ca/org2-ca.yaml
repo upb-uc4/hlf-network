@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: rca-org0
+    name: rca-org2
     labels:
-        app: rca-org0-root
+        app: rca-org2-root
 spec:
     selector:
         matchLabels:
-            app: rca-org0-root
+            app: rca-org2-root
     template:
         metadata: 
             labels:
-                app: rca-org0-root
+                app: rca-org2-root
         spec:
             containers:
-              - name: rca-org0
+              - name: rca-org2
                 image: hyperledger/fabric-ca
-                command: ["fabric-ca-server", "start", "-b", "rca-org0-admin:rca-org0-adminpw", "--port", "7053"]
+                command: ["fabric-ca-server", "start", "-b", "rca-org2-admin:rca-org2-adminpw", "--port", "7055"]
                 env:
                 - name: FABRIC_CA_HOME
                   value: "/etc/hyperledger/fabric-ca-server"
                 - name: FABRIC_CA_SERVER_TLS_ENABLED
                   value: "true"
                 - name: FABRIC_CA_SERVER_CSR_CN
-                  value: "rca-org0"
+                  value: "rca-org2"
                 - name: FABRIC_CA_SERVER_CSR_HOSTS
-                  value: "172.17.0.2"   # TODO: This is hardcoded at the moment
+                  value: "${IP}"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
