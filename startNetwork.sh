@@ -243,7 +243,7 @@ setup-org2-ca() {
   ./$CA_CLIENT register $DEBUG --id.name user-org2 --id.secret org2UserPW --id.type user -u https://$CA_ORG2_HOST
 }
 
-enroll-org1() {
+enroll-org1-peers() {
   # Enroll peer 1
 
   sep
@@ -336,6 +336,99 @@ enroll-org1() {
   cp $TMP_FOLDER/hyperledger/org1/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org1/peer2/msp/admincerts/org1-admin-cert.pem
 }
 
+enroll-org2-peers() {
+  # Enroll peer 1
+
+  sep
+  command "Org2 Peer1"
+  sep
+
+  command "Enroll Peer1 at Org2-CA"
+
+  export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org2/peer1
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org2-ca-cert.pem
+  export FABRIC_CA_CLIENT_MSPDIR=msp
+
+  # We need to copy the certificate of Org2-CA into our tmp directory
+  mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
+  cp $TMP_FOLDER/hyperledger/org2/ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
+
+  ./$CA_CLIENT enroll $DEBUG -u https://peer1-org2:peer1PW@$CA_ORG2_HOST
+
+  small_sep
+
+  command "Enroll Peer1 at TLS-CA"
+
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/tls-ca/tls-ca-cert.pem
+
+  # We need to copy the certificate of the TLS CA into our tmp directory
+  mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
+  cp $TMP_FOLDER/hyperledger/tls-ca/admin/tls-ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
+
+  export FABRIC_CA_CLIENT_MSPDIR=tls-msp
+  ./$CA_CLIENT enroll $DEBUG -u https://peer1-org2:peer1PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer1-org2
+
+
+
+  # Enroll peer 2
+
+  sep
+  command "Org2 Peer2"
+  sep
+
+  command "Enroll Peer2 at Org2-CA"
+
+  export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org2/peer2
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org2-ca-cert.pem
+  export FABRIC_CA_CLIENT_MSPDIR=msp
+
+  # We need to copy the certificate of Org2-CA into our tmp directory
+  mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
+  cp $TMP_FOLDER/hyperledger/org2/ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
+
+  ./$CA_CLIENT enroll $DEBUG -u https://peer2-org2:peer2PW@$CA_ORG2_HOST
+
+  small_sep
+
+  command "Enroll Peer2 at TLS-CA"
+
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/tls-ca/tls-ca-cert.pem
+
+  # We need to copy the certificate of the TLS CA into our tmp directory
+  mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
+  cp $TMP_FOLDER/hyperledger/tls-ca/admin/tls-ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
+
+  export FABRIC_CA_CLIENT_MSPDIR=tls-msp
+  ./$CA_CLIENT enroll $DEBUG -u https://peer2-org2:peer2PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer2-org2
+
+
+
+  # Enroll Org2 admin
+
+  sep
+  command "Org2 Admin"
+  sep
+
+  command "Enroll org2 admin identity"
+
+  # Note that we assume that peer 1 holds the admin identity
+  export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org2/admin
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=../../org2/peer1/assets/ca/org2-ca-cert.pem
+  export FABRIC_CA_CLIENT_MSPDIR=msp
+  ./$CA_CLIENT enroll $DEBUG -u https://admin-org2:org2AdminPW@$CA_ORG2_HOST
+
+  small_sep
+
+  command "Distribute admin certificate across peers"
+
+  mkdir $TMP_FOLDER/hyperledger/org2/peer1/msp/admincerts
+  cp $TMP_FOLDER/hyperledger/org2/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org2/peer1/msp/admincerts/org2-admin-cert.pem
+
+  # usually this would happen out-of-band
+  mkdir $TMP_FOLDER/hyperledger/org2/peer2/msp/admincerts
+  cp $TMP_FOLDER/hyperledger/org2/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org2/peer2/msp/admincerts/org2-admin-cert.pem
+}
+
 
 # Debug commands using -d flag
 export DEBUG=""
@@ -367,7 +460,8 @@ setup-tls-ca
 setup-orderer-org-ca
 setup-org1-ca
 setup-org2-ca
-enroll-org1
+enroll-org1-peers
+enroll-org2-peers
 
 sep
 
