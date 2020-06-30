@@ -275,6 +275,8 @@ enroll-org1-peers() {
   export FABRIC_CA_CLIENT_MSPDIR=tls-msp
   ./$CA_CLIENT enroll $DEBUG -u https://peer1-org1:peer1PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer1-org1
 
+  mv $TMP_FOLDER/hyperledger/org1/peer1/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org1/peer1/tls-msp/keystore/key.pem
+
 
 
   # Enroll peer 2
@@ -307,6 +309,8 @@ enroll-org1-peers() {
 
   export FABRIC_CA_CLIENT_MSPDIR=tls-msp
   ./$CA_CLIENT enroll $DEBUG -u https://peer2-org1:peer2PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer2-org1
+
+  mv $TMP_FOLDER/hyperledger/org1/peer2/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org1/peer2/tls-msp/keystore/key.pem
 
 
 
@@ -368,7 +372,7 @@ enroll-org2-peers() {
   export FABRIC_CA_CLIENT_MSPDIR=tls-msp
   ./$CA_CLIENT enroll $DEBUG -u https://peer1-org2:peer1PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer1-org2
 
-
+  mv $TMP_FOLDER/hyperledger/org2/peer1/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org2/peer1/tls-msp/keystore/key.pem
 
   # Enroll peer 2
 
@@ -401,7 +405,7 @@ enroll-org2-peers() {
   export FABRIC_CA_CLIENT_MSPDIR=tls-msp
   ./$CA_CLIENT enroll $DEBUG -u https://peer2-org2:peer2PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer2-org2
 
-
+  mv $TMP_FOLDER/hyperledger/org2/peer2/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org2/peer2/tls-msp/keystore/key.pem
 
   # Enroll Org2 admin
 
@@ -427,6 +431,14 @@ enroll-org2-peers() {
   # usually this would happen out-of-band
   mkdir $TMP_FOLDER/hyperledger/org2/peer2/msp/admincerts
   cp $TMP_FOLDER/hyperledger/org2/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org2/peer2/msp/admincerts/org2-admin-cert.pem
+}
+
+start-org1-peer1(){
+  sep
+  command "Starting Org1 Peer1"
+  sep
+
+  kubectl create -f "$K8S/org1-peer1/org1-peer1.yaml"
 }
 
 
@@ -462,6 +474,7 @@ setup-org1-ca
 setup-org2-ca
 enroll-org1-peers
 enroll-org2-peers
+start-org1-peer1
 
 sep
 

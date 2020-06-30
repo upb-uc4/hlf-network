@@ -16,37 +16,43 @@ spec:
       containers:
         - name: peer1-org1
           image: hyperledger/fabric-peer
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/org1/peer1
+              name: peer1-org1-mount
           env:
-            - name: FABRIC_CA_HOME
-              value: "/etc/hyperledger/fabric-ca-server"
-            - name: FABRIC_CA_SERVER_TLS_ENABLED
+            - name: CORE_PEER_ID
+              value: "/tmp/hyperledger/org1/peer1"
+            #- CORE_PEER_ADDRESS=peer1-org1:7051
+            #- name: CORE_PEER_ADDRESS
+            # value: "/tmp/hyperledger/org1/peer1"
+            - name: CORE_PEER_LOCALMSPID
+              value: "org1MSP"
+            - name: CORE_PEER_MSPCONFIGPATH
+              value: "/tmp/hyperledger/org1/peer1/msp"
+            - name: CORE_VM_ENDPOINT
+              value: "unix:///host/var/run/docker.sock"
+              #value: "unix:///run/containerd/containerd.sock"
+            - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
+              value: "guide_fabric-ca"
+            - name: FABRIC_LOGGING_SPEC
+              value: "debug"
+            - name: CORE_PEER_TLS_ENABLED
               value: "true"
-            - name: FABRIC_CA_SERVER_CSR_CN
-              value: "rca-org1"
-            - name: FABRIC_CA_SERVER_CSR_HOSTS
-              value: "${IP}"
-            - name: FABRIC_CA_SERVER_DEBUG
+            - name: CORE_PEER_TLS_CERT_FILE
+              value: "/tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem"
+            - name: CORE_PEER_TLS_KEY_FILE
+              value: "/tmp/hyperledger/org1/peer1/tls-msp/keystore/key.pem"
+            - name: CORE_PEER_TLS_ROOTCERT_FILE
+              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${ORG1_PEER1_TLSCACERTS}"
+            - name: CORE_PEER_GOSSIP_USELEADERELECTION
               value: "true"
-
-  environment:
-    - CORE_PEER_ID=peer1-org1
-    - CORE_PEER_ADDRESS=peer1-org1:7051
-    - CORE_PEER_LOCALMSPID=org1MSP
-    - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/peer1/msp
-    - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-    - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=guide_fabric-ca
-    - FABRIC_LOGGING_SPEC=debug
-    - CORE_PEER_TLS_ENABLED=true
-    - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem
-    - CORE_PEER_TLS_KEY_FILE=/tmp/hyperledger/org1/peer1/tls-msp/keystore/key.pem
-    - CORE_PEER_TLS_ROOTCERT_FILE=/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
-    - CORE_PEER_GOSSIP_USELEADERELECTION=true
-    - CORE_PEER_GOSSIP_ORGLEADER=false
-    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1-org1:7051
-    - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
-  working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org1/peer1
-  volumes:
-    - /var/run:/host/var/run
-    - /tmp/hyperledger/org1/peer1:/tmp/hyperledger/org1/peer1
-  networks:
-    - fabric-ca
+            - name: CORE_PEER_GOSSIP_ORGLEADER
+              value: "false"
+            - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
+              value: "peer1-org1:7051"
+            - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
+              value: "true"
+      volumes:
+        - name: peer1-org1-mount
+          hostPath:
+            path: /hyperledger/org1/peer1
