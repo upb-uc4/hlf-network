@@ -123,7 +123,6 @@ setup-orderer-org-ca() {
   # Query Orderrer CA server to enroll an admin identity
   command "Use CA-client to enroll admin"
   small_sep
-  cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
   ./$CA_CLIENT enroll $DEBUG -u https://rca-org0-admin:rca-org0-adminpw@$CA_ORDERER_HOST
   small_sep
 
@@ -362,6 +361,8 @@ fi
 mkdir -p $TMP_FOLDER/hyperledger
 
 # Mount tmp folder
+small_sep
+command "Mounting tmp folder to minikube"
 minikube mount $TMP_FOLDER/hyperledger:/hyperledger &
 
 setup-tls-ca
