@@ -62,7 +62,7 @@ setup-tls-ca() {
   export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/tls-ca/admin
   mkdir -p $TMP_FOLDER
   mkdir -p $FABRIC_CA_CLIENT_HOME
-  kubectl cp default/$TLS_CA_NAME:etc/hyperledger/fabric-ca-server/ca-cert.pem $TMP_FOLDER/ca-cert.pem
+  cp $TMP_FOLDER/hyperledger/tls/ca/crypto/ca-cert.pem $TMP_FOLDER/ca-cert.pem
 
   # Query TLS CA server to enroll an admin identity
   command "Use CA-client to enroll admin"
@@ -116,11 +116,11 @@ setup-orderer-org-ca() {
   command "Using pod $ORDERER_ORG_CA_NAME"
   small_sep
 
-  export FABRIC_CA_CLIENT_TLS_CERTFILES=ca-cert.pem
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=../crypto/ca-cert.pem
   export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org0/ca/admin
   mkdir -p $FABRIC_CA_CLIENT_HOME
 
-  # Query TLS CA server to enroll an admin identity
+  # Query Orderrer CA server to enroll an admin identity
   command "Use CA-client to enroll admin"
   small_sep
   cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
@@ -358,6 +358,11 @@ if minikube status | grep -q 'host: Stopped'; then
   command "Starting Network"
   minikube start
 fi
+
+mkdir -p $TMP_FOLDER/hyperledger
+
+# Mount tmp folder
+minikube mount $TMP_FOLDER/hyperledger:/hyperledger &
 
 setup-tls-ca
 setup-orderer-org-ca
