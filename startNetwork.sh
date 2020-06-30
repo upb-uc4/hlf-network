@@ -166,14 +166,13 @@ setup-org1-ca() {
   command "Using pod $ORG1_CA_NAME"
   small_sep
 
-  export FABRIC_CA_CLIENT_TLS_CERTFILES=ca-cert.pem
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=../crypto/ca-cert.pem
   export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/ca/admin
   mkdir -p $FABRIC_CA_CLIENT_HOME
 
   # Query TLS CA server to enroll an admin identity
   command "Use CA-client to enroll admin"
   small_sep
-  cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
   ./$CA_CLIENT enroll $DEBUG -u https://rca-org1-admin:rca-org1-adminpw@$CA_ORG1_HOST
   small_sep
 
@@ -221,14 +220,13 @@ setup-org2-ca() {
   command "Using pod $ORG2_CA_NAME"
   small_sep
 
-  export FABRIC_CA_CLIENT_TLS_CERTFILES=ca-cert.pem
-  export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org2ca/admin
+  export FABRIC_CA_CLIENT_TLS_CERTFILES=../crypto/ca-cert.pem
+  export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org2/ca/admin
   mkdir -p $FABRIC_CA_CLIENT_HOME
 
   # Query TLS CA server to enroll an admin identity
   command "Use CA-client to enroll admin"
   small_sep
-  cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
   ./$CA_CLIENT enroll $DEBUG -u https://rca-org2-admin:rca-org2-adminpw@$CA_ORG2_HOST
   small_sep
 
