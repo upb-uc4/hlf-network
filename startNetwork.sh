@@ -441,6 +441,29 @@ start-org1-peer1(){
   kubectl create -f "$K8S/org1-peer1/org1-peer1.yaml"
 }
 
+start-org1-peer2(){
+  sep
+  command "Starting Org1 Peer2"
+  sep
+
+  kubectl create -f "$K8S/org1-peer2/org1-peer2.yaml"
+}
+
+start-org2-peer1(){
+  sep
+  command "Starting Org2 Peer1"
+  sep
+
+  kubectl create -f "$K8S/org2-peer1/org2-peer1.yaml"
+}
+
+start-org2-peer2(){
+  sep
+  command "Starting Org2 Peer2"
+  sep
+
+  kubectl create -f "$K8S/org2-peer2/org2-peer2.yaml"
+}
 
 # Debug commands using -d flag
 export DEBUG=""
@@ -475,6 +498,10 @@ setup-org2-ca
 enroll-org1-peers
 enroll-org2-peers
 start-org1-peer1
+start-org1-peer2
+start-org2-peer1
+start-org2-peer2
+
 
 sep
 

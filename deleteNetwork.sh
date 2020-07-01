@@ -23,7 +23,9 @@ delete-ca "Org1 CA" "$K8S/org1-ca/org1-ca.yaml" "rca-org1-root" "$K8S/org1-ca/or
 delete-ca "Org2 CA" "$K8S/org2-ca/org2-ca.yaml" "rca-org2-root" "$K8S/org2-ca/org2-ca-service.yaml"
 
 kubectl delete -f "$K8S/org1-peer1/org1-peer1.yaml"
-
+kubectl delete -f "$K8S/org1-peer2/org1-peer2.yaml"
+kubectl delete -f "$K8S/org2-peer1/org2-peer1.yaml"
+kubectl delete -f "$K8S/org2-peer2/org2-peer2.yaml"
 
 echo Delete temporary directories
 rm -rf $TMP_FOLDER

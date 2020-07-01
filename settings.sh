@@ -1,2 +1,2 @@
 export IP=172.17.0.2
-export ORG1_PEER1_TLSCACERTS=tls-172-17-0-2-30905.pem
+export PEERS_TLSCACERTS=tls-172-17-0-2-30905.pem
