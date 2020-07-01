@@ -5,7 +5,7 @@ NORMAL=$(tput sgr0)
 # Function definitions
 get_pods() {
   #1 - app name
-  kubectl get pods -l app=$1 --field-selector status.phase=Running --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
+  kubectl get pods -l app=$1 --field-selector status.phase=Running --namespace=hlf-production-network --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
 }
 
 small_sep() {
@@ -31,27 +31,27 @@ setup-tls-ca() {
   sep
 
   # Create deployment for tls root ca
-  if (($(kubectl get deployment -l app=ca-tls-root --ignore-not-found | wc -l) < 2)); then
+  if (($(kubectl get deployment -l app=ca-tls-root --ignore-not-found --namespace=hlf-production-network | wc -l) < 2)); then
     command "Creating TLS CA deployment"
-    kubectl create -f $K8S/tls-ca/tls-ca.yaml
+    kubectl create -f $K8S/tls-ca/tls-ca.yaml --namespace=hlf-production-network
   else
     command "TLS CA deployment already exists"
   fi
 
   # Expose service for tls root ca
-  if (($(kubectl get service -l app=ca-tls-root --ignore-not-found | wc -l) < 2)); then
+  if (($(kubectl get service -l app=ca-tls-root --ignore-not-found  --namespace=hlf-production-network| wc -l) < 2)); then
     command "Creating TLS CA service"
-    kubectl create -f $K8S/tls-ca/tls-ca-service.yaml
+    kubectl create -f $K8S/tls-ca/tls-ca-service.yaml --namespace=hlf-production-network
   else
     command "TLS CA service already exists"
   fi
-  CA_TLS_HOST=$(minikube service ca-tls --url | cut -c 8-)
+  CA_TLS_HOST=$(minikube service ca-tls --url --namespace=hlf-production-network | cut -c 8-)
   command "TLS CA service exposed on $CA_TLS_HOST"
   small_sep
 
   # Wait until pod and service are ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=60s
+  kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=60s --namespace=hlf-production-network
   TLS_CA_NAME=$(get_pods "ca-tls-root")
   command "Using pod $TLS_CA_NAME"
   small_sep
@@ -91,27 +91,27 @@ setup-orderer-org-ca() {
   sep
 
   # Create deployment for orderer org ca
-  if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found | wc -l) < 2)); then
+  if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found  --namespace=hlf-production-network| wc -l) < 2)); then
     command "Creating Orderer Org CA deployment"
-    kubectl create -f $K8S/orderer-org-ca/orderer-org-ca.yaml
+    kubectl create -f $K8S/orderer-org-ca/orderer-org-ca.yaml --namespace=hlf-production-network
   else
     command "Orderer Org CA deployment already exists"
   fi
 
   # Expose service for orderer org ca
-  if (($(kubectl get service -l app=rca-org0-root --ignore-not-found | wc -l) < 2)); then
+  if (($(kubectl get service -l app=rca-org0-root --ignore-not-found  --namespace=hlf-production-network| wc -l) < 2)); then
     command "Creating Orderer Org CA service"
-    kubectl create -f $K8S/orderer-org-ca/orderer-org-ca-service.yaml
+    kubectl create -f $K8S/orderer-org-ca/orderer-org-ca-service.yaml --namespace=hlf-production-network
   else
     command "Orderer Org CA service already exists"
   fi
-  CA_ORDERER_HOST=$(minikube service rca-org0 --url | cut -c 8-)
+  CA_ORDERER_HOST=$(minikube service rca-org0 --url  --namespace=hlf-production-network| cut -c 8-)
   command "Orderer Org CA service exposed on $CA_ORDERER_HOST"
   small_sep
 
   # Wait until pod is ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=60s
+  kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=60s --namespace=hlf-production-network
   ORDERER_ORG_CA_NAME=$(get_pods "rca-org0-root")
   command "Using pod $ORDERER_ORG_CA_NAME"
   small_sep
@@ -141,27 +141,27 @@ setup-org1-ca() {
   sep
 
   # Create deployment for org1 ca
-  if (($(kubectl get deployment -l app=rca-org1-root --ignore-not-found | wc -l) < 2)); then
+  if (($(kubectl get deployment -l app=rca-org1-root --ignore-not-found  --namespace=hlf-production-network| wc -l) < 2)); then
     command "Creating Org1 CA deployment"
-    kubectl create -f $K8S/org1-ca/org1-ca.yaml
+    kubectl create -f $K8S/org1-ca/org1-ca.yaml --namespace=hlf-production-network
   else
     command "Org1 CA deployment already exists"
   fi
 
   # Expose service for org1 ca
-  if (($(kubectl get service -l app=rca-org1-root --ignore-not-found | wc -l) < 2)); then
+  if (($(kubectl get service -l app=rca-org1-root --ignore-not-found  --namespace=hlf-production-network| wc -l) < 2)); then
     command "Creating Org1 CA service"
-    kubectl create -f $K8S/org1-ca/org1-ca-service.yaml
+    kubectl create -f $K8S/org1-ca/org1-ca-service.yaml --namespace=hlf-production-network
   else
     command "Org1 CA service already exists"
   fi
-  CA_ORG1_HOST=$(minikube service rca-org1 --url | cut -c 8-)
+  CA_ORG1_HOST=$(minikube service rca-org1 --url  --namespace=hlf-production-network| cut -c 8-)
   command "Org1 CA service exposed on $CA_ORG1_HOST"
   small_sep
 
   # Wait until pod is ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=rca-org1-root --timeout=60s
+  kubectl wait --for=condition=ready pod -l app=rca-org1-root --timeout=60s --namespace=hlf-production-network
   ORG1_CA_NAME=$(get_pods "rca-org1-root")
   command "Using pod $ORG1_CA_NAME"
   small_sep
@@ -195,27 +195,27 @@ setup-org2-ca() {
   sep
 
   # Create deployment for org2 ca
-  if (($(kubectl get deployment -l app=rca-org2-root --ignore-not-found | wc -l) < 2)); then
+  if (($(kubectl get deployment -l app=rca-org2-root --ignore-not-found --namespace=hlf-production-network | wc -l) < 2)); then
     command "Creating Org2 CA deployment"
-    kubectl create -f $K8S/org2-ca/org2-ca.yaml
+    kubectl create -f $K8S/org2-ca/org2-ca.yaml --namespace=hlf-production-network
   else
     command "Org2 CA deployment already exists"
   fi
 
   # Expose service for org2 ca
-  if (($(kubectl get service -l app=rca-org2-root --ignore-not-found | wc -l) < 2)); then
+  if (($(kubectl get service -l app=rca-org2-root --ignore-not-found --namespace=hlf-production-network | wc -l) < 2)); then
     command "Creating Org2 CA service"
-    kubectl create -f $K8S/org2-ca/org2-ca-service.yaml
+    kubectl create -f $K8S/org2-ca/org2-ca-service.yaml --namespace=hlf-production-network
   else
     command "Org2 CA service already exists"
   fi
-  CA_ORG2_HOST=$(minikube service rca-org2 --url | cut -c 8-)
+  CA_ORG2_HOST=$(minikube service rca-org2 --url --namespace=hlf-production-network | cut -c 8-)
   command "Org2 CA service exposed on $CA_ORG2_HOST"
   small_sep
 
   # Wait until pod is ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=60s
+  kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=60s --namespace=hlf-production-network
   ORG2_CA_NAME=$(get_pods "rca-org2-root")
   command "Using pod $ORG2_CA_NAME"
   small_sep
@@ -438,7 +438,7 @@ start-org1-peer1(){
   command "Starting Org1 Peer1"
   sep
 
-  kubectl create -f "$K8S/org1-peer1/org1-peer1.yaml"
+  kubectl create -f "$K8S/org1-peer1/org1-peer1.yaml" --namespace=hlf-production-network
 }
 
 start-org1-peer2(){
@@ -446,7 +446,7 @@ start-org1-peer2(){
   command "Starting Org1 Peer2"
   sep
 
-  kubectl create -f "$K8S/org1-peer2/org1-peer2.yaml"
+  kubectl create -f "$K8S/org1-peer2/org1-peer2.yaml" --namespace=hlf-production-network
 }
 
 start-org2-peer1(){
@@ -454,7 +454,7 @@ start-org2-peer1(){
   command "Starting Org2 Peer1"
   sep
 
-  kubectl create -f "$K8S/org2-peer1/org2-peer1.yaml"
+  kubectl create -f "$K8S/org2-peer1/org2-peer1.yaml" --namespace=hlf-production-network
 }
 
 start-org2-peer2(){
@@ -462,7 +462,7 @@ start-org2-peer2(){
   command "Starting Org2 Peer2"
   sep
 
-  kubectl create -f "$K8S/org2-peer2/org2-peer2.yaml"
+  kubectl create -f "$K8S/org2-peer2/org2-peer2.yaml" --namespace=hlf-production-network
 }
 
 # Debug commands using -d flag
@@ -490,6 +490,10 @@ mkdir -p $TMP_FOLDER/hyperledger
 small_sep
 command "Mounting tmp folder to minikube"
 minikube mount $TMP_FOLDER/hyperledger:/hyperledger &
+
+small_sep
+kubectl create -f $K8S/namespace.yaml
+kubectl wait --for=condition=ready namespace -f $K8S/namespace.yaml --timeout=60s
 
 setup-tls-ca
 setup-orderer-org-ca
