@@ -39,7 +39,7 @@ setup-tls-ca() {
   fi
 
   # Expose service for tls root ca
-  if (($(kubectl get service -l app=ca-tls-root --ignore-not-found  -n hlf-production-network| wc -l) < 2)); then
+  if (($(kubectl get service -l app=ca-tls-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
     command "Creating TLS CA service"
     kubectl create -f $K8S/tls-ca/tls-ca-service.yaml -n hlf-production-network
   else
@@ -91,7 +91,7 @@ setup-orderer-org-ca() {
   sep
 
   # Create deployment for orderer org ca
-  if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found  -n hlf-production-network| wc -l) < 2)); then
+  if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
     command "Creating Orderer Org CA deployment"
     kubectl create -f $K8S/orderer-org-ca/orderer-org-ca.yaml -n hlf-production-network
   else
@@ -99,13 +99,13 @@ setup-orderer-org-ca() {
   fi
 
   # Expose service for orderer org ca
-  if (($(kubectl get service -l app=rca-org0-root --ignore-not-found  -n hlf-production-network| wc -l) < 2)); then
+  if (($(kubectl get service -l app=rca-org0-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
     command "Creating Orderer Org CA service"
     kubectl create -f $K8S/orderer-org-ca/orderer-org-ca-service.yaml -n hlf-production-network
   else
     command "Orderer Org CA service already exists"
   fi
-  CA_ORDERER_HOST=$(minikube service rca-org0 --url  -n hlf-production-network| cut -c 8-)
+  CA_ORDERER_HOST=$(minikube service rca-org0 --url -n hlf-production-network | cut -c 8-)
   command "Orderer Org CA service exposed on $CA_ORDERER_HOST"
   small_sep
 
@@ -141,7 +141,7 @@ setup-org1-ca() {
   sep
 
   # Create deployment for org1 ca
-  if (($(kubectl get deployment -l app=rca-org1-root --ignore-not-found  -n hlf-production-network| wc -l) < 2)); then
+  if (($(kubectl get deployment -l app=rca-org1-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
     command "Creating Org1 CA deployment"
     kubectl create -f $K8S/org1-ca/org1-ca.yaml -n hlf-production-network
   else
@@ -149,13 +149,13 @@ setup-org1-ca() {
   fi
 
   # Expose service for org1 ca
-  if (($(kubectl get service -l app=rca-org1-root --ignore-not-found  -n hlf-production-network| wc -l) < 2)); then
+  if (($(kubectl get service -l app=rca-org1-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
     command "Creating Org1 CA service"
     kubectl create -f $K8S/org1-ca/org1-ca-service.yaml -n hlf-production-network
   else
     command "Org1 CA service already exists"
   fi
-  CA_ORG1_HOST=$(minikube service rca-org1 --url  -n hlf-production-network| cut -c 8-)
+  CA_ORG1_HOST=$(minikube service rca-org1 --url -n hlf-production-network | cut -c 8-)
   command "Org1 CA service exposed on $CA_ORG1_HOST"
   small_sep
 
@@ -277,8 +277,6 @@ enroll-org1-peers() {
 
   mv $TMP_FOLDER/hyperledger/org1/peer1/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org1/peer1/tls-msp/keystore/key.pem
 
-
-
   # Enroll peer 2
 
   sep
@@ -311,8 +309,6 @@ enroll-org1-peers() {
   ./$CA_CLIENT enroll $DEBUG -u https://peer2-org1:peer2PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer2-org1
 
   mv $TMP_FOLDER/hyperledger/org1/peer2/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org1/peer2/tls-msp/keystore/key.pem
-
-
 
   # Enroll Org1 admin
 
@@ -433,7 +429,7 @@ enroll-org2-peers() {
   cp $TMP_FOLDER/hyperledger/org2/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org2/peer2/msp/admincerts/org2-admin-cert.pem
 }
 
-start-org1-peer1(){
+start-org1-peer1() {
   sep
   command "Starting Org1 Peer1"
   sep
@@ -441,7 +437,7 @@ start-org1-peer1(){
   kubectl create -f "$K8S/org1-peer1/org1-peer1.yaml" -n hlf-production-network
 }
 
-start-org1-peer2(){
+start-org1-peer2() {
   sep
   command "Starting Org1 Peer2"
   sep
@@ -449,7 +445,7 @@ start-org1-peer2(){
   kubectl create -f "$K8S/org1-peer2/org1-peer2.yaml" -n hlf-production-network
 }
 
-start-org2-peer1(){
+start-org2-peer1() {
   sep
   command "Starting Org2 Peer1"
   sep
@@ -457,7 +453,7 @@ start-org2-peer1(){
   kubectl create -f "$K8S/org2-peer1/org2-peer1.yaml" -n hlf-production-network
 }
 
-start-org2-peer2(){
+start-org2-peer2() {
   sep
   command "Starting Org2 Peer2"
   sep
@@ -505,7 +501,6 @@ start-org1-peer1
 start-org1-peer2
 start-org2-peer1
 start-org2-peer2
-
 
 sep
 
