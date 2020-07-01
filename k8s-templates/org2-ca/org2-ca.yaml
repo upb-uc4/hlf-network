@@ -17,9 +17,12 @@ spec:
               - name: rca-org2
                 image: hyperledger/fabric-ca
                 command: ["fabric-ca-server", "start", "-b", "rca-org2-admin:rca-org2-adminpw", "--port", "7055"]
+                volumeMounts:
+                  - mountPath: /tmp/hyperledger/fabric-ca
+                    name: ca-mount
                 env:
                 - name: FABRIC_CA_HOME
-                  value: "/etc/hyperledger/fabric-ca-server"
+                  value: "/tmp/hyperledger/fabric-ca/crypto"
                 - name: FABRIC_CA_SERVER_TLS_ENABLED
                   value: "true"
                 - name: FABRIC_CA_SERVER_CSR_CN
@@ -28,3 +31,7 @@ spec:
                   value: "${IP}"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
+            volumes:
+              - name: ca-mount
+                hostPath:
+                  path: /hyperledger/org2/ca
