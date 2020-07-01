@@ -472,7 +472,7 @@ fi
 source ./env.sh
 
 # Use configuration file to generate kubernetes setup from the template
-./apply-config.sh
+./applyConfig.sh
 
 # Start minikube
 if minikube status | grep -q 'host: Stopped'; then
