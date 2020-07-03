@@ -164,6 +164,7 @@ setup-org1-ca() {
   # Wait until pod is ready
   command "Waiting for pod"
   kubectl wait --for=condition=ready pod -l app=rca-org1-root --timeout=60s -n hlf-production-network
+  sleep $SERVER_STARTUP_TIME
   ORG1_CA_NAME=$(get_pods "rca-org1-root")
   command "Using pod $ORG1_CA_NAME"
   small_sep
@@ -218,6 +219,7 @@ setup-org2-ca() {
   # Wait until pod is ready
   command "Waiting for pod"
   kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=60s -n hlf-production-network
+  sleep $SERVER_STARTUP_TIME
   ORG2_CA_NAME=$(get_pods "rca-org2-root")
   command "Using pod $ORG2_CA_NAME"
   small_sep
