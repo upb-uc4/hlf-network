@@ -522,14 +522,14 @@ fi
 # Set environment variables
 source ./env.sh
 
-# Use configuration file to generate kubernetes setup from the template
-./applyConfig.sh
-
 # Start minikube
 if minikube status | grep -q 'host: Stopped'; then
   command "Starting Network"
   minikube start
 fi
+
+# Use configuration file to generate kubernetes setup from the template
+./applyConfig.sh
 
 mkdir -p $TMP_FOLDER/hyperledger
 
