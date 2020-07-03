@@ -52,6 +52,7 @@ setup-tls-ca() {
   # Wait until pod and service are ready
   command "Waiting for pod"
   kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=60s -n hlf-production-network
+  sleep $SERVER_STARTUP_TIME
   TLS_CA_NAME=$(get_pods "ca-tls-root")
   command "Using pod $TLS_CA_NAME"
   small_sep
@@ -112,6 +113,7 @@ setup-orderer-org-ca() {
   # Wait until pod is ready
   command "Waiting for pod"
   kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=60s -n hlf-production-network
+  sleep $SERVER_STARTUP_TIME
   ORDERER_ORG_CA_NAME=$(get_pods "rca-org0-root")
   command "Using pod $ORDERER_ORG_CA_NAME"
   small_sep
@@ -486,10 +488,10 @@ mkdir -p $TMP_FOLDER/hyperledger
 small_sep
 command "Mounting tmp folder to minikube"
 minikube mount $TMP_FOLDER/hyperledger:/hyperledger &
+sleep 3
 
 small_sep
 kubectl create -f $K8S/namespace.yaml
-kubectl wait --for=condition=ready namespace -f $K8S/namespace.yaml --timeout=60s
 
 setup-tls-ca
 setup-orderer-org-ca
