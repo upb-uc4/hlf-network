@@ -51,7 +51,7 @@ setup-tls-ca() {
 
   # Wait until pod and service are ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=60s -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=120s -n hlf-production-network
   sleep $SERVER_STARTUP_TIME
   TLS_CA_NAME=$(get_pods "ca-tls-root")
   command "Using pod $TLS_CA_NAME"
@@ -112,7 +112,7 @@ setup-orderer-org-ca() {
 
   # Wait until pod is ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=60s -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=120s -n hlf-production-network
   sleep $SERVER_STARTUP_TIME
   ORDERER_ORG_CA_NAME=$(get_pods "rca-org0-root")
   command "Using pod $ORDERER_ORG_CA_NAME"
@@ -163,7 +163,7 @@ setup-org1-ca() {
 
   # Wait until pod is ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=rca-org1-root --timeout=60s -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=rca-org1-root --timeout=120s -n hlf-production-network
   sleep $SERVER_STARTUP_TIME
   ORG1_CA_NAME=$(get_pods "rca-org1-root")
   command "Using pod $ORG1_CA_NAME"
@@ -218,7 +218,7 @@ setup-org2-ca() {
 
   # Wait until pod is ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=60s -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=120s -n hlf-production-network
   sleep $SERVER_STARTUP_TIME
   ORG2_CA_NAME=$(get_pods "rca-org2-root")
   command "Using pod $ORG2_CA_NAME"
@@ -514,6 +514,10 @@ setup-orderer() {
   sep "Generate genesis block"
   ./configtxgen -configPath $K8S/ -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel
   ./configtxgen -configPath $K8S/  -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel
+
+  # Move certificates to dedicated msp folders
+
+
 }
 
 # Debug commands using -d flag
