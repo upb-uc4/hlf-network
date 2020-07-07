@@ -510,6 +510,10 @@ setup-orderer() {
   mkdir -p $TMP_FOLDER/hyperledger/org0/orderer/msp/admincerts
   cp $TMP_FOLDER/hyperledger/org0/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org0/orderer/msp/admincerts/orderer-admin-cert.pem
 
+
+  sep "Generate genesis block"
+  ./configtxgen -configPath $K8S/ -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel
+  ./configtxgen -configPath $K8S/  -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel
 }
 
 # Debug commands using -d flag

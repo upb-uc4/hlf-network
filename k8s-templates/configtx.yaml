@@ -16,7 +16,7 @@ Organizations:
     ID: org0MSP
 
     # MSPDir is the filesystem path which contains the MSP configuration
-    MSPDir: /tmp/hyperledger/org0/msp
+    MSPDir: ${TMP_FOLDER}/hyperledger/org0/msp
 
   - &org1
 
@@ -26,14 +26,14 @@ Organizations:
     ID: org1MSP
 
     # MSPDir is the filesystem path which contains the MSP configuration
-    MSPDir: /tmp/hyperledger/org1/msp
+    MSPDir: ${TMP_FOLDER}/hyperledger/org1/msp
 
     AnchorPeers:
       # AnchorPeers defines the location of peers which can be used
       # for cross org gossip communication.  Note, this value is only
       # encoded in the genesis block in the Application section context
       - Host: peer1-org1
-          Port: 7051
+        Port: 7051
 
   - &org2
 
@@ -43,14 +43,14 @@ Organizations:
     ID: org2MSP
 
     # MSPDir is the filesystem path which contains the MSP configuration
-    MSPDir: /tmp/hyperledger/org2/msp
+    MSPDir: ${TMP_FOLDER}/hyperledger/org2/msp
 
     AnchorPeers:
       # AnchorPeers defines the location of peers which can be used
       # for cross org gossip communication.  Note, this value is only
       # encoded in the genesis block in the Application section context
       - Host: peer1-org2
-          Port: 7051
+        Port: 7051
 
 ################################################################################
 #
