@@ -513,8 +513,8 @@ setup-orderer() {
   setup-orderer-msp
 
   sep "Generate genesis block"
-  ./configtxgen -configPath $K8S/ -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel
-  ./configtxgen -configPath $K8S/  -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel
+  ./configtxgen -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel
+  ./configtxgen -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel
 }
 
 setup-orderer-msp() {
