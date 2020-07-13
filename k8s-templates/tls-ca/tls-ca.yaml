@@ -15,7 +15,8 @@ spec:
         spec:
             containers:
               - name: ca-tls
-                image: hyperledger/fabric-ca
+                image: hyperledger/fabric-ca:1.4.7
+                imagePullPolicy: IfNotPresent
                 command: ["fabric-ca-server", "start", "-b", "tls-ca-admin:tls-ca-adminpw", "--port", "7052"]
                 volumeMounts:
                   - mountPath: /tmp/hyperledger/fabric-ca

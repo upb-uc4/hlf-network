@@ -1,6 +1,5 @@
-# Color definitions for better readability
-CYAN=$(tput setaf 6)
-NORMAL=$(tput sgr0)
+# Exit on errors
+set -e
 
 # Function definitions
 get_pods() {
@@ -9,20 +8,16 @@ get_pods() {
 }
 
 small_sep() {
-  printf "%s" "${CYAN}"
-  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
-  printf "%s" "${NORMAL}"
+  printf "%s\n" '---------------------------------------------------------------------------------'
 }
 
 sep() {
-  printf "%s" "${CYAN}"
-  printf '%*s\n' "${COLUMN:-$(tput cols)}" '' | tr ' ' =
-  printf "%s" "${NORMAL}"
+  printf "%s\n" '================================================================================='
 }
 
 command() {
   #1 - command to display
-  echo "${CYAN}$1${NORMAL}"
+  echo "$1"
 }
 
 setup-tls-ca() {
@@ -51,7 +46,7 @@ setup-tls-ca() {
 
   # Wait until pod and service are ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=60s -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=120s -n hlf-production-network
   sleep $SERVER_STARTUP_TIME
   TLS_CA_NAME=$(get_pods "ca-tls-root")
   command "Using pod $TLS_CA_NAME"
@@ -112,7 +107,7 @@ setup-orderer-org-ca() {
 
   # Wait until pod is ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=60s -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=120s -n hlf-production-network
   sleep $SERVER_STARTUP_TIME
   ORDERER_ORG_CA_NAME=$(get_pods "rca-org0-root")
   command "Using pod $ORDERER_ORG_CA_NAME"
@@ -163,7 +158,7 @@ setup-org1-ca() {
 
   # Wait until pod is ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=rca-org1-root --timeout=60s -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=rca-org1-root --timeout=120s -n hlf-production-network
   sleep $SERVER_STARTUP_TIME
   ORG1_CA_NAME=$(get_pods "rca-org1-root")
   command "Using pod $ORG1_CA_NAME"
@@ -218,7 +213,7 @@ setup-org2-ca() {
 
   # Wait until pod is ready
   command "Waiting for pod"
-  kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=60s -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=120s -n hlf-production-network
   sleep $SERVER_STARTUP_TIME
   ORG2_CA_NAME=$(get_pods "rca-org2-root")
   command "Using pod $ORG2_CA_NAME"
@@ -510,6 +505,46 @@ setup-orderer() {
   mkdir -p $TMP_FOLDER/hyperledger/org0/orderer/msp/admincerts
   cp $TMP_FOLDER/hyperledger/org0/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org0/orderer/msp/admincerts/orderer-admin-cert.pem
 
+  setup-orderer-msp
+
+  sep "Generate genesis block"
+  ./configtxgen -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel
+  ./configtxgen -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel
+}
+
+setup-orderer-msp() {
+  # Create MSP directory for org0
+  export MSP_DIR=$TMP_FOLDER/hyperledger/org0/msp
+  mkdir -p $MSP_DIR
+  mkdir -p $MSP_DIR/admincerts
+  mkdir -p $MSP_DIR/cacerts
+  mkdir -p $MSP_DIR/tlscacerts
+  mkdir -p $MSP_DIR/users
+  cp $TMP_FOLDER/hyperledger/org0/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org0-cert.pem
+  cp $TMP_FOLDER/hyperledger/org0/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org0-ca-cert.pem
+  cp $TMP_FOLDER/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
+
+  # Create MSP directory for org1
+  export MSP_DIR=$TMP_FOLDER/hyperledger/org1/msp
+  mkdir -p $MSP_DIR
+  mkdir -p $MSP_DIR/admincerts
+  mkdir -p $MSP_DIR/cacerts
+  mkdir -p $MSP_DIR/tlscacerts
+  mkdir -p $MSP_DIR/users
+  cp $TMP_FOLDER/hyperledger/org1/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org1-cert.pem
+  cp $TMP_FOLDER/hyperledger/org1/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org1-ca-cert.pem
+  cp $TMP_FOLDER/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
+
+  # Create MSP directory for org2
+  export MSP_DIR=$TMP_FOLDER/hyperledger/org2/msp
+  mkdir -p $MSP_DIR
+  mkdir -p $MSP_DIR/admincerts
+  mkdir -p $MSP_DIR/cacerts
+  mkdir -p $MSP_DIR/tlscacerts
+  mkdir -p $MSP_DIR/users
+  cp $TMP_FOLDER/hyperledger/org2/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org2-cert.pem
+  cp $TMP_FOLDER/hyperledger/org2/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org2-ca-cert.pem
+  cp $TMP_FOLDER/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
 }
 
 # Debug commands using -d flag

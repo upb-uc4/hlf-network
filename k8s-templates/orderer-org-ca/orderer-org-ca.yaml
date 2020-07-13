@@ -15,7 +15,8 @@ spec:
         spec:
             containers:
               - name: rca-org0
-                image: hyperledger/fabric-ca
+                image: hyperledger/fabric-ca:1.4.7
+                imagePullPolicy: IfNotPresent
                 command: ["fabric-ca-server", "start", "-b", "rca-org0-admin:rca-org0-adminpw", "--port", "7053"]
                 volumeMounts:
                   - mountPath: /tmp/hyperledger/fabric-ca
