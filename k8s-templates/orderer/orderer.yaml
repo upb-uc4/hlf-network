@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderer-org0
+  labels:
+    app: orderer-org0
+spec:
+  selector:
+    matchLabels:
+      app: orderer-org0
+  template:
+    metadata:
+      labels:
+        app: orderer-org0
+    spec:
+      containers:
+        - name: orderer-org0
+          image: hyperledger/fabric-orderer:2.2
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/org0/orderer
+              name: orderer-mount
+          env:
+            - name:
+              value:
+      volumes:
+        - name: orderer-mount
+          hostPath:
+            path: /hyperledger/org0/orderer
