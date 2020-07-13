@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: peer2-org1
-          image: hyperledger/fabric-peer
+          image: hyperledger/fabric-peer:2.2
           volumeMounts:
             - mountPath: /tmp/hyperledger/org1/peer2
               name: peer2-org1-mount
