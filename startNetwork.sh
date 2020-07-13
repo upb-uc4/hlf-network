@@ -13,13 +13,21 @@ get_pods() {
 
 small_sep() {
   printf "%s" "${CYAN}"
-  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+  if ! type "tput" > /dev/null; then
+    printf "---------------------------------------------------------------------------------"
+  else
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+  fi
   printf "%s" "${NORMAL}"
 }
 
 sep() {
   printf "%s" "${CYAN}"
-  printf '%*s\n' "${COLUMN:-$(tput cols)}" '' | tr ' ' =
+  if ! type "tput" > /dev/null; then
+    printf "================================================================================="
+  else
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+  fi
   printf "%s" "${NORMAL}"
 }
 
