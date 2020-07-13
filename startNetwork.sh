@@ -1,3 +1,6 @@
+# Exit on errors
+set -e
+
 # Color definitions for better readability
 CYAN=$(tput setaf 6)
 NORMAL=$(tput sgr0)
