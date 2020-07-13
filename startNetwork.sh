@@ -510,6 +510,12 @@ setup-orderer() {
   sep "Generate genesis block"
   ./configtxgen -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel
   ./configtxgen -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel
+
+  sep
+  command "Starting Orderer"
+  sep
+
+  kubectl create -f "$K8S/orderer/orderer.yaml" -n hlf-production-network
 }
 
 setup-orderer-msp() {
