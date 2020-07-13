@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderer-org0
+  labels:
+    app: orderer-org0
+spec:
+  selector:
+    matchLabels:
+      app: orderer-org0
+  template:
+    metadata:
+      labels:
+        app: orderer-org0
+    spec:
+      containers:
+        - name: orderer-org0
+          image: hyperledger/fabric-orderer:2.2
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/org0/orderer
+              name: orderer-mount
+          env:
+            - name: ORDERER_HOME
+              value: "/tmp/hyperledger/orderer"
+            - name: ORDERER_HOST
+              value: "orderer1-org0"
+            - name: ORDERER_GENERAL_LISTENADDRESS
+              value: "0.0.0.0"
+            - name: ORDERER_GENERAL_GENESISMETHOD
+              value: "file"
+            - name: ORDERER_GENERAL_GENESISFILE
+              value: "/tmp/hyperledger/org0/orderer/genesis.block"
+            - name: ORDERER_GENERAL_LOCALMSPID
+              value: "org0MSP"
+            - name: ORDERER_GENERAL_LOCALMSPDIR
+              value: "/tmp/hyperledger/org0/orderer/msp"
+            - name: ORDERER_GENERAL_TLS_ENABLED
+              value: "true"
+            - name: ORDERER_GENERAL_TLS_CERTIFICATE
+              value: "/tmp/hyperledger/org0/orderer/tls-msp/signcerts/cert.pem"
+            - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+              value: "/tmp/hyperledger/org0/orderer/tls-msp/keystore/key.pem"
+            - name: ORDERER_GENERAL_TLS_ROOTCAS
+              value: "[/tmp/hyperledger/org0/orderer/tls-msp/tlscacerts/${PEERS_TLSCACERTS}]"
+            - name: ORDERER_GENERAL_LOGLEVEL
+              value: "debug"
+            - name: ORDERER_DEBUG_BROADCASTTRACEDIR
+              value: "data/logs"
+      volumes:
+        - name: orderer-mount
+          hostPath:
+            path: /hyperledger/org0/orderer
