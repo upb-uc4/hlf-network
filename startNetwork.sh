@@ -13,13 +13,13 @@ get_pods() {
 
 small_sep() {
   printf "%s" "${CYAN}"
-  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+  printf "%s\n" '---------------------------------------------------------------------------------'
   printf "%s" "${NORMAL}"
 }
 
 sep() {
   printf "%s" "${CYAN}"
-  printf '%*s\n' "${COLUMN:-$(tput cols)}" '' | tr ' ' =
+  printf "%s\n" '================================================================================='
   printf "%s" "${NORMAL}"
 }
 
