@@ -1,10 +1,6 @@
 # Exit on errors
 set -e
 
-# Color definitions for better readability
-CYAN=$(tput setaf 6)
-NORMAL=$(tput sgr0)
-
 # Function definitions
 get_pods() {
   #1 - app name
@@ -12,20 +8,16 @@ get_pods() {
 }
 
 small_sep() {
-  printf "%s" "${CYAN}"
   printf "%s\n" '---------------------------------------------------------------------------------'
-  printf "%s" "${NORMAL}"
 }
 
 sep() {
-  printf "%s" "${CYAN}"
   printf "%s\n" '================================================================================='
-  printf "%s" "${NORMAL}"
 }
 
 command() {
   #1 - command to display
-  echo "${CYAN}$1${NORMAL}"
+  echo "$1"
 }
 
 setup-tls-ca() {
