@@ -33,3 +33,13 @@ We deploy all kubernetes components to the same hlf-production-network namespace
 ## Versions 
 
 We use the release 2.2 for all hyperledger fabric components besides the CA server and client where the latest release is 1.4. The binary files are compiled from these releases and might be incompatible to other versions.
+
+## License
+
+Our source code files are made available under the Apache License, Version 2.0 (Apache-2.0), located in the [LICENSE](LICENSE) file.
+
+The included binaries are built from
+ - fabric-ca-client [Hyperledger Fabric CA, Release 1.4.7](https://github.com/hyperledger/fabric-ca)
+ - configtxgen [Hyperledger Fabric, Release 2.2](https://github.com/hyperledger/fabric)
+
+both published under the Apache-2.0 license.
