@@ -32,4 +32,4 @@ We deploy all kubernetes components to the same hlf-production-network namespace
 
 ## Versions 
 
-We use the release 2.2 for all hyperledger fabric components besides the CA server and client where we the latest release is 1.4. The binary files are compiled from these releases and might be incompatible to other versions.
+We use the release 2.2 for all hyperledger fabric components besides the CA server and client where the latest release is 1.4. The binary files are compiled from these releases and might be incompatible to other versions.
