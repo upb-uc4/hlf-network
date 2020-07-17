@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: rca-org2
+    labels:
+        app: rca-org2-root
+spec:
+    selector:
+        matchLabels:
+            app: rca-org2-root
+    template:
+        metadata: 
+            labels:
+                app: rca-org2-root
+        spec:
+            containers:
+              - name: rca-org2
+                image: hyperledger/fabric-ca:1.4.7
+                imagePullPolicy: IfNotPresent
+                command: ["fabric-ca-server", "start", "-b", "rca-org2-admin:rca-org2-adminpw", "--port", "7055"]
+                volumeMounts:
+                  - mountPath: /tmp/hyperledger/fabric-ca
+                    name: ca-mount
+                env:
+                - name: FABRIC_CA_HOME
+                  value: "/tmp/hyperledger/fabric-ca/crypto"
+                - name: FABRIC_CA_SERVER_TLS_ENABLED
+                  value: "true"
+                - name: FABRIC_CA_SERVER_CSR_CN
+                  value: "rca-org2"
+                - name: FABRIC_CA_SERVER_CSR_HOSTS
+                  value: "${IP}"
+                - name: FABRIC_CA_SERVER_DEBUG
+                  value: "true"
+            volumes:
+              - name: ca-mount
+                hostPath:
+                  path: /hyperledger/org2/ca
