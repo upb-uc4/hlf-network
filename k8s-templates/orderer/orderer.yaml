@@ -47,6 +47,10 @@ spec:
               value: "debug"
             - name: ORDERER_DEBUG_BROADCASTTRACEDIR
               value: "data/logs"
+            - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
+              value: "/tmp/hyperledger/org0/orderer/tls-msp/keystore/key.pem"
+            - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
+              value: "/tmp/hyperledger/org0/orderer/tls-msp/signcerts/cert.pem"
       volumes:
         - name: orderer-mount
           hostPath:

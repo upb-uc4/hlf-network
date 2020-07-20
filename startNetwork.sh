@@ -434,6 +434,7 @@ start-org1-peer1() {
   sep
 
   kubectl create -f "$K8S/org1-peer1/org1-peer1.yaml" -n hlf-production-network
+  kubectl create -f "$K8S/org1-peer1/org1-peer1-service.yaml" -n hlf-production-network
 }
 
 start-org1-peer2() {
@@ -516,6 +517,7 @@ setup-orderer() {
   sep
 
   kubectl create -f "$K8S/orderer/orderer.yaml" -n hlf-production-network
+  kubectl create -f "$K8S/orderer/orderer-service.yaml" -n hlf-production-network
 }
 
 setup-orderer-msp() {
