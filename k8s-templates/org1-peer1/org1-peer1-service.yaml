@@ -8,6 +8,11 @@ spec:
   selector:
     app: peer1-org1
   ports:
-    - protocol: TCP
+    - name: core
+      protocol: TCP
       targetPort: 7051
       port: 7051
+    - name: chaincode
+      protocol: TCP
+      targetPort: 7052
+      port: 7052
