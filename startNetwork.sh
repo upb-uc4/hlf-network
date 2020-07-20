@@ -553,6 +553,15 @@ setup-orderer-msp() {
   cp $TMP_FOLDER/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
 }
 
+start-cli() {
+  sep
+  command "Starting ORG1 CLI"
+  sep
+
+  kubectl create -f "$K8S/org1-cli.yaml" -n hlf-production-network
+}
+
+
 # Debug commands using -d flag
 export DEBUG=""
 if [[ $1 == "-d" ]]; then
@@ -594,6 +603,7 @@ start-org1-peer2
 start-org2-peer1
 start-org2-peer2
 setup-orderer
+start-cli
 
 sep
 
