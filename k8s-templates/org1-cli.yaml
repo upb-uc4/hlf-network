@@ -29,7 +29,7 @@ spec:
               value: "/opt/gopath"
             - name: CORE_VM_ENDPOINT
               value: "unix:///host/var/run/docker.sock"
-            - name: FABIRC_LOGGING_SPEC
+            - name: FABRIC_LOGGING_SPEC
               value: "DEBUG"
             - name: CORE_PEER_ID
               value: "cli-org1"
