@@ -40,7 +40,7 @@ spec:
             - name: CORE_PEER_TLS_ENABLES
               value: "true"
             - name: CORE_PEER_TLS_ROOTCERT_FILE
-              value: "/tmp/hyperledger/org1/peer1/tls-msp/${PEERS_TLSCACERTS}"
+              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}"
             - name: CORE_PEER_MSPCONFIGPATH
               value: "/tmp/hyperledger/org1/peer1/msp"
       volumes:
