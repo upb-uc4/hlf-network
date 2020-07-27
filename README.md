@@ -38,7 +38,7 @@ Get shell on CLI container `kubectl exec -n hlf-production-network {CLI-POD} -it
 
 Get logs of container `kubectl logs {POD} -n hlf-production-network`.
 
-
+You can omit the namespace parameter if you set the context of kubectl `kubectl config set-context --current --namespace=hlf-production-network`.
 
 ## Versions 
 
