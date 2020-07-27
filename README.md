@@ -30,6 +30,16 @@ The startNetwork script uses these filled configuration files and deploys the co
 
 We deploy all kubernetes components to the same hlf-production-network namespace which allows use to easily delete and restart the network from scratch.
 
+### Working with Pods
+
+List the name of all pods: `kubectl get pods -n hlf-production-network`.
+
+Get shell on CLI container `kubectl exec -n hlf-production-network {CLI-POD} -it -- sh`.
+
+Get logs of container `kubectl logs {POD} -n hlf-production-network`.
+
+
+
 ## Versions 
 
 We use the release 2.2 for all hyperledger fabric components besides the CA server and client where the latest release is 1.4. The binary files are compiled from these releases and might be incompatible to other versions.
