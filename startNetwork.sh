@@ -555,7 +555,7 @@ setup-orderer-msp() {
   cp $TMP_FOLDER/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
 }
 
-start-cli() {
+start-clis() {
   sep
   command "Starting ORG1 CLI"
   sep
@@ -568,6 +568,16 @@ start-cli() {
 
   # Copy channel.tx from orderer to peer1 to create the initial channel
   cp $TMP_FOLDER/hyperledger/org0/orderer/channel.tx $TMP_FOLDER/hyperledger/org1/peer1/assets/
+
+  sep
+  command "Starting ORG2 CLI"
+  sep
+
+  kubectl create -f "$K8S/org2-cli.yaml" -n hlf-production-network
+
+  # Provide admincerts to admin msp
+  d=$TMP_FOLDER/hyperledger/org2/admin/msp/admincerts/
+  mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org2/msp/admincerts/admin-org2-cert.pem "$d"
 }
 
 
@@ -612,7 +622,7 @@ start-org1-peer2
 start-org2-peer1
 start-org2-peer2
 setup-orderer
-start-cli
+start-clis
 
 sep
 
