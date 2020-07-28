@@ -451,6 +451,7 @@ start-org2-peer1() {
   sep
 
   kubectl create -f "$K8S/org2-peer1/org2-peer1.yaml" -n hlf-production-network
+  kubectl create -f "$K8S/org2-peer1/org2-peer1-service.yaml" -n hlf-production-network
 }
 
 start-org2-peer2() {
