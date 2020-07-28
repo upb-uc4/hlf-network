@@ -1,5 +1,7 @@
 # Kubernetes Hyperledger Config
 
+![CI](https://github.com/upb-uc4/hlf-network/workflows/CI/badge.svg?branch=develop)
+
 ## Introduction
 
 This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on minikube. The initial topology is based on the [fabric ca operations guide (release 1.4)](
@@ -29,6 +31,16 @@ We utilize environment variables to make our configurations flexible while keepi
 The startNetwork script uses these filled configuration files and deploys the corresponding entities to kubernetes. The script follows the operations guide. We mount the temporary  `tmp` folder to kubernetes which allows us to easily copy certificates and provide resources to the containers.
 
 We deploy all kubernetes components to the same hlf-production-network namespace which allows use to easily delete and restart the network from scratch.
+
+### Working with Pods
+
+List the name of all pods: `kubectl get pods -n hlf-production-network`.
+
+Get shell on CLI container `kubectl exec -n hlf-production-network {CLI-POD} -it -- sh`.
+
+Get logs of container `kubectl logs {POD} -n hlf-production-network`.
+
+You can omit the namespace parameter if you set the context of kubectl `kubectl config set-context --current --namespace=hlf-production-network`.
 
 ## Versions 
 

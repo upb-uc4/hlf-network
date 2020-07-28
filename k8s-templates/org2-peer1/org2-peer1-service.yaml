@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer1-org2
+  labels:
+    app: peer1-org2
+spec:
+  selector:
+    app: peer1-org2
+  ports:
+    - name: core
+      protocol: TCP
+      targetPort: 7051
+      port: 7051
+    - name: chaincode
+      protocol: TCP
+      targetPort: 7052
+      port: 7052

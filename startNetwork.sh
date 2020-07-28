@@ -434,6 +434,7 @@ start-org1-peer1() {
   sep
 
   kubectl create -f "$K8S/org1-peer1/org1-peer1.yaml" -n hlf-production-network
+  kubectl create -f "$K8S/org1-peer1/org1-peer1-service.yaml" -n hlf-production-network
 }
 
 start-org1-peer2() {
@@ -489,7 +490,7 @@ setup-orderer() {
   mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
   cp $TMP_FOLDER/hyperledger/tls-ca/admin/tls-ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
 
-  ./$CA_CLIENT enroll $DEBUG -u https://orderer1-org0:ordererPW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts orderer1-org0
+  ./$CA_CLIENT enroll $DEBUG -u https://orderer1-org0:ordererPW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts orderer-org0
 
   mv $TMP_FOLDER/hyperledger/org0/orderer/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org0/orderer/tls-msp/keystore/key.pem
 
@@ -516,6 +517,7 @@ setup-orderer() {
   sep
 
   kubectl create -f "$K8S/orderer/orderer.yaml" -n hlf-production-network
+  kubectl create -f "$K8S/orderer/orderer-service.yaml" -n hlf-production-network
 }
 
 setup-orderer-msp() {
@@ -552,6 +554,32 @@ setup-orderer-msp() {
   cp $TMP_FOLDER/hyperledger/org2/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org2-ca-cert.pem
   cp $TMP_FOLDER/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
 }
+
+start-clis() {
+  sep
+  command "Starting ORG1 CLI"
+  sep
+
+  kubectl create -f "$K8S/org1-cli.yaml" -n hlf-production-network
+
+  # Provide admincerts to admin msp
+  d=$TMP_FOLDER/hyperledger/org1/admin/msp/admincerts/
+  mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org1/msp/admincerts/admin-org1-cert.pem "$d"
+
+  # Copy channel.tx from orderer to peer1 to create the initial channel
+  cp $TMP_FOLDER/hyperledger/org0/orderer/channel.tx $TMP_FOLDER/hyperledger/org1/peer1/assets/
+
+  sep
+  command "Starting ORG2 CLI"
+  sep
+
+  kubectl create -f "$K8S/org2-cli.yaml" -n hlf-production-network
+
+  # Provide admincerts to admin msp
+  d=$TMP_FOLDER/hyperledger/org2/admin/msp/admincerts/
+  mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org2/msp/admincerts/admin-org2-cert.pem "$d"
+}
+
 
 # Debug commands using -d flag
 export DEBUG=""
@@ -594,6 +622,7 @@ start-org1-peer2
 start-org2-peer1
 start-org2-peer2
 setup-orderer
+start-clis
 
 sep
 
