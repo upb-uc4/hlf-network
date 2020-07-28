@@ -22,8 +22,10 @@ spec:
           env:
             - name: CORE_PEER_ID
               value: "peer1-org1"
-              # - name: CORE_PEER_ADDRESS
-              # value: "peer1-org1:7051"
+            - name: CORE_PEER_ADDRESS
+              value: "peer1-org1:7051"
+            - name: CORE_PEER_LISTENADDRESS
+              value: "0.0.0.0:7051"
             - name: CORE_PEER_LOCALMSPID
               value: "org1MSP"
             - name: CORE_PEER_MSPCONFIGPATH
@@ -50,8 +52,10 @@ spec:
               value: "peer1-org1:7051"
             - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
               value: "true"
-              # - name: CORE_PEER_CHAINCODELISTENADDRESS
-              # value: "peer1-org1:7052"
+            - name: CORE_PEER_CHAINCODEADDRESS
+              value: "peer1-org1:7052"
+            - name: CORE_PEER_CHAINCODELISTENADDRESS
+              value: "0.0.0.0:7052"
       volumes:
         - name: peer1-org1-mount
           hostPath:
