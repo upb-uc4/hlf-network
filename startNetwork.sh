@@ -460,6 +460,7 @@ start-org2-peer2() {
   sep
 
   kubectl create -f "$K8S/org2-peer2/org2-peer2.yaml" -n hlf-production-network
+  kubectl create -f "$K8S/org2-peer2/org2-peer2-service.yaml" -n hlf-production-network
 }
 
 setup-orderer() {
@@ -580,6 +581,9 @@ start-clis() {
   d=$TMP_FOLDER/hyperledger/org2/admin/msp/admincerts/
   mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org2/msp/admincerts/admin-org2-cert.pem "$d"
 
+  # Copy channel.tx from orderer to peer1 to create the initial channel
+  cp $TMP_FOLDER/hyperledger/org0/orderer/channel.tx $TMP_FOLDER/hyperledger/org2/peer1/assets/
+
   kubectl wait --for=condition=ready pod -l app=cli-org1 --timeout=120s -n hlf-production-network
   kubectl wait --for=condition=ready pod -l app=cli-org2 --timeout=120s -n hlf-production-network
 
@@ -593,7 +597,22 @@ create-channel() {
   CLI1=$(get_pods "cli-org1")
 
   # Use CLI shell
-  kubectl exec -n hlf-production-network $CLI1 -it -- sh -c "export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp; peer channel create -c mychannel -f /tmp/hyperledger/org1/peer1/assets/channel.tx -o orderer-org0:7050 --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block --tls --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-172-17-0-2-30905.pem"
+  kubectl exec -n hlf-production-network $CLI1 -it -- sh -c "export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp; peer channel create -c mychannel -f /tmp/hyperledger/org1/peer1/assets/channel.tx -o orderer-org0:7050 --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block --tls --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}"
+
+  sep
+  command "Joining channel using CLI2 on Org2 Peer1"
+  sep
+
+  CLI2=$(get_pods "cli-org2")
+
+  # Use CLI shell
+  kubectl exec -n hlf-production-network $CLI2 -it -- sh -c "export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/admin/msp;
+    export CORE_PEER_ADDRESS=peer1-org2:7051;
+    peer channel join -b /tmp/hyperledger/org2/peer1/assets/mychannel.block;"
+
+    # export CORE_PEER_ADDRESS=peer2-org2:7051;
+    # peer channel join -b /tmp/hyperledger/org2/peer2/assets/mychannel.block
+
 }
 
 
@@ -606,6 +625,7 @@ fi
 
 # Set environment variables
 source ./env.sh
+source ./settings.sh
 
 # Start minikube
 if minikube status | grep -q 'host: Stopped'; then
