@@ -616,14 +616,7 @@ create-channel() {
 
   CLI2=$(get_pods "cli-org2")
 
-  # Use CLI shell
-  kubectl exec -n hlf-production-network $CLI2 -it -- sh -c "export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/admin/msp;
-    export CORE_PEER_ADDRESS=peer1-org2:7051;
-    peer channel join -b /tmp/hyperledger/org2/peer1/assets/mychannel.block;"
-
-    # export CORE_PEER_ADDRESS=peer2-org2:7051;
-    # peer channel join -b /tmp/hyperledger/org2/peer2/assets/mychannel.block
-
+  kubectl exec -n hlf-production-network $CLI1 -i -- sh < scripts/joinChannelOrg2.sh
 }
 
 
