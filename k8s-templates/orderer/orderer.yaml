@@ -45,6 +45,8 @@ spec:
               value: "[/tmp/hyperledger/org0/orderer/tls-msp/tlscacerts/${PEERS_TLSCACERTS}]"
             - name: ORDERER_GENERAL_LOGLEVEL
               value: "debug"
+            - name: FABRIC_LOGGING_SPEC
+              value: "DEBUG"
             - name: ORDERER_DEBUG_BROADCASTTRACEDIR
               value: "data/logs"
             - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
