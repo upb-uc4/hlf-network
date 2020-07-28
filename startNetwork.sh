@@ -593,7 +593,8 @@ create-channel() {
   CLI1=$(get_pods "cli-org1")
 
   # Use CLI shell
-  kubectl exec -n hlf-production-network $CLI1 -it -- sh -c "export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp; peer channel create -c mychannel -f /tmp/hyperledger/org1/peer1/assets/channel.tx -o orderer-org0:7050 --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block --tls --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-172-17-0-2-30905.pem"
+
+  kubectl exec -n hlf-production-network $CLI1 -it -- sh -c "export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp; peer channel create -c mychannel -f /tmp/hyperledger/org1/peer1/assets/channel.tx -o orderer-org0:7050 --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block --tls --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}"
 }
 
 
@@ -612,6 +613,9 @@ if minikube status | grep -q 'host: Stopped'; then
   command "Starting Network"
   minikube start
 fi
+
+# Load additional environment variables
+source ./settings.sh
 
 # Use configuration file to generate kubernetes setup from the template
 ./applyConfig.sh
