@@ -580,6 +580,17 @@ start-clis() {
   mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org2/msp/admincerts/admin-org2-cert.pem "$d"
 }
 
+create-channel() {
+  sep
+  command "Creating channel using CLI1 on Org1 Peer1"
+  sep
+
+  CLI1=$(get_pods "cli-org1")
+
+  # Use CLI shell
+  kubectl exec -n hlf-production-network $CLI1 -it -- sh -c "export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp; peer channel create -c mychannel -f /tmp/hyperledger/org1/peer1/assets/channel.tx -o orderer-org0:7050 --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block --tls --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-172-17-0-2-30905.pem"
+}
+
 
 # Debug commands using -d flag
 export DEBUG=""
