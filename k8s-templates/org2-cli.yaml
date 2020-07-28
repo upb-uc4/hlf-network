@@ -37,7 +37,7 @@ spec:
             - name: CORE_PEER_ADDRESS
               value: "peer1-org2:7051"
             - name: CORE_PEER_LOCALMSPID
-              value: "org1MSP"
+              value: "org2MSP"
             - name: CORE_PEER_TLS_ENABLED
               value: "true"
             - name: CORE_PEER_TLS_ROOTCERT_FILE
