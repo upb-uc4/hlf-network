@@ -579,6 +579,10 @@ start-clis() {
   # Provide admincerts to admin msp
   d=$TMP_FOLDER/hyperledger/org2/admin/msp/admincerts/
   mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org2/msp/admincerts/admin-org2-cert.pem "$d"
+
+  kubectl wait --for=condition=ready pod -l app=cli-org1 --timeout=120s -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=cli-org2 --timeout=120s -n hlf-production-network
+
 }
 
 create-channel() {
