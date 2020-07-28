@@ -22,8 +22,8 @@ spec:
           env:
             - name: CORE_PEER_ID
               value: "peer1-org1"
-            - name: CORE_PEER_ADDRESS
-              value: "peer1-org1:7051"
+              # - name: CORE_PEER_ADDRESS
+              # value: "peer1-org1:7051"
             - name: CORE_PEER_LOCALMSPID
               value: "org1MSP"
             - name: CORE_PEER_MSPCONFIGPATH
