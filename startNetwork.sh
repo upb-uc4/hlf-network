@@ -561,6 +561,8 @@ start-cli() {
   sep
 
   kubectl create -f "$K8S/org1-cli.yaml" -n hlf-production-network
+  d=$TMP_FOLDER/hyperledger/org1/admin/msp/admincerts/
+  mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org1/msp/admincerts/admin-org1-cert.pem "$d"
 }
 
 
