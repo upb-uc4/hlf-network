@@ -582,9 +582,6 @@ start-clis() {
   d=$TMP_FOLDER/hyperledger/org2/admin/msp/admincerts/
   mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org2/msp/admincerts/admin-org2-cert.pem "$d"
 
-  # Copy channel.tx from orderer to peer1 to create the initial channel
-  cp $TMP_FOLDER/hyperledger/org0/orderer/channel.tx $TMP_FOLDER/hyperledger/org2/peer1/assets/
-
   kubectl wait --for=condition=ready pod -l app=cli-org1 --timeout=120s -n hlf-production-network
   kubectl wait --for=condition=ready pod -l app=cli-org2 --timeout=120s -n hlf-production-network
 
@@ -602,7 +599,10 @@ create-channel() {
   envsubst <scripts/createChannel.sh>$TMP_FOLDER/.createChannel.sh
 
   kubectl exec -n hlf-production-network $CLI1 -i -- sh < $TMP_FOLDER/.createChannel.sh
-  # rm $TMP_FOLDER/.createChannel.sh
+  rm $TMP_FOLDER/.createChannel.sh
+
+  # Copy mychannel.block from peer1-org1 to peer1-org2
+  cp $TMP_FOLDER/hyperledger/org1/peer1/assets/mychannel.block $TMP_FOLDER/hyperledger/org2/peer1/assets/mychannel.block
 
   sep
   command "Joining channel using CLI1 on Org1 Peer1 and Peer2"
@@ -616,7 +616,7 @@ create-channel() {
 
   CLI2=$(get_pods "cli-org2")
 
-  kubectl exec -n hlf-production-network $CLI1 -i -- sh < scripts/joinChannelOrg2.sh
+  kubectl exec -n hlf-production-network $CLI2 -i -- sh < scripts/joinChannelOrg2.sh
 }
 
 
