@@ -1,16 +1,16 @@
 name: CI
 on:
-  - push:
-      branches:
-        - master
-        - develop
-      paths-ignore:
-        - README.md
-        - LICENSE
-  - pull_request:
-      branches:
-        - master
-        - develop
+  push:
+    branches:
+      - master
+      - develop
+    paths-ignore:
+      - README.md
+      - LICENSE
+  pull_request:
+    branches:
+      - master
+      - develop
 jobs:
   job1:
     runs-on: ubuntu-latest
