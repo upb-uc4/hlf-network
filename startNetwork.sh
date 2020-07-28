@@ -634,6 +634,7 @@ start-org2-peer1
 start-org2-peer2
 setup-orderer
 start-clis
+create-channel
 
 sep
 
