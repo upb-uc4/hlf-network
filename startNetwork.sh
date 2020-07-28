@@ -443,6 +443,7 @@ start-org1-peer2() {
   sep
 
   kubectl create -f "$K8S/org1-peer2/org1-peer2.yaml" -n hlf-production-network
+  kubectl create -f "$K8S/org1-peer2/org1-peer2-service.yaml" -n hlf-production-network
 }
 
 start-org2-peer1() {
@@ -582,7 +583,6 @@ start-clis() {
 
   kubectl wait --for=condition=ready pod -l app=cli-org1 --timeout=120s -n hlf-production-network
   kubectl wait --for=condition=ready pod -l app=cli-org2 --timeout=120s -n hlf-production-network
-
 }
 
 create-channel() {
@@ -592,9 +592,18 @@ create-channel() {
 
   CLI1=$(get_pods "cli-org1")
 
-  # Use CLI shell
+  # Use CLI shell to create channel
+  source ./settings.sh
+  envsubst <scripts/createChannel.sh>$TMP_FOLDER/.createChannel.sh
 
-  kubectl exec -n hlf-production-network $CLI1 -it -- sh -c "export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp; peer channel create -c mychannel -f /tmp/hyperledger/org1/peer1/assets/channel.tx -o orderer-org0:7050 --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block --tls --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}"
+  kubectl exec -n hlf-production-network $CLI1 -i -- sh < $TMP_FOLDER/.createChannel.sh
+  # rm $TMP_FOLDER/.createChannel.sh
+
+  sep
+  command "Joining channel using CLI1 on Org1 Peer1 and Peer2"
+  sep
+
+  kubectl exec -n hlf-production-network $CLI1 -i -- sh < scripts/joinChannelOrg1.sh
 }
 
 
@@ -613,9 +622,6 @@ if minikube status | grep -q 'host: Stopped'; then
   command "Starting Network"
   minikube start
 fi
-
-# Load additional environment variables
-source ./settings.sh
 
 # Use configuration file to generate kubernetes setup from the template
 ./applyConfig.sh
