@@ -1,5 +1,7 @@
 # Kubernetes Hyperledger Config
 
+![CI](https://github.com/upb-uc4/hlf-network/workflows/CI/badge.svg?branch=develop)
+
 ## Introduction
 
 This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on minikube. The initial topology is based on the [fabric ca operations guide (release 1.4)](
