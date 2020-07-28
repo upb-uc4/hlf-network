@@ -490,7 +490,7 @@ setup-orderer() {
   mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
   cp $TMP_FOLDER/hyperledger/tls-ca/admin/tls-ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
 
-  ./$CA_CLIENT enroll $DEBUG -u https://orderer1-org0:ordererPW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts orderer1-org0
+  ./$CA_CLIENT enroll $DEBUG -u https://orderer1-org0:ordererPW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts orderer-org0
 
   mv $TMP_FOLDER/hyperledger/org0/orderer/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org0/orderer/tls-msp/keystore/key.pem
 
@@ -561,6 +561,8 @@ start-cli() {
   sep
 
   kubectl create -f "$K8S/org1-cli.yaml" -n hlf-production-network
+
+  # Provide admincerts to admin msp
   d=$TMP_FOLDER/hyperledger/org1/admin/msp/admincerts/
   mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org1/msp/admincerts/admin-org1-cert.pem "$d"
 }
