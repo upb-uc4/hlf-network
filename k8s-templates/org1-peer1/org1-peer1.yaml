@@ -23,7 +23,7 @@ spec:
             - name: CORE_PEER_ID
               value: "peer1-org1"
             - name: CORE_PEER_LISTENADDRESS
-              value: 0.0.0.0:7051
+              value: "0.0.0.0:7051"
             - name: CORE_PEER_ADDRESS
               value: "peer1-org1:7051"
             - name: CORE_PEER_LOCALMSPID
