@@ -19,12 +19,13 @@ spec:
           imagePullPolicy: IfNotPresent
           tty: true
           command: ["sh"]
+          workingDir: /tmp/hyperledger/chaincode
           volumeMounts:
             - mountPath: /tmp/hyperledger/org1/admin
               name: org1-admin-mount
             - mountPath: /tmp/hyperledger/org1/peer1
               name: org1-peer1-mount
-            - mountPath: /opt/gopath/src/chaincode
+            - mountPath: /tmp/hyperledger/chaincode
               name: chaincode-mount
           env:
             - name: GOPATH
@@ -32,8 +33,8 @@ spec:
             - name: CORE_VM_ENDPOINT
               value: "unix:///host/var/run/docker.sock"
             # Uncomment for debugging
-            # - name: FABRIC_LOGGING_SPEC
-            #   value: "DEBUG"
+            - name: FABRIC_LOGGING_SPEC
+              value: "DEBUG"
             - name: CORE_PEER_ID
               value: "cli-org1"
             - name: CORE_PEER_ADDRESS
@@ -55,4 +56,7 @@ spec:
             path: /hyperledger/org1/admin
         - name: chaincode-mount
           hostPath:
-            path: /hyperledger/chaincode/chaincode
+            path: /hyperledger/chaincode/product_code/hyperledger/chaincode
+        - name: docker-mount
+          hostPath:
+            path: /var/run/
