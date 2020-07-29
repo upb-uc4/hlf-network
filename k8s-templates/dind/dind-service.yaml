@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: dind
   labels:
-    run: dind
+    app: dind
 spec:
   selector:
-    name: dind
+    app: dind
   ports:
     - protocol: TCP
       targetPort: 2375

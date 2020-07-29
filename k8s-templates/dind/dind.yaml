@@ -2,20 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dind
+  labels:
+    app: dind
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: dind
+      app: dind
   template:
     metadata:
       labels:
-        name: dind
+        app: dind
     spec:
       volumes:
-        - name: dockervolume
-          persistentVolumeClaim:
-            claimName: docker-pvc
+        - name: dind-mount
+          hostPath:
+            path: /hyperledger/dind
       containers:
         - name: docker
           securityContext:
@@ -24,5 +26,5 @@ spec:
           ports:
             - containerPort: 2375
           volumeMounts:
-            - mountPath: /var/lib/docker
-              name: dockervolume
+            - mountPath: /tmp/hyperledger/dind
+              name: dind-mount
