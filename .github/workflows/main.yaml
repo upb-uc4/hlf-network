@@ -34,3 +34,6 @@ jobs:
           ./startNetwork.sh
       - name: Check Network
         run: kubectl get all -n hlf-production-network
+      - name: Install Chaincode
+        run:
+          ./installChaincode.sh

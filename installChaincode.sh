@@ -1,3 +1,6 @@
+# Exit on errors
+set -e
+
 source ./env.sh
 
 mkdir $TMP_FOLDER/hyperledger/chaincode
