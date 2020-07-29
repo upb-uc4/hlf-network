@@ -29,15 +29,16 @@ spec:
               value: "/opt/gopath"
             - name: CORE_VM_ENDPOINT
               value: "unix:///host/var/run/docker.sock"
-            - name: FABRIC_LOGGING_SPEC
-              value: "DEBUG"
+            # Uncomment for debugging
+            # - name: FABRIC_LOGGING_SPEC
+            #   value: "DEBUG"
             - name: CORE_PEER_ID
               value: "cli-org2"
             - name: CORE_PEER_ADDRESS
               value: "peer1-org2:7051"
             - name: CORE_PEER_LOCALMSPID
-              value: "org1MSP"
-            - name: CORE_PEER_TLS_ENABLES
+              value: "org2MSP"
+            - name: CORE_PEER_TLS_ENABLED
               value: "true"
             - name: CORE_PEER_TLS_ROOTCERT_FILE
               value: "/tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}"
