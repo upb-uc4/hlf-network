@@ -587,6 +587,17 @@ start-clis() {
 
 }
 
+setup-dind() {
+  sep
+  command "Starting Docker in Docker in Kubernetes"
+  sep
+
+  mkdir -p $TMP_FOLDER/hyperledger/dind
+
+  kubectl create -f "$K8S/dind/dind.yaml" -n hlf-production-network
+  kubectl create -f "$K8S/dind/dind-service.yaml" -n hlf-production-network
+}
+
 create-channel() {
   sep
   command "Creating channel using CLI1 on Org1 Peer1"
@@ -662,6 +673,7 @@ start-org2-peer1
 start-org2-peer2
 setup-orderer
 start-clis
+setup-dind
 create-channel
 
 sep
