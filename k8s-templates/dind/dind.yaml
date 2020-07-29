@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dind
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: dind
+  template:
+    metadata:
+      labels:
+        name: dind
+    spec:
+      volumes:
+        - name: dockervolume
+          persistentVolumeClaim:
+            claimName: docker-pvc
+      containers:
+        - name: docker
+          securityContext:
+            privileged: true
+          image: "docker:18.05.0-dind"
+          ports:
+            - containerPort: 2375
+          volumeMounts:
+            - mountPath: /var/lib/docker
+              name: dockervolume
