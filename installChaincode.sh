@@ -1,7 +1,7 @@
 source ./env.sh
 
 mkdir $TMP_FOLDER/hyperledger/chaincode
-wget -c https://github.com/hyperledger/fabric-samples/archive/v2.1.1.tar.gz -O - | tar -xz -C $TMP_FOLDER/hyperledger/chaincode --strip-components=1
+wget -c https://github.com/upb-uc4/University-Credits-4.0/archive/v0.4.3.tar.gz -O - | tar -xz -C $TMP_FOLDER/hyperledger/chaincode --strip-components=1
 
 
 get_pods() {
