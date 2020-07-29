@@ -24,6 +24,8 @@ spec:
               name: org1-admin-mount
             - mountPath: /tmp/hyperledger/org1/peer1
               name: org1-peer1-mount
+            - mountPath: /opt/gopath/src/chaincode
+              name: chaincode-mount
           env:
             - name: GOPATH
               value: "/opt/gopath"
@@ -51,3 +53,6 @@ spec:
         - name: org1-admin-mount
           hostPath:
             path: /hyperledger/org1/admin
+        - name: chaincode-mount
+          hostPath:
+            path: /hyperledger/chaincode/chaincode
