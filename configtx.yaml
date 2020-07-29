@@ -61,7 +61,7 @@ Organizations:
         # OrdererEndpoints is a list of all orderers this org runs which clients
         # and peers may to connect to to push transactions and receive blocks respectively.
         OrdererEndpoints:
-            - "orderer-org0:7050" # TODO check ip address
+            - "orderer-org0:7050"
 
     - &Org1
         # Name is the key by which this org will be referenced in channel
