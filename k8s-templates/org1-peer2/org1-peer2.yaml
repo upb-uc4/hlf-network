@@ -22,16 +22,20 @@ spec:
           env:
             - name: CORE_PEER_ID
               value: "peer2-org1"
-            #- CORE_PEER_ADDRESS=peer1-org1:7051
-            #- name: CORE_PEER_ADDRESS
-            # value: "/tmp/hyperledger/org1/peer1"
+            - name: CORE_PEER_LISTENADDRESS
+              value: "0.0.0.0:7051"
+            - name: CORE_PEER_ADDRESS
+              value: "peer2-org1:7051"
+            - name: CORE_PEER_CHAINCODELISTENADDRESS
+              value: "0.0.0.0:7052"
+            - name: CORE_PEER_CHAINCODEADDRESS
+              value: "peer2-org1:7052"
             - name: CORE_PEER_LOCALMSPID
               value: "org1MSP"
             - name: CORE_PEER_MSPCONFIGPATH
               value: "/tmp/hyperledger/org1/peer2/msp"
             - name: CORE_VM_ENDPOINT
               value: "tcp://dind:2375"
-              #value: "unix:///run/containerd/containerd.sock"
             - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
               value: "guide_fabric-ca"
             - name: FABRIC_LOGGING_SPEC
@@ -52,6 +56,8 @@ spec:
               value: "peer2-org1:7051"
             - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
               value: "true"
+            - name: CORE_PEER_GOSSIP_BOOTSTRAP
+              value: "peer1-org1:7051"
 
       volumes:
         - name: peer2-org1-mount
