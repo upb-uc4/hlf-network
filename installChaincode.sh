@@ -4,7 +4,7 @@ get_pods() {
 }
 
 # Exit on errors
-# set -e
+set -e
 
 source ./env.sh
 
@@ -40,3 +40,6 @@ kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < $TMP_FO
 
 rm $TMP_FOLDER/.approveChaincodeOrg1.sh
 rm $TMP_FOLDER/.approveChaincodeOrg2.sh
+
+echo "Check Commit Readiness for channel chaincode"
+kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/checkCommitReadiness.sh
