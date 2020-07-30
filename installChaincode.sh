@@ -29,20 +29,21 @@ kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts
 
 # Use CLI shell to create channel
 source ./settings.sh
-envsubst <scripts/approveChaincodeOrg1.sh>$TMP_FOLDER/.approveChaincodeOrg1.sh
-envsubst <scripts/approveChaincodeOrg2.sh>$TMP_FOLDER/.approveChaincodeOrg2.sh
 
 echo "Approve chaincode on Org1"
+envsubst <scripts/approveChaincodeOrg1.sh>$TMP_FOLDER/.approveChaincodeOrg1.sh
 kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < $TMP_FOLDER/.approveChaincodeOrg1.sh
+rm $TMP_FOLDER/.approveChaincodeOrg1.sh
 
 echo "Approve chaincode on Org2"
+envsubst <scripts/approveChaincodeOrg2.sh>$TMP_FOLDER/.approveChaincodeOrg2.sh
 kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < $TMP_FOLDER/.approveChaincodeOrg2.sh
-
-rm $TMP_FOLDER/.approveChaincodeOrg1.sh
 rm $TMP_FOLDER/.approveChaincodeOrg2.sh
 
 echo "Check Commit Readiness for channel chaincode"
 kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/checkCommitReadiness.sh
 
 echo "Commit chaincode"
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/commitChaincode.sh
+envsubst <scripts/commitChaincode.sh>$TMP_FOLDER/.commitChaincode.sh
+kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < $TMP_FOLDER/.commitChaincode.sh
+rm $TMP_FOLDER/.commitChaincode.sh
