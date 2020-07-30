@@ -3,8 +3,14 @@ set -e
 
 source ./env.sh
 
+echo "Download chaincode"
 mkdir -p $TMP_FOLDER/hyperledger/chaincode
 wget -c https://github.com/upb-uc4/University-Credits-4.0/archive/v0.4.3.tar.gz -O - | tar -xz -C $TMP_FOLDER/hyperledger/chaincode --strip-components=1
+
+echo "Build chaincode using gradle"
+pushd $TMP_FOLDER/hyperledger/chaincode/product_code/hyperledger/chaincode
+./gradlew installDist
+popd
 
 
 get_pods() {
