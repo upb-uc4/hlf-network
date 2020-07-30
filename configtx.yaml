@@ -153,7 +153,7 @@ Organizations:
                 # Rule: "OR('SampleOrg.admin', 'SampleOrg.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('org2SMP.admin')"
+                Rule: "OR('org2MSP.admin')"
             Endorsement:
                 Type: Signature
                 Rule: "OR('org2MSP.member')"
