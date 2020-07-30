@@ -25,3 +25,9 @@ kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts
 
 echo "Install chaincode on Org2 Peers"
 kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/installChaincodeOrg2.sh
+
+echo "Approve chaincode on Org1"
+kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/approveChaincodeOrg1.sh
+
+echo "Approve chaincode on Org2"
+kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/approveChaincodeOrg2.sh
