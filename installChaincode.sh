@@ -1,3 +1,8 @@
+get_pods() {
+  #1 - app name
+  kubectl get pods -l app=$1 --field-selector status.phase=Running -n hlf-production-network --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
+}
+
 # Exit on errors
 set -e
 
@@ -12,12 +17,7 @@ pushd $TMP_FOLDER/hyperledger/chaincode/product_code/hyperledger/chaincode
 ./gradlew installDist
 popd
 
-
-get_pods() {
-  #1 - app name
-  kubectl get pods -l app=$1 --field-selector status.phase=Running -n hlf-production-network --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
-}
-
+kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/packageChaincode.sh
 
 kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/installChaincodeOrg1.sh
 kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/installChaincodeOrg2.sh
