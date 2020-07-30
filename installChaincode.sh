@@ -17,7 +17,11 @@ pushd $TMP_FOLDER/hyperledger/chaincode/product_code/hyperledger/chaincode
 ./gradlew installDist
 popd
 
+echo "Package chaincode on CLI1"
 kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/packageChaincode.sh
 
+echo "Install chaincode on Org1 Peers"
 kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/installChaincodeOrg1.sh
+
+echo "Install chaincode on Org2 Peers"
 kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/installChaincodeOrg2.sh
