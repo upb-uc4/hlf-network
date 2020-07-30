@@ -484,6 +484,8 @@ Profiles:
         <<: *ChannelDefaults
         Orderer:
             <<: *OrdererDefaults
+            Organizations:
+                - *Org0
         Consortiums:
             SampleConsortium:
                 Organizations:
