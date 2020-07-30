@@ -43,3 +43,6 @@ rm $TMP_FOLDER/.approveChaincodeOrg2.sh
 
 echo "Check Commit Readiness for channel chaincode"
 kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/checkCommitReadiness.sh
+
+echo "Commit chaincode"
+kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/commitChaincode.sh

@@ -25,6 +25,8 @@ spec:
               name: org1-admin-mount
             - mountPath: /tmp/hyperledger/org1/peer1
               name: org1-peer1-mount
+            - mountPath: /tmp/hyperledger/org2/peer1
+              name: org2-peer1-mount
             - mountPath: /tmp/hyperledger/chaincode
               name: chaincode-mount
           env:
@@ -51,6 +53,9 @@ spec:
         - name: org1-peer1-mount
           hostPath:
             path: /hyperledger/org1/peer1
+        - name: org2-peer1-mount
+          hostPath:
+            path: /hyperledger/org2/peer1
         - name: org1-admin-mount
           hostPath:
             path: /hyperledger/org1/admin
