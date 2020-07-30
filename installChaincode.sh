@@ -4,7 +4,7 @@ get_pods() {
 }
 
 # Exit on errors
-set -e
+# set -e
 
 source ./env.sh
 
@@ -26,8 +26,17 @@ kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts
 echo "Install chaincode on Org2 Peers"
 kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/installChaincodeOrg2.sh
 
+
+# Use CLI shell to create channel
+source ./settings.sh
+envsubst <scripts/approveChaincodeOrg1.sh>$TMP_FOLDER/.approveChaincodeOrg1.sh
+envsubst <scripts/approveChaincodeOrg2.sh>$TMP_FOLDER/.approveChaincodeOrg2.sh
+
 echo "Approve chaincode on Org1"
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/approveChaincodeOrg1.sh
+kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < $TMP_FOLDER/.approveChaincodeOrg1.sh
 
 echo "Approve chaincode on Org2"
-kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/approveChaincodeOrg2.sh
+kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < $TMP_FOLDER/.approveChaincodeOrg2.sh
+
+rm $TMP_FOLDER/.approveChaincodeOrg1.sh
+rm $TMP_FOLDER/.approveChaincodeOrg2.sh
