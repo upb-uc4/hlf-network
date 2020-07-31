@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cli-org1
+  labels:
+    app: cli-org1
+spec:
+  selector:
+    matchLabels:
+      app: cli-org1
+  template:
+    metadata:
+      labels:
+        app: cli-org1
+    spec:
+      containers:
+        - name: cli-org1
+          image: hyperledger/fabric-tools:2.2
+          imagePullPolicy: IfNotPresent
+          tty: true
+          command: ["sh"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/org1/admin
+              name: org1-admin-mount
+            - mountPath: /tmp/hyperledger/org1/peer1
+              name: org1-peer1-mount
+          env:
+            - name: GOPATH
+              value: "/opt/gopath"
+            - name: CORE_VM_ENDPOINT
+              value: "unix:///host/var/run/docker.sock"
+            # Uncomment for debugging
+            # - name: FABRIC_LOGGING_SPEC
+            #   value: "DEBUG"
+            - name: CORE_PEER_ID
+              value: "cli-org1"
+            - name: CORE_PEER_ADDRESS
+              value: "peer1-org1:7051"
+            - name: CORE_PEER_LOCALMSPID
+              value: "org1MSP"
+            - name: CORE_PEER_TLS_ENABLED
+              value: "true"
+            - name: CORE_PEER_TLS_ROOTCERT_FILE
+              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}"
+            - name: CORE_PEER_MSPCONFIGPATH
+              value: "/tmp/hyperledger/org1/peer1/msp"
+      volumes:
+        - name: org1-peer1-mount
+          hostPath:
+            path: /hyperledger/org1/peer1
+        - name: org1-admin-mount
+          hostPath:
+            path: /hyperledger/org1/admin

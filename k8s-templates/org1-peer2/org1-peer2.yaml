@@ -52,8 +52,6 @@ spec:
               value: "peer2-org1:7051"
             - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
               value: "true"
-            - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
-              value: "peer1-org1:7051"
 
       volumes:
         - name: peer2-org1-mount

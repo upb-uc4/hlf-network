@@ -25,7 +25,7 @@ spec:
               #value: "/tmp/hyperledger/org1/peer1"
             #- CORE_PEER_ADDRESS=peer1-org1:7051
             #- name: CORE_PEER_ADDRESS
-            # value: "/tmp/hyperledger/org1/peer1"
+             # value: "peer1-org2:7051"
             - name: CORE_PEER_LOCALMSPID
               value: "org2MSP"
             - name: CORE_PEER_MSPCONFIGPATH
