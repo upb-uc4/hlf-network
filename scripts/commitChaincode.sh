@@ -9,5 +9,4 @@ peer lifecycle chaincode commit \
     --peerAddresses peer1-org1:7051 \
     --tlsRootCertFiles /tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem \
     --peerAddresses peer1-org2:7051 \
-    --tlsRootCertFiles /tmp/hyperledger/org2/peer1/tls-msp/signcerts/cert.pem \
-    --init-required
+    --tlsRootCertFiles /tmp/hyperledger/org2/peer1/tls-msp/signcerts/cert.pem

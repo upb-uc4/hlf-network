@@ -11,5 +11,4 @@ peer lifecycle chaincode approveformyorg \
   --package-id "$CHAINCODE_ID" \
   --sequence 1 \
   --tls \
-  --cafile /tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS} \
-  --init-required
+  --cafile /tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}
