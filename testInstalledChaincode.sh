@@ -4,9 +4,12 @@ get_pods() {
 }
 
 # Exit on errors
-set -e
+# set -e
 
 source ./env.sh
 
 echo "Invoke chaincode from org1-peer1"
 kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/invokeChaincode.sh
+
+echo "Query chaincode from org1-peer1"
+kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/queryChaincode.sh
