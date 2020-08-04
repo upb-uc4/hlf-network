@@ -6,14 +6,27 @@ get_pods() {
 # Exit on errors
 set -e
 
+# Set default branch
+export BRANCH_TAG=develop
+
+if [ -z "$1" ]
+then
+  echo "Installing latest chaincode from develop."
+  echo "Use './installChaincode.sh [branch|tag]' to specify another branch or tag."
+else
+  echo "Using branch / tag: $1"
+  export BRANCH_TAG=$1
+fi
+echo ""
+
 source ./env.sh
 
 echo "Download chaincode"
-mkdir -p $TMP_FOLDER/hyperledger/chaincode
-wget -c https://github.com/upb-uc4/University-Credits-4.0/archive/v0.4.3.tar.gz -O - | tar -xz -C $TMP_FOLDER/hyperledger/chaincode --strip-components=1
+mkdir -p $TMP_FOLDER/hyperledger/uc4
+wget -c https://github.com/upb-uc4/hyperledger_chaincode/archive/"$BRANCH_TAG".tar.gz -O - | tar -xz -C $TMP_FOLDER/hyperledger/uc4 --strip-components=1
 
 echo "Build chaincode using gradle"
-pushd $TMP_FOLDER/hyperledger/chaincode/product_code/hyperledger/chaincode
+pushd $TMP_FOLDER/hyperledger/uc4/chaincode
 ./gradlew installDist
 popd
 
