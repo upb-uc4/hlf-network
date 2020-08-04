@@ -4,7 +4,7 @@ get_pods() {
 }
 
 # Exit on errors
-# set -e
+set -e
 
 source ./env.sh
 
