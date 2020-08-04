@@ -31,12 +31,12 @@ kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts
 source ./settings.sh
 
 echo "Approve chaincode on Org1"
-envsubst <scripts/approveChaincodeOrg1.sh>$TMP_FOLDER/.approveChaincodeOrg1.sh
+envsubst '${PEERS_TLSCACERTS}' <scripts/approveChaincodeOrg1.sh>$TMP_FOLDER/.approveChaincodeOrg1.sh
 kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < $TMP_FOLDER/.approveChaincodeOrg1.sh
 rm $TMP_FOLDER/.approveChaincodeOrg1.sh
 
 echo "Approve chaincode on Org2"
-envsubst <scripts/approveChaincodeOrg2.sh>$TMP_FOLDER/.approveChaincodeOrg2.sh
+envsubst '${PEERS_TLSCACERTS}' <scripts/approveChaincodeOrg2.sh>$TMP_FOLDER/.approveChaincodeOrg2.sh
 kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < $TMP_FOLDER/.approveChaincodeOrg2.sh
 rm $TMP_FOLDER/.approveChaincodeOrg2.sh
 
