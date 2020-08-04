@@ -1,1 +1,12 @@
-peer lifecycle chaincode commit -o orderer-org0:7050 --channelID mychannel --name uc4-cc --version 1.0 --sequence 1 --tls true --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS} --peerAddresses peer1-org1:7051 --tlsRootCertFiles /tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem --peerAddresses peer1-org2:7051 --tlsRootCertFiles /tmp/hyperledger/org2/peer1/tls-msp/signcerts/cert.pem
+peer lifecycle chaincode commit \
+    -o orderer-org0:7050 \
+    --channelID mychannel \
+    --name uc4-cc \
+    --version 1.0 \
+    --sequence 1 \
+    --tls true \
+    --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS} \
+    --peerAddresses peer1-org1:7051 \
+    --tlsRootCertFiles /tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem \
+    --peerAddresses peer1-org2:7051 \
+    --tlsRootCertFiles /tmp/hyperledger/org2/peer1/tls-msp/signcerts/cert.pem
