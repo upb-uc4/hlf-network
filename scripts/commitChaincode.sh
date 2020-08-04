@@ -4,9 +4,10 @@ peer lifecycle chaincode commit \
     --name uc4-cc \
     --version 1.0 \
     --sequence 1 \
-    --tls true \
+    --tls \
     --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS} \
     --peerAddresses peer1-org1:7051 \
     --tlsRootCertFiles /tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem \
     --peerAddresses peer1-org2:7051 \
-    --tlsRootCertFiles /tmp/hyperledger/org2/peer1/tls-msp/signcerts/cert.pem
+    --tlsRootCertFiles /tmp/hyperledger/org2/peer1/tls-msp/signcerts/cert.pem \
+    --init-required

@@ -10,3 +10,4 @@ source ./env.sh
 
 kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/debug/queryInstalledOrg1.sh
 kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/debug/queryInstalledOrg2.sh
+kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/debug/queryCommited.sh
