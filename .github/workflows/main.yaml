@@ -37,3 +37,6 @@ jobs:
       - name: Install Chaincode
         run:
           ./installChaincode.sh
+      - name: Test Installed Chaincode
+        run:
+          ./testInstalledChaincode.sh
