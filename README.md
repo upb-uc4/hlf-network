@@ -5,7 +5,7 @@
 ## Introduction
 
 This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on minikube. The initial topology is based on the [fabric ca operations guide (release 1.4)](
-https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
+https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html). 
 
 ## Network
 
@@ -17,6 +17,42 @@ We freshly generate and distribute all certificates for this.
 ## Setup
 
 You need to install [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by kubernetes.
+
+## Guide to the Kubernetes Hyperledger Config
+
+wo welche Skripte \
+wo welche Zertifikate, warum eigene msp Ordner, warum Kopieren von Zertifikaten (TLS signing certificates, i.e. signcerts, need to be available on each host which intends to run commands against the TLS CA.)? \
+was liegt in scripts\
+wo welche config files, there are config files for setting up the CAs for each organization and each peer, Each component consists of one config file for the Kubernetes deployment and one for a Kubernetes service. \
+
+
+## Our Conceptual Deployment Steps
+
+### CAs
+We make use of one root TLS CA which provides our organizations with TLS certificates ensuring secure communication.
+An admin has to be enrolled and then identities can be registered \
+The signing certificates are used to validate certificates.
+
+### Organizations
+The Orderer is implemented by being an organization in the network. Its task is to...\ 
+Each organization is set up by enrolling a CA admin and registering identities for their members (peers, admin, user). For setting up peers for the organization, peers need to be enrolled and launched. 
+
+### Orderer
+create Genesis block 
+Wie wir an die Certificates kommen: Unlike explained in the guide referenced above, we...\
+Launching the orderer service allows us to...\
+
+### CLI containers
+One CLI for each organization.
+Creating a channel and letting peers join is done using these CLIs. 
+
+### Install and Invoke Chaincode
+All chaincode configurations and commands are based on the newest available releases, i.e., verion 2.x. See this [article for a reference about the differences between Fabric's chaincode container versions](https://medium.com/@kctheservant/chaincode-container-comparison-between-fabric-v1-4-and-v2-0-50a835aaad6a). 
+new chaincode lifecycle commands, process consists in Packaging, Installing, Approving and Committing before the chaincode can finally be invoked. The advantage is that each organization has an impact on... \
+These commands are being used:\
+
+
+
 
 ## Starting the network
 
