@@ -7,9 +7,13 @@ get_pods() {
 set -e
 
 source ./env.sh
+source ./settings.sh
 
 echo "Invoke chaincode from org1-peer1"
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/invokeChaincode.sh
+envsubst <scripts/invokeChaincode.sh>$TMP_FOLDER/.invokeChaincode.sh
+kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < $TMP_FOLDER/.invokeChaincode.sh
+rm $TMP_FOLDER/.invokeChaincode.sh
+
 
 # Uncomment when using couch db
 # echo "Query chaincode from org1-peer1"
