@@ -31,11 +31,9 @@ spec:
             - name: CORE_PEER_MSPCONFIGPATH
               value: "/tmp/hyperledger/org1/peer1/msp"
             - name: CORE_VM_ENDPOINT
-              value: "unix:///host/var/run/docker.sock"
-            - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
-              value: "guide_fabric-ca"
+              value: "tcp://dind:2375"
             - name: FABRIC_LOGGING_SPEC
-              value: "debug"
+              value: "debug:gossip,msp=info"
             - name: CORE_PEER_TLS_ENABLED
               value: "true"
             - name: CORE_PEER_TLS_CERT_FILE
