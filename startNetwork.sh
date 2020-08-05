@@ -184,6 +184,8 @@ setup-org1-ca() {
   small_sep
   ./$CA_CLIENT register $DEBUG --id.name admin-org1 --id.secret org1AdminPW --id.type user -u https://$CA_ORG1_HOST
   small_sep
+  ./$CA_CLIENT register $DEBUG --id.name scala-admin-org1 --id.secret scalaAdminPW --id.type admin -u https://$CA_ORG1_HOST
+  small_sep
   ./$CA_CLIENT register $DEBUG --id.name user-org1 --id.secret org1UserPW --id.type user -u https://$CA_ORG1_HOST
 }
 
