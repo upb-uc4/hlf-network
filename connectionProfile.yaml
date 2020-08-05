@@ -155,7 +155,8 @@ organizations:
     mspID: "org0MSP"
 
     # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
-    cryptoPath: ordererOrganizations/example.com/users/{username}@example.com/msp
+    # cryptoPath: ordererOrganizations/example.com/users/{username}@example.com/msp
+    # TODO
 
 
 #
@@ -164,13 +165,13 @@ organizations:
 # SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
 #
 orderers:
-  local.orderer.example.com:
-    url: orderer.example.com:7050
+  orderer-org0:
+    url: orderer-org0:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
     grpcOptions:
-      ssl-target-name-override: orderer.example.com
+      # ssl-target-name-override: orderer.example.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -183,19 +184,19 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+      path: tmp/ca-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.org1.example.com:
+  peer1-org1:
     # this URL is used to send endorsement and query requests
-    url: peer0.org1.example.com:7051
+    url: peer1-org1:7051
 
     grpcOptions:
-      ssl-target-name-override: peer0.org1.example.com
+      # ssl-target-name-override: peer0.org1.example.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -208,12 +209,14 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+      path: tmp/ca-cert.pem
 
-  peer0.org2.example.com:
-    url: peer0.org2.example.com:7051
+  peer2-org1:
+    # this URL is used to send endorsement and query requests
+    url: peer2-org1:7051
+
     grpcOptions:
-      ssl-target-name-override: peer0.org2.example.com
+      # ssl-target-name-override: peer0.org1.example.com
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -225,4 +228,46 @@ peers:
       allow-insecure: false
 
     tlsCACerts:
-      path: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
+      # Certificate location absolute path
+      path: tmp/ca-cert.pem
+
+  peer1-org2:
+    # this URL is used to send endorsement and query requests
+    url: peer1-org2:7051
+
+    grpcOptions:
+      # ssl-target-name-override: peer0.org1.example.com
+      # These parameters should be set in coordination with the keepalive policy on the server,
+      # as incompatible settings can result in closing of connection.
+      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: tmp/ca-cert.pem
+
+  peer2-org2:
+    # this URL is used to send endorsement and query requests
+    url: peer2-org2:7051
+
+    grpcOptions:
+      # ssl-target-name-override: peer0.org1.example.com
+      # These parameters should be set in coordination with the keepalive policy on the server,
+      # as incompatible settings can result in closing of connection.
+      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: tmp/ca-cert.pem
+
