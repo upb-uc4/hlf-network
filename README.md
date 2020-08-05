@@ -7,6 +7,19 @@
 This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on minikube. The initial topology is based on the [fabric ca operations guide (release 1.4)](
 https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html). 
 
+## Setup
+
+You need to install [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by kubernetes.
+
+## Starting the network
+
+To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard `minikube dashboard`. The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace). You can delete everything and restart the network using `./restartNetwork`. Use the `-d` flag to activate debug output.
+
+Currently, in order to install chaincode on the channel, execute 
+
+To reset the network, execute `./deleteNetwork.sh`. You can stop minicube with `minikube stop` if desired.
+
+
 ## Network
 
 The initial topology of the operations guide implements the most interesting use cases of hyperledger fabric besides multiple orderers.
@@ -14,19 +27,10 @@ The initial topology of the operations guide implements the most interesting use
 There are three organizations, one providing the orderer service and two hosting two peers each on a shared channel. We deploy an external TLS CA which provides TLS certificates for all containers.
 We freshly generate and distribute all certificates for this.
 
-## Setup
-
-You need to install [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by kubernetes.
-
-## Guide to the Kubernetes Hyperledger Config
-
-wo welche Skripte \
-wo welche Zertifikate, warum eigene msp Ordner, warum Kopieren von Zertifikaten (TLS signing certificates, i.e. signcerts, need to be available on each host which intends to run commands against the TLS CA.)? \
-was liegt in scripts\
-wo welche config files, there are config files for setting up the CAs for each organization and each peer, Each component consists of one config file for the Kubernetes deployment and one for a Kubernetes service. \
-
-
 ## Our Conceptual Deployment Steps
+
+Links (Discord)
+https://hyperledger-fabric.readthedocs.io/en/release-2.1/deployment_guide_overview.html
 
 ### CAs
 We make use of one root TLS CA which provides our organizations with TLS certificates ensuring secure communication.
@@ -38,13 +42,29 @@ The Orderer is implemented by being an organization in the network. Its task is 
 Each organization is set up by enrolling a CA admin and registering identities for their members (peers, admin, user). For setting up peers for the organization, peers need to be enrolled and launched. 
 
 ### Orderer
-create Genesis block 
+The orderer is in charge of... The orderer's identity needs to be enrolled with a CA in order to get/ generate its local MSP (artifacts).\
+The orderer requires a genesis block to bootstrap itself(?). The genesis block provides configurations for a channel, which are specified in the configtx file. More information on the channel configuration file can be found in the [Hyperledger Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/release-1.4/configtx.html?channel-configuration-configtx). \
+The commands `/configtxgen -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel` and `./configtxgen -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel` generate the `genesis.block` and the `channel.tx` files. The `channel.tx` file will be used to create the channel. \
+TODO: Do we use the commands for gathering certificates?
+
 Wie wir an die Certificates kommen: Unlike explained in the guide referenced above, we...\
 Launching the orderer service allows us to...\
 
-### CLI containers
-One CLI for each organization.
-Creating a channel and letting peers join is done using these CLIs. 
+### CLIs and channel creation
+CLI containers are required to enable communication with peers.
+We use one CLI container for each organization. We start the CLI containers in the same host machine as peer1 for each org(?).
+Using these CLIs, we can create a channel and let peers join it. For this, the following commands can be issued in the CLIs:
+`kubectl exec -n hlf-production-network $CLI1 -i -- sh < $TMP_FOLDER/.createChannel.sh` 
+and `channel create \
+         -c mychannel \
+         -f /tmp/hyperledger/org1/peer1/assets/channel.tx \
+         -o orderer-org0:7050 \
+         --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block \
+         --tls \
+         --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}`
+The first command executes the CLI and the second command generates the mychannel.block on peer1 which can be used by other peers in the network to join the channel.
+For joining the channel we issue(?) the commands `peer channel join -b /tmp/hyperledger/org1/peer1/assets/mychannel.block` for the respective peers.
+
 
 ### Install and Invoke Chaincode
 All chaincode configurations and commands are based on the newest available releases, i.e., verion 2.x. See this [article for a reference about the differences between Fabric's chaincode container versions](https://medium.com/@kctheservant/chaincode-container-comparison-between-fabric-v1-4-and-v2-0-50a835aaad6a). 
@@ -54,11 +74,23 @@ These commands are being used:\
 
 
 
-## Starting the network
+## Guide to the Kubernetes Hyperledger Config
 
-To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard `minikube dashboard`. The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace). You can delete everything and restart the network using `./restartNetwork`. Use the `-d` flag to activate debug output.
+wo welche Skripte \
+wo welche Zertifikate, warum eigene msp Ordner, warum Kopieren von Zertifikaten (TLS signing certificates, i.e. signcerts, need to be available on each host which intends to run commands against the TLS CA.)? \
+was liegt in scripts\
+wo welche config files, there are config files for setting up the CAs for each organization and each peer, Each component consists of one config file for the Kubernetes deployment and one for a Kubernetes service. \
+(Enrollment) MSP directory: ca contains the enrollment certificate, tls-ca contains the TLS certificate, admincerts folder contains certificates of the administrators 
 
-To reset the network, execute `./deleteNetwork.sh`. You can stop minicube with `minikube stop` if desired.
+directory structure/ tree:
+```
+project
++-- congif.yaml
++-- scripts
+|   +-- debug.sh
++-- delete
+```
+
 
 ## Development 
 
@@ -67,6 +99,10 @@ We utilize environment variables to make our configurations flexible while keepi
 The startNetwork script uses these filled configuration files and deploys the corresponding entities to kubernetes. The script follows the operations guide. We mount the temporary  `tmp` folder to kubernetes which allows us to easily copy certificates and provide resources to the containers.
 
 We deploy all kubernetes components to the same hlf-production-network namespace which allows use to easily delete and restart the network from scratch.
+
+use of namespace (?)
+
+Issue with timeouts, integrated wait commands (?)
 
 ### Working with Pods
 
