@@ -5,6 +5,7 @@ metadata:
   labels:
     app: peer2-org1
 spec:
+  type: NodePort
   selector:
     app: peer2-org1
   ports:
@@ -12,7 +13,9 @@ spec:
       protocol: TCP
       targetPort: 7051
       port: 7051
+      nodePort: 30121
     - name: chaincode
       protocol: TCP
       targetPort: 7052
       port: 7052
+      nodePort: 30122
