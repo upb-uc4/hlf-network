@@ -21,6 +21,13 @@ description: "The UC4 production network."
 #
 version: 1.2.0 # TODO
 
+client:
+  organization: org1
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+
 #
 # [Optional]. But most apps would have this section so that channel objects can be constructed
 # based on the content below. If an app is creating channels, then it likely will not need this
@@ -127,7 +134,7 @@ organizations:
 
     # This org's MSP store (absolute path or relative to client.cryptoconfig)
     # cryptoPath:  peerOrganizations/org1.example.com/users/{username}@org1.example.com/msp
-    # TODO
+    cryptoPath: /tmp/hyperledger/org1/msp
 
     peers:
       - peer1-org1
@@ -142,8 +149,7 @@ organizations:
     mspid: org2MSP
 
     # This org's MSP store (absolute path or relative to client.cryptoconfig)
-    # cryptoPath:  peerOrganizations/org2.example.com/users/{username}@org2.example.com/msp
-    # TODO
+    cryptoPath: /tmp/hyperledger/org2/msp
 
     peers:
       - peer1-org2
@@ -155,8 +161,7 @@ organizations:
     mspID: "org0MSP"
 
     # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
-    # cryptoPath: ordererOrganizations/example.com/users/{username}@example.com/msp
-    # TODO
+    cryptoPath: /tmp/hyperledger/org0/msp
 
 
 #
@@ -166,7 +171,7 @@ organizations:
 #
 orderers:
   orderer-org0:
-    url: orderer-org0:7050
+    url: grpcs://172.17.0.2:30010
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
@@ -184,16 +189,17 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: tmp/ca-cert.pem
+      path: /tmp/hyperledger/ca-cert.pem
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
+
 peers:
   peer1-org1:
     # this URL is used to send endorsement and query requests
-    url: peer1-org1:7051
+    url: grpcs://172.17.0.2:30111
 
     grpcOptions:
       # ssl-target-name-override: peer0.org1.example.com
@@ -209,11 +215,11 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: tmp/ca-cert.pem
+      path: /tmp/hyperledger/ca-cert.pem
 
   peer2-org1:
     # this URL is used to send endorsement and query requests
-    url: peer2-org1:7051
+    url: grpcs://172.17.0.2:30121
 
     grpcOptions:
       # ssl-target-name-override: peer0.org1.example.com
@@ -229,11 +235,11 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: tmp/ca-cert.pem
+      path: /tmp/hyperledger/ca-cert.pem
 
   peer1-org2:
     # this URL is used to send endorsement and query requests
-    url: peer1-org2:7051
+    url: grpcs://172.17.0.2:30211
 
     grpcOptions:
       # ssl-target-name-override: peer0.org1.example.com
@@ -249,11 +255,11 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: tmp/ca-cert.pem
+      path: /tmp/hyperledger/ca-cert.pem
 
   peer2-org2:
     # this URL is used to send endorsement and query requests
-    url: peer2-org2:7051
+    url: grpcs://172.17.0.2:30221
 
     grpcOptions:
       # ssl-target-name-override: peer0.org1.example.com
@@ -269,5 +275,5 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: tmp/ca-cert.pem
+      path: /tmp/hyperledger/ca-cert.pem
 
