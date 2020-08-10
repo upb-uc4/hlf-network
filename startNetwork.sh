@@ -678,6 +678,18 @@ start-clis
 setup-dind
 create-channel
 
+
+# For scala api
+rm -rf /tmp/hyperledger/
+mkdir -p /tmp/hyperledger/
+mkdir -p /tmp/hyperledger/org0
+mkdir -p /tmp/hyperledger/org1
+mkdir -p /tmp/hyperledger/org2
+cp $TMP_FOLDER/ca-cert.pem /tmp/hyperledger/
+cp -a $TMP_FOLDER/hyperledger/org0/msp /tmp/hyperledger/org0
+cp -a $TMP_FOLDER/hyperledger/org1/msp /tmp/hyperledger/org1
+cp -a $TMP_FOLDER/hyperledger/org2/msp /tmp/hyperledger/org2
+
 sep
 
 echo -e "Done. Execute \e[2mminikube dashboard\e[22m to open the dashboard or run \e[2m./deleteNetwork.sh\e[22m to shutdown and delete the network."
