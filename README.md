@@ -13,16 +13,16 @@ You need to install [minikube](https://kubernetes.io/docs/tasks/tools/install-mi
 
 ## Starting the network
 
-To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard `minikube dashboard`. The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace). You can delete everything and restart the network using `./restartNetwork`. Use the `-d` flag to activate debug output.
+To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard `minikube dashboard`. The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace). You can delete everything and restart the network directly using `./restartNetwork.sh`. Use the `-d` flag to activate debug output.
 
-Currently, in order to install chaincode on the channel, execute 
+Currently, chaincode can be installed on the channel by executing the script ```./installChaincode.sh```. 
 
-To reset the network, execute `./deleteNetwork.sh`. You can stop minicube with `minikube stop` if desired.
+To reset the network, execute `./deleteNetwork.sh`. You can stop minikube using the command `minikube stop`, if desired.
 
 
 ## Network
 
-The initial topology of the operations guide implements the most interesting use cases of hyperledger fabric besides multiple orderers.
+The initial network topology suggested by the [operations guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html) implements the most interesting use cases of hyperledger fabric besides multiple orderers.
 ![Network Topology](https://hyperledger-fabric-ca.readthedocs.io/en/latest/_images/network_topology.png)
 There are three organizations, one providing the orderer service and two hosting two peers each on a shared channel. We deploy an external TLS CA which provides TLS certificates for all containers.
 We freshly generate and distribute all certificates for this.
@@ -33,8 +33,8 @@ Links (Discord)
 https://hyperledger-fabric.readthedocs.io/en/release-2.1/deployment_guide_overview.html
 
 ### CAs
-We make use of one root TLS CA which provides our organizations with TLS certificates ensuring secure communication.
-An admin has to be enrolled and then identities can be registered \
+We make use of one root TLS CA which (serves as TLS server and) provides our organizations with TLS certificates ensuring secure communication.
+An admin has to be enrolled to reveice a certificate, then identities can be registered \
 The signing certificates are used to validate certificates.
 
 ### Organizations
@@ -74,22 +74,122 @@ These commands are being used:\
 
 
 
-## Guide to the Kubernetes Hyperledger Config
+## File structure
 
+
+
+```
+| k8s-templates   # definition of all deployments and services for the network components 
+    +-- dind
+    +-- orderer
+    +-- orderer-org-ca
+    +-- org1-ca
+    +-- org1-peer1
+    +-- org1-peer2
+    +-- org2-ca
+    +-- org2-peer1
+    +-- org2-peer2
+    +-- tls-ca
+    +-- namespace.yaml
+    +-- org1-cli.yaml
+    +-- org2-cli.yaml
+| scripts
+|   +-- debug
+        +-- TODO
+    +-- installChaincodeOrg1.sh
+    +-- installChaincodeOrg2.sh
+
+| tmp      # temporary files available during network runtime
+    +-- hyperledger
+        +-- dind
+        +-- org0
+            +-- admin
+                +-- msp
+                    +-- cacerts
+                        +-- 172-17-0-2-30906.pem   # 
+                    +-- keystore   # private key
+                    +-- signcerts
+                        +-- cert.pem   # certificate after enrollment of Org0's admin
+                    +-- user
+                +-- fabric-ca-client-config.yaml
+            +-- ca
+                +-- admin
+                    +-- msp
+                        +-- cacerts
+                            +-- 172-17-0-2-30906.pem
+                        +-- keystore #pk
+                        +-- signcerts
+                            +-- cert.pem
+                        +-- user
+                    +-- fabric-ca-client-config.yaml
+                +-- crypto
+                    +-- msp
+                    +-- ca-cert.pem
+                    +-- fabric-ca-server-config.yaml
+                    +-- tls-cert.pem
+            +-- msp
+                +-- admincerts
+                    +-- admin-org0-cert.pem   # certificate of the Org0's admin identity
+                +-- cacerts
+                    +-- org0-ca-cert.pem  # trusted root certificate of Org0
+                +-- tlscacerts
+                    +-- tls-ca-cert.pem  # trusted root certificate of the TLS CA
+                +-- users
+            +-- orderer
+                +-- assets
+                    +-- ca
+                        +-- org0-ca-cert.pem  # trusted root certificate for Org0
+                    +-- tls-ca
+                        +-- tls-ca-cert.pem  # certificate of the TLS CA
+                +-- msp
+                    +-- admincerts
+                        +-- orderer-admin-cert.pem  # certificate of Org0's admin
+                    +-- cacerts
+                        +-- 172-17-0-2-30906.pem
+                    +-- keystore   # pk
+                    +-- signcerts
+                        +-- cert.pem
+                    +-- user
+                +-- tls-msp
+                    +-- cacerts
+                    +-- keystore
+                        +-- key.pem
+                    +-- signcerts
+                        +-- cert.pem
+                    +-- tlscacerts
+                        +-- tls-172-17-0-2-30905.pem
+                    +-- user
+                +-- channel.tx
+                +-- fabric-ca-client-config.yaml
+                +-- genesis.block
+        +-- org1
+            ...
+        +-- org2
+            ...
+        +-- tls-ca
+            
+        +-- uc4
+    +-- ca-cert.pem # the TLS certificate shared by all organizations
+| coonfigtx.yaml #our channel configuration file for the genesis block
+| deleteNetwork.sh #script to delete the namespace 
+| installChaincode.sh #script which processes the chaincode lifecycle
+| restartNetwork.sh 
+| settings.sh
+| startNetwork.sh
+| testInstalledChaincode.sh 
+```
+TODO: Does the same file strucutre apply to all organizations? Maybe separate the certificate file structure from the overall file structure.
+The structure of the organizations are very similar. Org0 has the extra file orderer, Org1 and Org2 have the files peer1 and peer2 instead which..., each containing an msp folder etc again.
+They also have additional admin certificates. 
+The private keys are stored in the folders keystore and are generated during the enrollment with TLS.
+
+The script with the most important logic is ```startNetwork.sh``` where the network is deployed by creating and launching respective Deployments and Services in minikube as well as enrolling and registering users which involves the provision of respective certificates for all participating parties.
+The file ```installChaincode.sh``` consists of the logic for installing chaincode on the channel processing all steps of the chaincode lifecycle. 
 wo welche Skripte \
 wo welche Zertifikate, warum eigene msp Ordner, warum Kopieren von Zertifikaten (TLS signing certificates, i.e. signcerts, need to be available on each host which intends to run commands against the TLS CA.)? \
 was liegt in scripts\
 wo welche config files, there are config files for setting up the CAs for each organization and each peer, Each component consists of one config file for the Kubernetes deployment and one for a Kubernetes service. \
 (Enrollment) MSP directory: ca contains the enrollment certificate, tls-ca contains the TLS certificate, admincerts folder contains certificates of the administrators 
-
-directory structure/ tree:
-```
-project
-+-- congif.yaml
-+-- scripts
-|   +-- debug.sh
-+-- delete
-```
 
 
 ## Development 
@@ -100,9 +200,9 @@ The startNetwork script uses these filled configuration files and deploys the co
 
 We deploy all kubernetes components to the same hlf-production-network namespace which allows use to easily delete and restart the network from scratch.
 
-use of namespace (?)
+We structure our deployments using a namespace in Kubernetes which helps us to delete the whole network in a safe and easy way.
 
-Issue with timeouts, integrated wait commands (?)
+<!--- Issue with timeouts, integrated wait commands (?) -->
 
 ### Working with Pods
 
@@ -113,6 +213,11 @@ Get shell on CLI container `kubectl exec -n hlf-production-network {CLI-POD} -it
 Get logs of container `kubectl logs {POD} -n hlf-production-network`.
 
 You can omit the namespace parameter if you set the context of kubectl `kubectl config set-context --current --namespace=hlf-production-network`.
+
+## Debugging
+
+For debugging, we provide a few scripts in the folder scripts/debug. When executing ```podShell.sh``` input the pod name in order to run a shell on the specific pod. For viewing the logs of a specific pod, execute ```getLogs.sh``` with the respective pod name. 
+<!---TODO: pod name or service name?--> 
 
 ## Versions 
 
@@ -127,3 +232,7 @@ The included binaries are built from
  - configtxgen [Hyperledger Fabric, Release 2.2](https://github.com/hyperledger/fabric)
 
 both published under the Apache-2.0 license.
+
+## Troubleshooting
+
+* The error ```mount: /hyperledger: mount(2) system call failed: Connection timed out.``` arose when running our ```startNetwork.sh``` script and set up mounts for our Kubernetes cluster. Currently, we solve this issue by disabling any firewall running on our systems using the command ```sudo ufw disable```. This is just a work-around for testing, we hope to find a real fix in the near future.
