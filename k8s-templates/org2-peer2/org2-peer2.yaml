@@ -52,6 +52,14 @@ spec:
               value: "true"
             - name: CORE_PEER_GOSSIP_BOOTSTRAP
               value: "peer1-org2:7051"
+            - name: CORE_LEDGER_STATE_STATEDATABASE
+              value: "CouchDB"
+            - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+              value: "localhost:5984"
+        - name: couchdb
+          image: hyperledger/fabric-couchdb:latest
+          ports:
+            - containerPort: 5984
       volumes:
         - name: peer2-org2-mount
           hostPath:
