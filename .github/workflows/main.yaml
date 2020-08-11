@@ -1,4 +1,4 @@
-name: CI
+name: Deployment test
 on:
   push:
     branches:
@@ -14,7 +14,7 @@ on:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    name: build discover and deploy
+    name: Deploy network and install chaincode
     steps:
       - uses: actions/checkout@v2
       - name: Start minikube
@@ -24,19 +24,6 @@ jobs:
           ./startNetwork.sh
       - name: Check Network
         run: kubectl get all -n hlf-production-network
-      - name: Delete Network
-        run:
-          ./deleteNetwork.sh
-      - name: Check Network
-        run: kubectl get all -n hlf-production-network
-      - name: Start Network again
-        run:
-          ./startNetwork.sh
-      - name: Check Network
-        run: kubectl get all -n hlf-production-network
       - name: Install Chaincode
         run:
           ./installChaincode.sh
-      - name: Test Installed Chaincode
-        run:
-          ./testInstalledChaincode.sh

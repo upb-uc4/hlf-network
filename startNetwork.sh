@@ -184,6 +184,8 @@ setup-org1-ca() {
   small_sep
   ./$CA_CLIENT register $DEBUG --id.name admin-org1 --id.secret org1AdminPW --id.type user -u https://$CA_ORG1_HOST
   small_sep
+  ./$CA_CLIENT register $DEBUG --id.name scala-admin-org1 --id.secret scalaAdminPW --id.type admin -u https://$CA_ORG1_HOST
+  small_sep
   ./$CA_CLIENT register $DEBUG --id.name user-org1 --id.secret org1UserPW --id.type user -u https://$CA_ORG1_HOST
 }
 
@@ -675,6 +677,18 @@ setup-orderer
 start-clis
 setup-dind
 create-channel
+
+
+# For scala api
+rm -rf /tmp/hyperledger/
+mkdir -p /tmp/hyperledger/
+mkdir -p /tmp/hyperledger/org0
+mkdir -p /tmp/hyperledger/org1
+mkdir -p /tmp/hyperledger/org2
+cp $TMP_FOLDER/ca-cert.pem /tmp/hyperledger/
+cp -a $TMP_FOLDER/hyperledger/org0/msp /tmp/hyperledger/org0
+cp -a $TMP_FOLDER/hyperledger/org1/msp /tmp/hyperledger/org1
+cp -a $TMP_FOLDER/hyperledger/org2/msp /tmp/hyperledger/org2
 
 sep
 

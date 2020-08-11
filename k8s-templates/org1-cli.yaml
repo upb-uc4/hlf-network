@@ -61,7 +61,7 @@ spec:
             path: /hyperledger/org1/admin
         - name: chaincode-mount
           hostPath:
-            path: /hyperledger/chaincode/product_code/hyperledger/chaincode
+            path: /hyperledger/uc4/chaincode
         - name: docker-mount
           hostPath:
             path: /var/run/
