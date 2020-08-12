@@ -1,3 +1,9 @@
+# [v.0.6.0](https://github.com/upb-uc4/hlf-network/compare/v0.5.1...v0.6.0) (DRAFT)
+
+## Feature
+
+ - Add CouchDB container to each Peer's Pod
+
 # [v0.5.1](https://github.com/upb-uc4/hlf-network/compare/v0.5.0...v0.5.1) (2020-08-11)
 
 ## Feature
