@@ -7,8 +7,12 @@ get_pods() {
 
 if [ -z "$1" ]
 then
-  echo "Usage: ./getLogs.sh deployment-name"
+  echo "Usage: ./getLogs.sh deployment-name [containername]"
 else
-  echo "Log for $1:"
-  kubectl logs $(get_pods "$1") -n hlf-production-network
+  if [ -z "$2" ]
+  then
+    kubectl logs $(get_pods "$1") -n hlf-production-network
+  else
+    kubectl logs $(get_pods "$1") -c $2 -n hlf-production-network
+  fi
 fi

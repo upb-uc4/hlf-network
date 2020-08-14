@@ -30,12 +30,10 @@ spec:
             - name: CORE_PEER_MSPCONFIGPATH
               value: "/tmp/hyperledger/org2/peer2/msp"
             - name: CORE_VM_ENDPOINT
-              value: "unix:///host/var/run/docker.sock"
+              value: "tcp://dind:2375"
               #value: "unix:///run/containerd/containerd.sock"
-            - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
-              value: "guide_fabric-ca"
             - name: FABRIC_LOGGING_SPEC
-              value: "debug"
+              value: "debug:gossip,msp=info"
             - name: CORE_PEER_TLS_ENABLED
               value: "true"
             - name: CORE_PEER_TLS_CERT_FILE
@@ -52,6 +50,16 @@ spec:
               value: "peer2-org2:7051"
             - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
               value: "true"
+            - name: CORE_PEER_GOSSIP_BOOTSTRAP
+              value: "peer1-org2:7051"
+            - name: CORE_LEDGER_STATE_STATEDATABASE
+              value: "CouchDB"
+            - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+              value: "localhost:5984"
+        - name: couchdb
+          image: hyperledger/fabric-couchdb:latest
+          ports:
+            - containerPort: 5984
       volumes:
         - name: peer2-org2-mount
           hostPath:

@@ -1,4 +1,4 @@
-name: CI
+name: Deployment test
 on:
   push:
     branches:
@@ -7,6 +7,7 @@ on:
     paths-ignore:
       - README.md
       - LICENSE
+      - CHANGELOG.md
   pull_request:
     branches:
       - master
@@ -14,7 +15,7 @@ on:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    name: build discover and deploy
+    name: Deploy network and install chaincode
     steps:
       - uses: actions/checkout@v2
       - name: Start minikube
@@ -24,13 +25,6 @@ jobs:
           ./startNetwork.sh
       - name: Check Network
         run: kubectl get all -n hlf-production-network
-      - name: Delete Network
+      - name: Install Chaincode
         run:
-          ./deleteNetwork.sh
-      - name: Check Network
-        run: kubectl get all -n hlf-production-network
-      - name: Start Network again
-        run:
-          ./startNetwork.sh
-      - name: Check Network
-        run: kubectl get all -n hlf-production-network
+          ./installChaincode.sh

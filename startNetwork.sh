@@ -78,7 +78,7 @@ setup-tls-ca() {
   small_sep
   ./$CA_CLIENT register $DEBUG --id.name peer2-org2 --id.secret peer2PW --id.type peer -u https://$CA_TLS_HOST
   small_sep
-  ./$CA_CLIENT register $DEBUG --id.name orderer1-org0 --id.secret ordererPW --id.type orderer -u https://$CA_TLS_HOST
+  ./$CA_CLIENT register $DEBUG --id.name orderer-org0 --id.secret ordererPW --id.type orderer -u https://$CA_TLS_HOST
 }
 
 setup-orderer-org-ca() {
@@ -127,7 +127,7 @@ setup-orderer-org-ca() {
   command "Use CA-client to register identities"
   small_sep
   # The id.secret password ca be used to enroll the registered users lateron
-  ./$CA_CLIENT register $DEBUG --id.name orderer1-org0 --id.secret ordererpw --id.type orderer -u https://$CA_ORDERER_HOST
+  ./$CA_CLIENT register $DEBUG --id.name orderer-org0 --id.secret ordererpw --id.type orderer -u https://$CA_ORDERER_HOST
   small_sep
   ./$CA_CLIENT register $DEBUG --id.name admin-org0 --id.secret org0adminpw --id.type admin --id.attrs "hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert" -u https://$CA_ORDERER_HOST
 }
@@ -183,6 +183,8 @@ setup-org1-ca() {
   ./$CA_CLIENT register $DEBUG --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://$CA_ORG1_HOST
   small_sep
   ./$CA_CLIENT register $DEBUG --id.name admin-org1 --id.secret org1AdminPW --id.type user -u https://$CA_ORG1_HOST
+  small_sep
+  ./$CA_CLIENT register $DEBUG --id.name scala-admin-org1 --id.secret scalaAdminPW --id.type admin -u https://$CA_ORG1_HOST
   small_sep
   ./$CA_CLIENT register $DEBUG --id.name user-org1 --id.secret org1UserPW --id.type user -u https://$CA_ORG1_HOST
 }
@@ -435,6 +437,7 @@ start-org1-peer1() {
 
   kubectl create -f "$K8S/org1-peer1/org1-peer1.yaml" -n hlf-production-network
   kubectl create -f "$K8S/org1-peer1/org1-peer1-service.yaml" -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=120s -n hlf-production-network
 }
 
 start-org1-peer2() {
@@ -444,6 +447,7 @@ start-org1-peer2() {
 
   kubectl create -f "$K8S/org1-peer2/org1-peer2.yaml" -n hlf-production-network
   kubectl create -f "$K8S/org1-peer2/org1-peer2-service.yaml" -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=peer2-org1 --timeout=120s -n hlf-production-network
 }
 
 start-org2-peer1() {
@@ -453,6 +457,7 @@ start-org2-peer1() {
 
   kubectl create -f "$K8S/org2-peer1/org2-peer1.yaml" -n hlf-production-network
   kubectl create -f "$K8S/org2-peer1/org2-peer1-service.yaml" -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=peer1-org2 --timeout=120s -n hlf-production-network
 }
 
 start-org2-peer2() {
@@ -462,6 +467,8 @@ start-org2-peer2() {
 
   kubectl create -f "$K8S/org2-peer2/org2-peer2.yaml" -n hlf-production-network
   kubectl create -f "$K8S/org2-peer2/org2-peer2-service.yaml" -n hlf-production-network
+  kubectl wait --for=condition=ready pod -l app=peer2-org2 --timeout=120s -n hlf-production-network
+
 }
 
 setup-orderer() {
@@ -481,7 +488,7 @@ setup-orderer() {
   mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
   cp $TMP_FOLDER/hyperledger/org0/ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
 
-  ./$CA_CLIENT enroll $DEBUG -u https://orderer1-org0:ordererpw@$CA_ORDERER_HOST
+  ./$CA_CLIENT enroll $DEBUG -u https://orderer-org0:ordererpw@$CA_ORDERER_HOST
 
   small_sep
 
@@ -493,7 +500,7 @@ setup-orderer() {
   mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
   cp $TMP_FOLDER/hyperledger/tls-ca/admin/tls-ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
 
-  ./$CA_CLIENT enroll $DEBUG -u https://orderer1-org0:ordererPW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts orderer-org0
+  ./$CA_CLIENT enroll $DEBUG -u https://orderer-org0:ordererPW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts orderer-org0
 
   mv $TMP_FOLDER/hyperledger/org0/orderer/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org0/orderer/tls-msp/keystore/key.pem
 
@@ -587,6 +594,17 @@ start-clis() {
 
 }
 
+setup-dind() {
+  sep
+  command "Starting Docker in Docker in Kubernetes"
+  sep
+
+  mkdir -p $TMP_FOLDER/hyperledger/dind
+
+  kubectl create -f "$K8S/dind/dind.yaml" -n hlf-production-network
+  kubectl create -f "$K8S/dind/dind-service.yaml" -n hlf-production-network
+}
+
 create-channel() {
   sep
   command "Creating channel using CLI1 on Org1 Peer1"
@@ -662,7 +680,20 @@ start-org2-peer1
 start-org2-peer2
 setup-orderer
 start-clis
+setup-dind
 create-channel
+
+
+# For scala api
+rm -rf /tmp/hyperledger/
+mkdir -p /tmp/hyperledger/
+mkdir -p /tmp/hyperledger/org0
+mkdir -p /tmp/hyperledger/org1
+mkdir -p /tmp/hyperledger/org2
+cp $TMP_FOLDER/ca-cert.pem /tmp/hyperledger/
+cp -a $TMP_FOLDER/hyperledger/org0/msp /tmp/hyperledger/org0
+cp -a $TMP_FOLDER/hyperledger/org1/msp /tmp/hyperledger/org1
+cp -a $TMP_FOLDER/hyperledger/org2/msp /tmp/hyperledger/org2
 
 sep
 

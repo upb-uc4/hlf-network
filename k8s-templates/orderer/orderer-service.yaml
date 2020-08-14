@@ -5,9 +5,11 @@ metadata:
   labels:
     app: orderer-org0
 spec:
+  type: NodePort
   selector:
     app: orderer-org0
   ports:
     - protocol: TCP
       targetPort: 7050
       port: 7050
+      nodePort: 30010

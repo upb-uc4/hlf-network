@@ -24,7 +24,7 @@ spec:
             - name: ORDERER_HOME
               value: "/tmp/hyperledger/orderer"
             - name: ORDERER_HOST
-              value: "orderer1-org0"
+              value: "orderer-org0"
             - name: ORDERER_GENERAL_LISTENADDRESS
               value: "0.0.0.0"
             - name: ORDERER_GENERAL_GENESISMETHOD
