@@ -33,6 +33,10 @@ Links (Discord)
 https://hyperledger-fabric.readthedocs.io/en/release-2.1/deployment_guide_overview.html
 https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html
 (https://developer.ibm.com/technologies/blockchain/tutorials/hyperledger-fabric-kubernetes-cluster-tls-rhel/#b-create-hyperledger-fabric-manifests-for-kubernetes)
+(https://developer.ibm.com/technologies/blockchain/tutorials/hyperledger-fabric-kubernetes-cluster-tls-rhel/)
+(https://hyperledger-fabric-ca.readthedocs.io/en/latest/deployguide/cadeploy.html)
+(link for channel config: https://hyperledger-fabric.readthedocs.io/en/release-1.4/configtx.html?channel-configuration-configtx)
+(chaincode lifecycle: https://hyperledger-fabric.readthedocs.io/en/release-2.0/chaincode_lifecycle.html)
 
 
 ### CAs
