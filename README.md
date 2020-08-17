@@ -31,6 +31,9 @@ We freshly generate and distribute all certificates for this.
 
 Links (Discord)
 https://hyperledger-fabric.readthedocs.io/en/release-2.1/deployment_guide_overview.html
+https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html
+(https://developer.ibm.com/technologies/blockchain/tutorials/hyperledger-fabric-kubernetes-cluster-tls-rhel/#b-create-hyperledger-fabric-manifests-for-kubernetes)
+
 
 ### CAs
 We make use of one root TLS CA which (serves as TLS server and) provides our organizations with TLS certificates ensuring secure communication.
@@ -67,14 +70,14 @@ For joining the channel we issue(?) the commands `peer channel join -b /tmp/hype
 
 
 ### Install and Invoke Chaincode
-All chaincode configurations and commands are based on the newest available releases, i.e., verion 2.x. See this [article for a reference about the differences between Fabric's chaincode container versions](https://medium.com/@kctheservant/chaincode-container-comparison-between-fabric-v1-4-and-v2-0-50a835aaad6a). 
+All chaincode configurations and commands are based on the newest available releases, i.e., verion 2.x. See this [article](https://medium.com/@kctheservant/chaincode-container-comparison-between-fabric-v1-4-and-v2-0-50a835aaad6a) for a reference to the differences between Fabric's chaincode container versions. 
 new chaincode lifecycle commands, process consists in Packaging, Installing, Approving and Committing before the chaincode can finally be invoked. The advantage is that each organization has an impact on... \
 These commands are being used:\
 
 
 
 
-## File structure
+## Folder structure
 
 
 
@@ -86,7 +89,7 @@ These commands are being used:\
     +-- org1-ca
     +-- org1-peer1
     +-- org1-peer2
-    +-- org2-ca
+    +-- org2-ca 
     +-- org2-peer1
     +-- org2-peer2
     +-- tls-ca
@@ -131,7 +134,7 @@ These commands are being used:\
                 +-- admincerts
                     +-- admin-org0-cert.pem   # certificate of the Org0's admin identity
                 +-- cacerts
-                    +-- org0-ca-cert.pem  # trusted root certificate of Org0
+                    +-- org0-ca-cert.pem  # trusted root certificate of Org0 (organisation-level)
                 +-- tlscacerts
                     +-- tls-ca-cert.pem  # trusted root certificate of the TLS CA
                 +-- users
@@ -178,10 +181,15 @@ These commands are being used:\
 | startNetwork.sh
 | testInstalledChaincode.sh 
 ```
+
+### MSP folder structure
+
+The folders keystore and signcerts are generated for the entities which sign or endorse transactions. 
+The private keys are stored in the folders keystore and are generated during the enrollment with TLS. The folders signcerts store the associated certificates for signing. Henca, these two files belong together since they provide the sensitive signing material.
+
 TODO: Does the same file strucutre apply to all organizations? Maybe separate the certificate file structure from the overall file structure.
 The structure of the organizations are very similar. Org0 has the extra file orderer, Org1 and Org2 have the files peer1 and peer2 instead which..., each containing an msp folder etc again.
 They also have additional admin certificates. 
-The private keys are stored in the folders keystore and are generated during the enrollment with TLS.
 
 The script with the most important logic is ```startNetwork.sh``` where the network is deployed by creating and launching respective Deployments and Services in minikube as well as enrolling and registering users which involves the provision of respective certificates for all participating parties.
 The file ```installChaincode.sh``` consists of the logic for installing chaincode on the channel processing all steps of the chaincode lifecycle. 
@@ -214,10 +222,14 @@ Get logs of container `kubectl logs {POD} -n hlf-production-network`.
 
 You can omit the namespace parameter if you set the context of kubectl `kubectl config set-context --current --namespace=hlf-production-network`.
 
-## Debugging
+### Debugging
 
 For debugging, we provide a few scripts in the folder scripts/debug. When executing ```podShell.sh``` input the pod name in order to run a shell on the specific pod. For viewing the logs of a specific pod, execute ```getLogs.sh``` with the respective pod name. 
 <!---TODO: pod name or service name?--> 
+
+### Changelog
+
+To get an overview of our developmental process, we tagged our releases and added a [Changelog](https://github.com/upb-uc4/hlf-network/blob/master/CHANGELOG.md) to our repository which reveals our different releases along with a respective description/ enumeration of our changes, TODO: put link.
 
 ## Versions 
 
