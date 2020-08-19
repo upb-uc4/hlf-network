@@ -14,38 +14,31 @@ You need to install [minikube](https://kubernetes.io/docs/tasks/tools/install-mi
 ## Starting the network
 
 To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard `minikube dashboard`. The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace). You can delete everything and restart the network directly using `./restartNetwork.sh`. Use the `-d` flag to activate debug output.
-
-Currently, chaincode can be installed on the channel by executing the script ```./installChaincode.sh```. 
-
+Our chaincode can be installed on the channel by executing the script ```./installChaincode.sh```. 
 To reset the network, execute `./deleteNetwork.sh`. You can stop minikube using the command `minikube stop`, if desired.
 
 
 ## Network
 
 The initial network topology suggested by the [operations guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html) implements the most interesting use cases of hyperledger fabric besides multiple orderers.
-![Network Topology](https://hyperledger-fabric-ca.readthedocs.io/en/latest/_images/network_topology.png)
+<!---TODO: multiple orderers?-->
 There are three organizations, one providing the orderer service and two hosting two peers each on a shared channel. We deploy an external TLS CA which provides TLS certificates for all containers.
 We freshly generate and distribute all certificates for this.
+The following figure visualizes the implemented network.
+![Network Topology](https://hyperledger-fabric-ca.readthedocs.io/en/latest/_images/network_topology.png)
+Note: Network Topology. Reprinted from the [fabric ca operations guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
+<!---TODO: Note or Fig?-->
 
 ## Our Conceptual Deployment Steps
-
-Links (Discord)
-https://hyperledger-fabric.readthedocs.io/en/release-2.1/deployment_guide_overview.html
-https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html
-(https://developer.ibm.com/technologies/blockchain/tutorials/hyperledger-fabric-kubernetes-cluster-tls-rhel/#b-create-hyperledger-fabric-manifests-for-kubernetes)
-(https://developer.ibm.com/technologies/blockchain/tutorials/hyperledger-fabric-kubernetes-cluster-tls-rhel/)
-(https://hyperledger-fabric-ca.readthedocs.io/en/latest/deployguide/cadeploy.html)
-(link for channel config: https://hyperledger-fabric.readthedocs.io/en/release-1.4/configtx.html?channel-configuration-configtx)
-(chaincode lifecycle: https://hyperledger-fabric.readthedocs.io/en/release-2.0/chaincode_lifecycle.html)
-
+In this part, we briefly explain our conceptual deployment and the implemented network entities.
 
 ### CAs
 We make use of one root TLS CA which (serves as TLS server and) provides our organizations with TLS certificates ensuring secure communication.
-An admin has to be enrolled to reveice a certificate, then identities can be registered \
-The signing certificates are used to validate certificates.
+For each organization, an admin has to be enrolled to reveice a certificate, then identities can be registered.
+<!---The signing certificates are used to validate certificates.-->
 
 ### Organizations
-The Orderer is implemented by being an organization in the network. Its task is to...\ 
+The Orderer is represented by an organization in the network. Its task is to order transactions and group them into a block. Besides, the orderer is in charge of the consortium (?)\ 
 Each organization is set up by enrolling a CA admin and registering identities for their members (peers, admin, user). For setting up peers for the organization, peers need to be enrolled and launched. 
 
 ### Orderer
@@ -80,6 +73,16 @@ These commands are being used:\
 
 
 
+During our development, the following references were useful for us: <!---TODO: check and order-->  
+https://hyperledger-fabric.readthedocs.io/en/release-2.1/deployment_guide_overview.html
+https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html
+(https://developer.ibm.com/technologies/blockchain/tutorials/hyperledger-fabric-kubernetes-cluster-tls-rhel/#b-create-hyperledger-fabric-manifests-for-kubernetes)
+(https://developer.ibm.com/technologies/blockchain/tutorials/hyperledger-fabric-kubernetes-cluster-tls-rhel/) \
+(https://hyperledger-fabric-ca.readthedocs.io/en/latest/deployguide/cadeploy.html) \
+(link for channel config: https://hyperledger-fabric.readthedocs.io/en/release-1.4/configtx.html?channel-configuration-configtx) \
+(chaincode lifecycle: https://hyperledger-fabric.readthedocs.io/en/release-2.0/chaincode_lifecycle.html)
+
+
 
 ## Folder structure
 
@@ -87,7 +90,7 @@ These commands are being used:\
 
 ```
 | k8s-templates   # definition of all deployments and services for the network components 
-    +-- dind
+    +-- dind  # files for deployment to which the  
     +-- orderer
     +-- orderer-org-ca
     +-- org1-ca
