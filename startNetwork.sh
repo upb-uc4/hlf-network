@@ -1,20 +1,6 @@
 # Exit on errors
 set -e
 
-# Function definitions
-get_pods() {
-  #1 - app name
-  kubectl get pods -l app=$1 --field-selector status.phase=Running -n hlf-production-network --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
-}
-
-small_sep() {
-  printf "%s\n" '---------------------------------------------------------------------------------'
-}
-
-sep() {
-  printf "%s\n" '================================================================================='
-}
-
 setup-tls-ca() {
   sep
   echo "TLS CA"
@@ -642,6 +628,7 @@ fi
 
 # Set environment variables
 source ./env.sh
+source ./util.sh
 
 # Use configuration file to generate kubernetes setup from the template
 # TODO: Avoid necessity for configuring IPs by making use of kubernetes' internal DNS
