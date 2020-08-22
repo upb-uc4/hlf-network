@@ -536,7 +536,7 @@ kubectl create -f $K8S/namespace.yaml
 
 source ./scripts/setupTlsCa.sh
 source ./scripts/setupOrdererOrgCa.sh
-setup-org1-ca
+source ./scripts/setupOrg1Ca.sh
 setup-org2-ca
 enroll-org1-peers
 enroll-org2-peers
