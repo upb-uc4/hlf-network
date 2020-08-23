@@ -1,13 +1,6 @@
 # Exit on errors
 set -e
 
-
-
-start-clis() {
-
-
-}
-
 setup-dind() {
   sep
   echo "Starting Docker in Docker in Kubernetes"
@@ -87,7 +80,7 @@ source ./scripts/enrollPeersOrg1.sh
 source ./scripts/enrollPeersOrg2.sh
 source ./scripts/startPeers.sh
 source ./scripts/setupOrderer.sh
-start-clis
+source ./scripts/startClis.sh
 setup-dind
 create-channel
 
