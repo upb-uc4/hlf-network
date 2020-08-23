@@ -1,17 +1,6 @@
 # Exit on errors
 set -e
 
-setup-dind() {
-  sep
-  echo "Starting Docker in Docker in Kubernetes"
-  sep
-
-  mkdir -p $TMP_FOLDER/hyperledger/dind
-
-  kubectl create -f "$K8S/dind/dind.yaml" -n hlf-production-network
-  kubectl create -f "$K8S/dind/dind-service.yaml" -n hlf-production-network
-}
-
 create-channel() {
   sep
   echo "Creating channel using CLI1 on Org1 Peer1"
@@ -81,7 +70,7 @@ source ./scripts/enrollPeersOrg2.sh
 source ./scripts/startPeers.sh
 source ./scripts/setupOrderer.sh
 source ./scripts/startClis.sh
-setup-dind
+source ./scripts/setupDind.sh
 create-channel
 
 
