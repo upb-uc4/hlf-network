@@ -5,20 +5,14 @@ echo "TLS CA"
 sep
 
 # Create deployment for tls root ca
-if (($(kubectl get deployment -l app=ca-tls-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
-  echo "Creating TLS CA deployment"
-  kubectl create -f $K8S/tls-ca/tls-ca.yaml -n hlf-production-network
-else
-  echo "TLS CA deployment already exists"
-fi
+echo "Creating TLS CA deployment"
+kubectl create -f $K8S/tls-ca/tls-ca.yaml -n hlf-production-network
+
 
 # Expose service for tls root ca
-if (($(kubectl get service -l app=ca-tls-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
-  echo "Creating TLS CA service"
-  kubectl create -f $K8S/tls-ca/tls-ca-service.yaml -n hlf-production-network
-else
-  echo "TLS CA service already exists"
-fi
+echo "Creating TLS CA service"
+kubectl create -f $K8S/tls-ca/tls-ca-service.yaml -n hlf-production-network
+
 export CA_TLS_HOST=$(minikube service ca-tls --url -n hlf-production-network | cut -c 8-)
 echo "TLS CA service exposed on $CA_TLS_HOST"
 small_sep
