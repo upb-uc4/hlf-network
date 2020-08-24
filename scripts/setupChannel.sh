@@ -1,8 +1,6 @@
 source ./util.sh
 
-sep
-echo "Creating channel using CLI1 on Org1 Peer1"
-sep
+header "Setting up channel using CLI1 on Org1 Peer1"
 
 CLI1=$(get_pods "cli-org1")
 
@@ -17,15 +15,12 @@ rm $TMP_FOLDER/.createChannel.sh
 cp $TMP_FOLDER/hyperledger/org1/peer1/assets/mychannel.block $TMP_FOLDER/hyperledger/org2/peer1/assets/mychannel.block
 
 sep
-echo "Joining channel using CLI1 on Org1 Peer1 and Peer2"
-sep
 
+echo "Joining channel using CLI1 on Org1 Peer1 and Peer2"
 kubectl exec -n hlf-production-network $CLI1 -i -- sh < scripts/joinChannelOrg1.sh
 
 sep
+
 echo "Joining channel using CLI2 on Org2 Peer1"
-sep
-
 CLI2=$(get_pods "cli-org2")
-
 kubectl exec -n hlf-production-network $CLI2 -i -- sh < scripts/joinChannelOrg2.sh

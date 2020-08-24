@@ -1,8 +1,6 @@
 source ./util.sh
 
-sep
-echo "TLS CA"
-sep
+header "TLS CA"
 
 # Create deployment for tls root ca
 echo "Creating TLS CA deployment"

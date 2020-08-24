@@ -1,6 +1,4 @@
-sep
-echo "Org1 Peer1"
-sep
+header "Org1 Peer1"
 
 echo "Enroll Peer1 at Org1-CA"
 export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/peer1
@@ -28,9 +26,7 @@ mv $TMP_FOLDER/hyperledger/org1/peer1/tls-msp/keystore/*_sk $TMP_FOLDER/hyperled
 
 
 
-sep
-echo "Org1 Peer2"
-sep
+header "Org1 Peer2"
 
 echo "Enroll Peer2 at Org1-CA"
 export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/peer2
@@ -58,9 +54,7 @@ mv $TMP_FOLDER/hyperledger/org1/peer2/tls-msp/keystore/*_sk $TMP_FOLDER/hyperled
 
 
 
-sep
-echo "Org1 Admin"
-sep
+header "Org1 Admin"
 
 echo "Enroll org1 admin identity"
 # Note that we assume that peer 1 holds the admin identity

@@ -1,8 +1,6 @@
 source ./util.sh
 
-sep
-echo "Org2 CA"
-sep
+header "Org2 CA"
 
 # Create deployment for org2 ca
 if (($(kubectl get deployment -l app=rca-org2-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then

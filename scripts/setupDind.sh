@@ -1,8 +1,6 @@
 source ./util.sh
 
-sep
-echo "Starting Docker in Docker in Kubernetes"
-sep
+header "Starting Docker in Docker in Kubernetes"
 
 mkdir -p $TMP_FOLDER/hyperledger/dind
 

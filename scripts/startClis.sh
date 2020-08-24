@@ -1,9 +1,8 @@
 source ./util.sh
 
-sep
-echo "Starting ORG1 CLI"
-sep
+header "Starting CLIs"
 
+echo "Starting Org 1 CLI"
 kubectl create -f "$K8S/org1-cli.yaml" -n hlf-production-network
 
 # Provide admincerts to admin msp
@@ -14,9 +13,8 @@ mkdir -p "$d" && cp $TMP_FOLDER/hyperledger/org1/msp/admincerts/admin-org1-cert.
 cp $TMP_FOLDER/hyperledger/org0/orderer/channel.tx $TMP_FOLDER/hyperledger/org1/peer1/assets/
 
 sep
-echo "Starting ORG2 CLI"
-sep
 
+echo "Starting ORG2 CLI"
 kubectl create -f "$K8S/org2-cli.yaml" -n hlf-production-network
 
 # Provide admincerts to admin msp

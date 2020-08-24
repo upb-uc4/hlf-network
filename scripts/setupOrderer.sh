@@ -1,8 +1,6 @@
 source ./util.sh
 
-sep
-echo "Orderer"
-sep
+header "Orderer"
 
 echo "Enroll Orderer at Org0 enrollment ca"
 export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org0/orderer
@@ -38,7 +36,9 @@ export FABRIC_CA_CLIENT_MSPDIR=msp
 mkdir -p $TMP_FOLDER/hyperledger/org0/orderer/msp/admincerts
 cp $TMP_FOLDER/hyperledger/org0/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org0/orderer/msp/admincerts/orderer-admin-cert.pem
 
+sep
 
+echo "Creating MSP directories"
 # Setup Orderer MSP
 # Create MSP directory for org0
 export MSP_DIR=$TMP_FOLDER/hyperledger/org0/msp
@@ -74,14 +74,14 @@ cp $TMP_FOLDER/hyperledger/org2/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org2-ca-c
 cp $TMP_FOLDER/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
 
 
-sep "Generate genesis block"
+sep
+
+echo "Generate genesis block"
 ./configtxgen -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel
 ./configtxgen -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel
 
-
 sep
+
 echo "Starting Orderer"
-sep
-
 kubectl create -f "$K8S/orderer/orderer.yaml" -n hlf-production-network
 kubectl create -f "$K8S/orderer/orderer-service.yaml" -n hlf-production-network
