@@ -1,3 +1,8 @@
+# [v.0.7.0](https://github.com/upb-uc4/hlf-network/compare/v0.6.0...v0.7.0) (Draft)
+
+## Refactor
+ - Change chaincode repository url
+
 # [v.0.6.0](https://github.com/upb-uc4/hlf-network/compare/v0.5.1...v0.6.0) (2020-08-14)
 
 ## Feature
