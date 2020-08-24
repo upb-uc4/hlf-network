@@ -3,20 +3,13 @@ source ./util.sh
 header "Org2 CA"
 
 # Create deployment for org2 ca
-if (($(kubectl get deployment -l app=rca-org2-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
-  echo "Creating Org2 CA deployment"
-  kubectl create -f $K8S/org2-ca/org2-ca.yaml -n hlf-production-network
-else
-  echo "Org2 CA deployment already exists"
-fi
+echo "Creating Org2 CA deployment"
+kubectl create -f $K8S/org2-ca/org2-ca.yaml -n hlf-production-network
 
 # Expose service for org2 ca
-if (($(kubectl get service -l app=rca-org2-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
-  echo "Creating Org2 CA service"
-  kubectl create -f $K8S/org2-ca/org2-ca-service.yaml -n hlf-production-network
-else
-  echo "Org2 CA service already exists"
-fi
+echo "Creating Org2 CA service"
+kubectl create -f $K8S/org2-ca/org2-ca-service.yaml -n hlf-production-network
+
 export CA_ORG2_HOST=$(minikube service rca-org2 --url -n hlf-production-network | cut -c 8-)
 echo "Org2 CA service exposed on $CA_ORG2_HOST"
 small_sep
