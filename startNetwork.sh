@@ -19,12 +19,6 @@ source ./util.sh
 
 mkdir -p $TMP_FOLDER/hyperledger
 
-# Mount tmp folder
-# TODO: Replace local mounts with PVCs
-# small_sep
-# echo "Mounting tmp folder to minikube"
-# minikube mount $TMP_FOLDER/hyperledger:/hyperledger &
-# sleep 3
 
 small_sep
 kubectl create -f $K8S/namespace.yaml

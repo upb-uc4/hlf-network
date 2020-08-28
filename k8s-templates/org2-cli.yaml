@@ -50,13 +50,13 @@ spec:
       volumes:
         - name: org2-peer1-mount
           hostPath:
-            path: /hyperledger/org2/peer1
+            path: /mnt/hyperledger/org2/peer1
         - name: org2-admin-mount
           hostPath:
-            path: /hyperledger/org2/admin
+            path: /mnt/hyperledger/org2/admin
         - name: chaincode-mount
           hostPath:
-            path: /hyperledger/uc4/chaincode/
+            path: /mnt/hyperledger/uc4/chaincode/
         - name: docker-mount
           hostPath:
             path: /var/run/

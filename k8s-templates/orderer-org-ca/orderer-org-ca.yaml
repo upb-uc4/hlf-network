@@ -35,4 +35,4 @@ spec:
             volumes:
               - name: ca-mount
                 hostPath:
-                  path: /hyperledger/org0/ca
+                  path: /mnt/hyperledger/org0/ca

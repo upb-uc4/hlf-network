@@ -63,4 +63,4 @@ spec:
       volumes:
         - name: peer2-org2-mount
           hostPath:
-            path: /hyperledger/org2/peer2
+            path: /mnt/hyperledger/org2/peer2

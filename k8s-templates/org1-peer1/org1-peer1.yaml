@@ -67,4 +67,4 @@ spec:
       volumes:
         - name: peer1-org1-mount
           hostPath:
-            path: /hyperledger/org1/peer1
+            path: /mnt/hyperledger/org1/peer1

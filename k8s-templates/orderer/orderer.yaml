@@ -56,4 +56,4 @@ spec:
       volumes:
         - name: orderer-mount
           hostPath:
-            path: /hyperledger/org0/orderer
+            path: /mnt/hyperledger/org0/orderer
