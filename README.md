@@ -71,7 +71,7 @@ We make use of TLS to ensure secure communication with our entities. Therefore, 
 
 ### Organizations and Enrollment-CAs 
 Each organization is set up by enrolling a CA admin and registering identities for their members, including their roles, i.e., peers, admins, users. Peers need to be enrolled by the CA admin of their organization before they are launched.
-Membership, roles and privileges within an organization are managed by an enrollment ca server, which issues certificates to members. 
+Membership, roles and privileges within an organization are managed by an enrollment CA server, which issues certificates to members. 
 
 ### Orderer
 The Orderer is represented by an organization in the network. Its task is to order transactions and group them into a block as well as being in charge of the consortium.
