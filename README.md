@@ -95,7 +95,7 @@ Launching the orderer service allows us to...\-->
 CLI containers are required to administrate the network and enable communication with the peers.
 Therefore, we use one CLI container for each organization which has the respective admin rights.\
 The CLI containers are started in the same host machine as peer1 for each organization.
-Using these CLIs, we can create a channel and let peers join it. For this, the following command can be used to ecexute shell scripts in the CLIs:
+Using these CLIs, we can create a channel and let peers join it. For this, the following command can be used to execute shell scripts in the CLIs:
 ```
 kubectl exec -n hlf-production-network $CLI1 -i -- sh < $someScript.sh
 ``` 
