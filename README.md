@@ -41,7 +41,7 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
 
 ### Prerequisites
 For setting up our project, you need to install [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
-Exceute `minikube start` to start Minikube.
+Execute `minikube start` to start Minikube.
 
 ### Starting the Network
 
@@ -67,7 +67,7 @@ Note: Network Topology. Reprinted from the [Fabric CA operations guide](https://
 In this part, we conceptually explain the steps of our deployment and the implemented network entities.
 
 ### TLS-CA
-We make use of TLS to ensure secure communication with our entities. Therefore, we provide a TLS-CA server which contains our TLS root certificate and provides TLS certificates to our network components. The TLS root certificate needs to be distributed via a secure channel (and added to the client's keystore) such that clients can verify their communication partner's TLS certicicate. 
+We make use of TLS to ensure secure communication with our entities. Therefore, we provide a TLS-CA server that contains our TLS root certificate and provides TLS certificates to our network components. The TLS root certificate needs to be distributed via a secure channel (and added to the client's keystore) such that clients can verify their communication partner's TLS certicicate. 
 
 ### Organizations and Enrollment-CAs 
 Each organization is set up by enrolling a CA admin and registering identities for their members, including their roles, i.e., peers, admins, users. Peers need to be enrolled by the CA admin of their organization before they are launched.
@@ -93,7 +93,7 @@ Launching the orderer service allows us to...\-->
 
 ### CLIs and Channel Creation
 CLI containers are required to administrate the network and enable communication with the peers.
-Therefore, we use one CLI container for each organization which has the respective admin rights.\
+Therefore, we use one CLI container for each organization that has the respective admin rights.\
 The CLI containers are started in the same host machine as peer1 for each organization.
 Using these CLIs, we can create a channel and let peers join it. For this, the following command can be used to execute shell scripts in the CLIs:
 ```
@@ -124,7 +124,7 @@ The advantage of this new concept is that multiple endorsing peers can be involv
 The chaincode lifecycle includes the following deployment steps: 
 1. Build the chaincode using gradle.
 2. The chaincode is packaged in the CLI container, which directly builds the chaincode container image.
-3. The chaincode is installed in this format on selected peers. (This installation process will take a few minutes since a java enviroment for the chaincode is downloaded and each peer builds its own chaincode docker image.)
+3. The chaincode is installed in this format on selected peers. (This installation process will take a few minutes since a java environment for the chaincode is downloaded and each peer builds its own chaincode docker image.)
 4. The instantiating process of version v1.4 is replaced by an approvement given by the peers for their organization. 
 5. After organizations have approved, the chaincode definition is committed to the channel. 
 
@@ -254,7 +254,7 @@ This section contains useful information for developers who are new to this proj
 #### Main Scripts
 The most fundamental script is <b>```startNetwork.sh```</b> where the network is deployed by creating and launching respective Deployments and Services in minikube as well as enrolling and registering users which involves the provision of respective certificates for all participating parties.\
 We first set up the TLS CA and the CAs for all organizations, respectively. Then we enroll the peers for the organizations Org1 and Org2 and start them by creating deployments in minikube. 
-In the next step, we set up the orderere which indludes the enrollment of its admin identity, the generation of the genesis block as well as the launch of the deployment in minikube. For the orderer's MSP directory, we create MSP folders locally in order to store the respective certificates of all organizations in this ordering host explicitly. 
+In the next step, we set up the orderer which includes the enrollment of its admin identity, the generation of the genesis block as well as the launch of the deployment in minikube. For the orderer's MSP directory, we create MSP folders locally in order to store the respective certificates of all organizations in this ordering host explicitly. 
 Next, the CLIs are created in minikube, one for each organization Org1 and Org2. These can be used in the following to create the channel. \
 The file <b>```installChaincode.sh```</b> consists of the logic for installing chaincode on the channel processing all steps of the chaincode lifecycle. 
 
@@ -262,13 +262,13 @@ The file <b>```installChaincode.sh```</b> consists of the logic for installing c
 The MSP directories include the material necessary for enrollment: the `ca` folder contains the enrollment certificate, the `tls-ca` folder contains the TLS certificate, the `admincerts` folder contains certificates of the administrators. 
 The folders keystore and signcerts are generated for the entities which sign or endorse transactions. 
 The private keys are stored in the folders keystore and are generated during the enrollment with TLS. The folders signcerts store the associated certificates for signing. Hence, these two files belong together since they provide the sensitive signing material.
-The structure of the organizations are very similar. Org0 has the extra folder `orderer`, Org1 and Org2 have the files `peer1` and `peer2` instead, each containing an msp folder again, and additional admin certificates. 
+The structure of the organizations is very similar. Org0 has the extra folder `orderer`, Org1 and Org2 have the files `peer1` and `peer2` instead, each containing an msp folder again, and additional admin certificates. 
 
 <!---More advanced/ longer explanations on specific folders or files may come here?-->
 <!---The templating (and the environment variables for the IP addresses) are necessary to set the respective IP addresses on start of the network? It allows more manual configuration depending on the host machine without changing the tracked files.-->
 
 <!---### MSP folder structure-->
-<!---TODO: Does the same file strucutre apply to all organizations? Maybe separate the certificate file structure from the overall file structure.-->
+<!---TODO: Does the same file structure apply to all organizations? Maybe separate the certificate file structure from the overall file structure.-->
 <!---wo welche Zertifikate, warum eigene msp Ordner, warum Kopieren von Zertifikaten (TLS signing certificates, i.e. signcerts, need to be available on each host which intends to run commands against the TLS CA.)?-->
 
 ### Implementation Details
@@ -321,4 +321,4 @@ both published under the Apache-2.0 license.
 
 ## Troubleshooting
 
-* The error ```mount: /hyperledger: mount(2) system call failed: Connection timed out.``` arose when running our ```startNetwork.sh``` script and set up mounts for our Kubernetes cluster. Currently, we solve this issue by disabling any firewall running on our systems using the command ```sudo ufw disable```. This is just a work-around for testing, we hope to find a real fix in the near future.
+* The error ```mount: /hyperledger: mount(2) system call failed: Connection timed out.``` arose when running our ```startNetwork.sh``` script and set up mounts for our Kubernetes cluster. Currently, we solve this issue by disabling any firewall running on our systems using the command ```sudo ufw disable```. This is just a workaround for testing, we hope to find a real fix in the near future.
