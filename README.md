@@ -1,4 +1,4 @@
-# Kubernetes Hyperledger Config
+# Hyperledger Fabric Network on Kubernetes
 
 ![CI](https://github.com/upb-uc4/hlf-network/workflows/CI/badge.svg?branch=develop)
 
@@ -7,14 +7,43 @@
 This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on Kubernetes minikube. The topology is based on the [Hyperledger Fabric CA operations guide (release 1.4)](
 https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html). 
 
+## Table of Contents
+
+- [Hyperledger Fabric Network on Kubernetes](#hyperledger-fabric-network-on-kubernetes)
+  * [Introduction](#introduction)
+  * [Getting Started](#getting-started)
+    + [Prerequisites](#prerequisites)
+    + [Starting the Network](#starting-the-network)
+  * [Network Topology](#network-topology)
+  * [Deployment Steps](#deployment-steps)
+    + [TLS-CA](#tls-ca)
+    + [Organizations and Enrollment-CAs](#organizations-and-enrollment-cas)
+    + [Orderer](#orderer)
+    + [CLIs and Channel Creation](#clis-and-channel-creation)
+    + [Install and Invoke Chaincode](#install-and-invoke-chaincode)
+    + [Further Readings](#further-readings)
+  * [For Developers](#for-developers)
+    + [Project Structure](#project-structure)
+      - [Main Scripts](#main-scripts)
+      - [MSP Directories](#msp-directories)
+    + [Implementation Details](#implementation-details)
+    + [Using kubectl](#using-kubectl)
+    + [Debugging](#debugging)
+  * [Changelog](#changelog)
+  * [Versions](#versions)
+  * [License](#license)
+  * [Troubleshooting](#troubleshooting)
+  
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+  
+  
 ## Getting Started
 
-### Setup
-
+### Prerequisites
 For setting up our project, you need to install [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 Exceute `minikube start` to start Minikube.
 
-### Starting the network
+### Starting the Network
 
 To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard by typing `minikube dashboard`. 
 The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace in the dashboard GUI on the left handside). Use the `-d` flag to activate debug output.
@@ -22,10 +51,10 @@ The latter allows you to easily log into the pods and read the logs (make sure y
 Our chaincode can be installed on the channel by executing the script ```./installChaincode.sh [branch|tag]``` (default is the develop branch). 
 To delete the network, execute `./deleteNetwork.sh`. You can also delete everything and start the network directly using `./restartNetwork.sh`. 
 
-## Network
+## Network Topology
 
-The initial network topology suggested by the [operations guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html) implements the most interesting use cases of hyperledger fabric besides multiple orderers.
-<!---TODO: multiple orderers?-->
+The initial network topology suggested by the [operations guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html) implements the most interesting use cases of hyperledger fabric. For using multiple orderers later, we would have to use the [raft protocol](https://raft.github.io/) since kafka is deprecated.
+
 The network consists of three organizations, one providing the orderer service and two hosting two peers each communicating on a shared channel. 
 We deploy an external TLS CA which provides TLS certificates for all containers.
 We freshly generate and distribute all certificates for this.
@@ -62,7 +91,7 @@ generate the `genesis.block` and the `channel.tx` files. The `channel.tx` file w
 <!---Wie wir an die Certificates kommen: Unlike explained in the guide referenced above, we...\
 Launching the orderer service allows us to...\-->
 
-### CLIs and channel creation
+### CLIs and Channel Creation
 CLI containers are required to administrate the network and enable communication with the peers.
 Therefore, we use one CLI container for each organization which has the respective admin rights.\
 The CLI containers are started in the same host machine as peer1 for each organization.
@@ -111,8 +140,12 @@ This guide serves as a starting point. If you are interested in more details, we
 * [Channel Configuration](https://hyperledger-fabric.readthedocs.io/en/release-2.2/configtx.html?channel-configuration-configtx)
 * [Chaincode Lifecycle](https://hyperledger-fabric.readthedocs.io/en/release-2.2/chaincode_lifecycle.html)
 
-## Folder structure
 
+## For Developers 
+
+This section contains useful information for developers who are new to this project.
+
+### Project Structure
 <!---TODO: can be improved and extended and maybe separated-->
 ```
 | k8s-templates                     # template definitions of all deployments and services for the network components 
@@ -218,12 +251,14 @@ This guide serves as a starting point. If you are interested in more details, we
 | testInstalledChaincode.sh                # invokes a chaincode function for testing
 ```
 
-The script with the most important logic is <b>```startNetwork.sh```</b> where the network is deployed by creating and launching respective Deployments and Services in minikube as well as enrolling and registering users which involves the provision of respective certificates for all participating parties.
+#### Main Scripts
+The most fundamental script is <b>```startNetwork.sh```</b> where the network is deployed by creating and launching respective Deployments and Services in minikube as well as enrolling and registering users which involves the provision of respective certificates for all participating parties.\
 We first set up the TLS CA and the CAs for all organizations, respectively. Then we enroll the peers for the organizations Org1 and Org2 and start them by creating deployments in minikube. 
 In the next step, we set up the orderere which indludes the enrollment of its admin identity, the generation of the genesis block as well as the launch of the deployment in minikube. For the orderer's MSP directory, we create MSP folders locally in order to store the respective certificates of all organizations in this ordering host explicitly. 
 Next, the CLIs are created in minikube, one for each organization Org1 and Org2. These can be used in the following to create the channel. \
 The file <b>```installChaincode.sh```</b> consists of the logic for installing chaincode on the channel processing all steps of the chaincode lifecycle. 
 
+#### MSP Directories
 The MSP directories include the material necessary for enrollment: the `ca` folder contains the enrollment certificate, the `tls-ca` folder contains the TLS certificate, the `admincerts` folder contains certificates of the administrators. 
 The folders keystore and signcerts are generated for the entities which sign or endorse transactions. 
 The private keys are stored in the folders keystore and are generated during the enrollment with TLS. The folders signcerts store the associated certificates for signing. Hence, these two files belong together since they provide the sensitive signing material.
@@ -236,7 +271,7 @@ The structure of the organizations are very similar. Org0 has the extra folder `
 <!---TODO: Does the same file strucutre apply to all organizations? Maybe separate the certificate file structure from the overall file structure.-->
 <!---wo welche Zertifikate, warum eigene msp Ordner, warum Kopieren von Zertifikaten (TLS signing certificates, i.e. signcerts, need to be available on each host which intends to run commands against the TLS CA.)?-->
 
-## Development 
+### Implementation Details
 
 We utilize environment variables to make our configurations flexible while keeping the needed tools at a bare minimum. When we start the network, we copy all configuration files from the templates folder to the `.k8s` folder where we replace placeholders (environment variables) by the values set in `settings.sh`. In addition to this, the minikube ip is read and set by the `applyConfig.sh` script which handles this process. If desired, users can overwrite these settings in a `user-settings.sh` script that is ignored by git.
 
@@ -244,11 +279,7 @@ The startNetwork script uses these filled configuration files and deploys the co
 
 We deploy all kubernetes components to the same `hlf-production-network` namespace which separates our components from other components running in Kubernetes and allows us to easily and safely delete and restart the network from scratch.
 
-<!--- Issue with timeouts, integrated wait commands (?) -->
-
-<!---### CouchDB?-->
-
-### Working with Pods
+### Using kubectl
 
 List the name of all pods: `kubectl get pods -n hlf-production-network`.
 
@@ -260,10 +291,17 @@ You can omit the namespace parameter, if you set the context of kubectl `kubectl
 
 ### Debugging
 
-For debugging, we provide a few scripts in the folder scripts/debug. When executing ```podShell.sh```, input the pod name in order to run a shell on the specific pod. For viewing the logs of a specific pod, execute ```getLogs.sh``` with the respective pod name. 
-<!---TODO: pod name or service name?--> 
+For debugging, we provide a few scripts in the folder scripts/debug. When executing 
+```
+./podShell.sh deployment-name [container name]
+```
+in order to run a shell on the specific pod. For viewing the logs of a specific pod, execute 
+```
+./getLogs.sh deployment-name [container name]
+``` 
+with the respective deployment name. The optional parameter `container name` is needed, if there are two different containers running on the same pod.
 
-### Changelog
+## Changelog
 
 To get an overview of our developmental process, we tagged our releases and added a [Changelog](https://github.com/upb-uc4/hlf-network/blob/master/CHANGELOG.md) to our repository which reveals our different releases along with a respective description/ enumeration of our changes.
 
