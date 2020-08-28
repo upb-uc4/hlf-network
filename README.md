@@ -43,6 +43,14 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
 For setting up our project, you need to install [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 Execute `minikube start` to start Minikube.
 
+You need to mount the system folder ```/data/uc4/development/hyperledger``` to ```/mnt/data/hyperledger``` into the kubernetes nodes in order to use the hostPaths for volumes.
+You might need to create the directory and change permissions.
+```
+sudo mkdir /data/uc4
+sudo chmod 755 /data/uc4
+```
+If you use minikube, you can use the ```./setupMinikube.sh``` for creating the mount.
+
 ### Starting the Network
 
 To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard by typing `minikube dashboard`. 
