@@ -90,22 +90,26 @@ for the respective peers.
 Chaincode in Hyperledger Fabric represents the smart contracts or business logic for an application.
 All our chaincode configurations and commands are based on the newest available releases, i.e., version 2.x, whose chaincode deployment concept differs a bit from the former fabric version 1.x. See this [article](https://medium.com/@kctheservant/chaincode-container-comparison-between-fabric-v1-4-and-v2-0-50a835aaad6a) as a reference to the differences between Fabric's chaincode container versions.   
 <!--- The chaincode is executed in specific chaincode containers.-->
-This new chaincode deployment concept is called `Chaincode Lifecycle` and it handles the complete management of chaincode.
+This new chaincode deployment concept is called `chaincode lifecycle` and it handles the complete management of chaincode.
 The advantage of this new concept is that multiple endorsing peers can be involved in the decision on how a chaincode is operated before its usage on the channel. The endorsement policy for this process is prescribed in the configtx configuration file.
-The chaincode lifecycle includes the following deployment steps: First, the chaincode is packaged in the CLI container, which directly builds the chaincode container image, and then installed in this format on selected peers. <!---This installation process will take a few minutes.-->
-The instantiating process of version v1.4 is replaced by an approvement given by the peers as well as a commitment of the chaincode definition to the channel. 
+The chaincode lifecycle includes the following deployment steps: 
+1. Build the chaincode using gradle.
+2. The chaincode is packaged in the CLI container, which directly builds the chaincode container image.
+3. The chaincode is installed in this format on selected peers. (This installation process will take a few minutes since a java enviroment for the chaincode is downloaded and each peer builds its own chaincode docker image.)
+4. The instantiating process of version v1.4 is replaced by an approvement given by the peers for their organization. 
+5. After organizations have approved, the chaincode definition is committed to the channel. 
+
 After this chaincode deployment the chaincode containers are running, hence, the chaincode can be invoked and queried by the peers.
 For the chaincode, we currently deploy one explicit container called `dind` (docker in docker) which allows every peer to deploy the chaincode without having access rights to the docker daemon. 
 
-\
-During our development, the following references were particularly useful for us: <!---TODO: check and order-->  
-* https://hyperledger-fabric.readthedocs.io/en/release-2.1/deployment_guide_overview.html
-* https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html
-* (https://hyperledger-fabric-ca.readthedocs.io/en/latest/deployguide/cadeploy.html) 
-* [channel configuration](https://hyperledger-fabric.readthedocs.io/en/release-1.4/configtx.html?channel-configuration-configtx)
-* [chaincode lifecycle](https://hyperledger-fabric.readthedocs.io/en/release-2.0/chaincode_lifecycle.html)
-<!---* (https://developer.ibm.com/technologies/blockchain/tutorials/hyperledger-fabric-kubernetes-cluster-tls-rhel/#b-create-hyperledger-fabric-manifests-for-kubernetes)
-* (https://developer.ibm.com/technologies/blockchain/tutorials/hyperledger-fabric-kubernetes-cluster-tls-rhel/) -->
+### Further Readings
+This guide serves as a starting point. If you are interested in more details, we recommend the following references which were particularly useful for us during development: <!---TODO: check and order-->  
+
+* [Deploying a Production Network](https://hyperledger-fabric.readthedocs.io/en/release-2.2/deployment_guide_overview.html)
+* [Fabric CA Operations Guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html)
+* [CA Deployment Steps](https://hyperledger-fabric-ca.readthedocs.io/en/latest/deployguide/cadeploy.html) 
+* [Channel Configuration](https://hyperledger-fabric.readthedocs.io/en/release-2.2/configtx.html?channel-configuration-configtx)
+* [Chaincode Lifecycle](https://hyperledger-fabric.readthedocs.io/en/release-2.2/chaincode_lifecycle.html)
 
 ## Folder structure
 
