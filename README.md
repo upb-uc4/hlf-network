@@ -4,20 +4,23 @@
 
 ## Introduction
 
-This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on Kubernetes minikube. The initial topology is based on the [fabric ca operations guide (release 1.4)](
+This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on Kubernetes minikube. The topology is based on the [Hyperledger Fabric CA operations guide (release 1.4)](
 https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html). 
 
-## Setup
+## Getting Started
 
-For setting up our project, you need to install [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by kubernetes.
+### Setup
 
-## Starting the network
+For setting up our project, you need to install [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
+Exceute `minikube start` to start Minikube.
+
+### Starting the network
 
 To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard by typing `minikube dashboard`. 
 The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace in the dashboard GUI on the left handside). Use the `-d` flag to activate debug output.
-Our chaincode can be installed on the channel by executing the script ```./installChaincode.sh```. 
-To reset the network, execute `./deleteNetwork.sh`. You can also delete everything and restart the network directly using `./restartNetwork.sh`. The command `minikube stop` stops minikube.
 
+Our chaincode can be installed on the channel by executing the script ```./installChaincode.sh [branch|tag]``` (default is the develop branch). 
+To delete the network, execute `./deleteNetwork.sh`. You can also delete everything and start the network directly using `./restartNetwork.sh`. 
 
 ## Network
 
@@ -28,19 +31,19 @@ We deploy an external TLS CA which provides TLS certificates for all containers.
 We freshly generate and distribute all certificates for this.
 The following figure visualizes the implemented network.
 ![Network Topology](https://hyperledger-fabric-ca.readthedocs.io/en/latest/_images/network_topology.png)
-Note: Network Topology. Reprinted from the [fabric ca operations guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
+Note: Network Topology. Reprinted from the [Fabric CA operations guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
 <!---TODO: Note or Fig?-->
 
-## Our Conceptual Deployment Steps
-In this part, we briefly explain our conceptual deployment and the implemented network entities.
+## Deployment Steps
+In this part, we conceptually explain the steps of our deployment and the implemented network entities.
 
-### CAs
-We make use of one root TLS CA which (serves as TLS server and) provides our organizations with TLS certificates ensuring secure communication.
-For each organization, an admin has to be enrolled to reveice a certificate, then identities can be registered.
-<!---The signing certificates are used to validate certificates.-->
+### TLS-CA
+We make use of TLS to ensure secure communication with our entities. Therefore, we provide a TLS-CA server which contains our TLS root certificate and provides TLS certificates to our network components. The TLS root certificate needs to be distributed via a secure channel (and added to the client's keystore) such that clients can verify their communication partner's TLS certicicate. 
 
-### Organizations 
-Each organization is set up by enrolling a CA admin and registering identities for their members<!---(peers, admin, user)-->. For setting up peers for the organization, peers need to be enrolled and launched. 
+### Organizations and Enrollment-CAs 
+Each organization is set up by enrolling a CA admin and registering identities for their members<!---(peers, admin, user)-->. Peers need to be enrolled by the CA admin of their organization before they are launched.
+Enrollment-CAs are present for each organization and are in charge of generating the certificate for its users 
+Membership, roles and privilege within an organization are technically managed by an enrollment ca server, which issues certificates to members.
 
 ### Orderer
 The Orderer is represented by an organization in the network. Its task is to order transactions and group them into a block as well as being in charge of the consortium.
