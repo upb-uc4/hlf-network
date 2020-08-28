@@ -41,16 +41,22 @@ In this part, we conceptually explain the steps of our deployment and the implem
 We make use of TLS to ensure secure communication with our entities. Therefore, we provide a TLS-CA server which contains our TLS root certificate and provides TLS certificates to our network components. The TLS root certificate needs to be distributed via a secure channel (and added to the client's keystore) such that clients can verify their communication partner's TLS certicicate. 
 
 ### Organizations and Enrollment-CAs 
-Each organization is set up by enrolling a CA admin and registering identities for their members<!---(peers, admin, user)-->. Peers need to be enrolled by the CA admin of their organization before they are launched.
-Enrollment-CAs are present for each organization and are in charge of generating the certificate for its users 
-Membership, roles and privilege within an organization are technically managed by an enrollment ca server, which issues certificates to members.
+Each organization is set up by enrolling a CA admin and registering identities for their members, including their roles, i.e., peers, admins, users. Peers need to be enrolled by the CA admin of their organization before they are launched.
+Membership, roles and privileges within an organization are managed by an enrollment ca server, which issues certificates to members. 
 
 ### Orderer
 The Orderer is represented by an organization in the network. Its task is to order transactions and group them into a block as well as being in charge of the consortium.
 The orderer's identity needs to be enrolled with a CA in order to <!---get/--> generate its local MSP<!---(artifacts)-->.\
-The orderer requires a genesis block to launch itself. The genesis block provides configurations for a channel, which are specified in the configtx file. This file also contains all information to generate the genesis block itself. More information on the channel configuration file can be found in the [Hyperledger Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/release-1.4/configtx.html?channel-configuration-configtx). \
-The commands `/configtxgen -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel` \
-and `./configtxgen -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel` \
+The orderer requires a genesis block to launch itself. The genesis block provides configurations for a channel, which are specified in the configtx file. This file also contains all information to generate the genesis block itself. More information on the channel configuration file can be found in the [Hyperledger Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/release-1.4/configtx.html?channel-configuration-configtx). The commands 
+```
+/configtxgen -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel
+```
+and
+
+```
+ ./configtxgen -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel
+``` 
+ 
 generate the `genesis.block` and the `channel.tx` files. The `channel.tx` file will be used to create the channel.
 
 <!---Wie wir an die Certificates kommen: Unlike explained in the guide referenced above, we...\
@@ -58,20 +64,27 @@ Launching the orderer service allows us to...\-->
 
 ### CLIs and channel creation
 CLI containers are required to administrate the network and enable communication with the peers.
-We use one CLI container for each organization. 
+Therefore, we use one CLI container for each organization which has the respective admin rights.\
 The CLI containers are started in the same host machine as peer1 for each organization.
-Using these CLIs, we can create a channel and let peers join it. For this, the following commands can be issued in the CLIs:\
-`kubectl exec -n hlf-production-network $CLI1 -i -- sh < $TMP_FOLDER/.createChannel.sh` 
-and `channel create \
+Using these CLIs, we can create a channel and let peers join it. For this, the following command can be used to ecexute shell scripts in the CLIs:
+```
+kubectl exec -n hlf-production-network $CLI1 -i -- sh < $someScript.sh
+``` 
+This command generates the mychannel.block on peer1 which can be used by other peers in the network to join the channel:
+```
+channel create \
          -c mychannel \
          -f /tmp/hyperledger/org1/peer1/assets/channel.tx \
          -o orderer-org0:7050 \
          --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block \
          --tls \
-         --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}`.
-The first command executes the CLI and the second command generates the mychannel.block on peer1 which can be used by other peers in the network to join the channel.
-For joining the channel we issue the command\
-`peer channel join -b /tmp/hyperledger/org1/peer1/assets/mychannel.block` for the respective peers.
+         --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}
+```
+For joining the channel we use the command
+```
+peer channel join -b /tmp/hyperledger/org1/peer1/assets/mychannel.block
+``` 
+for the respective peers.
 
 ### Install and Invoke Chaincode
 Chaincode in Hyperledger Fabric represents the smart contracts or business logic for an application.
