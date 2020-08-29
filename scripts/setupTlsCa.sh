@@ -41,7 +41,7 @@ small_sep
 # Query TLS CA server to register other identities
 echo "Use CA-client to register identities"
 small_sep
-./$CA_CLIENT register $DEBUG --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://$CA_TLS_HOST
+./$CA_CLIENT register $DEBUG --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://localhost:30905
 small_sep
 ./$CA_CLIENT register $DEBUG --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://$CA_TLS_HOST
 small_sep

@@ -1,5 +1,7 @@
 source ./util.sh
 
+# TODO: Change this to a k8s Job
+
 header "Org2 Peer1"
 
 echo "Enroll Peer1 at Org2-CA"

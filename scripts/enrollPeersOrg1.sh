@@ -1,5 +1,7 @@
 header "Org1 Peer1"
 
+# TODO: Change this to a k8s Job
+
 echo "Enroll Peer1 at Org1-CA"
 export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/peer1
 export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org1-ca-cert.pem

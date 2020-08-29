@@ -31,6 +31,8 @@ export ORDERER_ORG_CA_NAME=$(get_pods "rca-org0-root")
 echo "Using pod $ORDERER_ORG_CA_NAME"
 small_sep
 
+# TODO: change this to a k8s Job
+
 export FABRIC_CA_CLIENT_TLS_CERTFILES=../crypto/ca-cert.pem
 export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org0/ca/admin
 mkdir -p $FABRIC_CA_CLIENT_HOME

@@ -2,6 +2,8 @@ source ./util.sh
 
 header "Orderer"
 
+# TODO: Change enrollment to a k8s Job
+
 echo "Enroll Orderer at Org0 enrollment ca"
 export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org0/orderer
 export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org0-ca-cert.pem
