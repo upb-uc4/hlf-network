@@ -21,6 +21,8 @@ spec:
                 volumeMounts:
                   - mountPath: /tmp/hyperledger/fabric-ca
                     name: ca-mount
+                  - mountPath: /tmp/hyperledger/scripts
+                    name: scripts
                 env:
                 - name: FABRIC_CA_HOME
                   value: "/tmp/hyperledger/fabric-ca/crypto"
@@ -36,3 +38,6 @@ spec:
               - name: ca-mount
                 hostPath:
                   path: /mnt/hyperledger/tls-ca
+              - name: scripts
+                hostPath:
+                  path: /mnt/hyperledger/scripts

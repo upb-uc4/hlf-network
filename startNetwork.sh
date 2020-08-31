@@ -18,7 +18,8 @@ source ./util.sh
 ./applyConfig.sh
 
 mkdir -p $TMP_FOLDER/hyperledger
-
+cp -a ./scripts $TMP_FOLDER/hyperledger/scripts
+cp fabric-ca-client $TMP_FOLDER/hyperledger/scripts
 
 small_sep
 kubectl create -f $K8S/namespace.yaml
