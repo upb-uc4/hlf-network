@@ -29,7 +29,7 @@ spec:
                 - name: FABRIC_CA_SERVER_CSR_CN
                   value: "ca-tls"
                 - name: FABRIC_CA_SERVER_CSR_HOSTS
-                  value: "${IP}"
+                  value: "${IP},ca-tls.hlf-production-network,localhost,0.0.0.0"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
             volumes:
