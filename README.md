@@ -281,9 +281,7 @@ The structure of the organizations is very similar. Org0 has the extra folder `o
 
 ### Implementation Details
 
-We utilize environment variables to make our configurations flexible while keeping the needed tools at a bare minimum. When we start the network, we copy all configuration files from the templates folder to the `.k8s` folder where we replace placeholders (environment variables) by the values set in `settings.sh`. In addition to this, the minikube ip is read and set by the `applyConfig.sh` script which handles this process. If desired, users can overwrite these settings in a `user-settings.sh` script that is ignored by git.
-
-The startNetwork script uses these filled configuration files and deploys the corresponding entities to kubernetes. We mount the temporary `tmp` folder to kubernetes which allows us to easily copy certificates and provide resources to the containers.
+The startNetwork script uses these filled configuration files and deploys the corresponding entities to kubernetes. We mount the temporary `/data/uc4/deployment` folder to kubernetes which allows us to easily copy certificates and provide resources to the containers.
 
 We deploy all kubernetes components to the same `hlf-production-network` namespace which separates our components from other components running in Kubernetes and allows us to easily and safely delete and restart the network from scratch.
 
