@@ -10,8 +10,6 @@ kubectl create -f $K8S/org2-ca/org2-ca.yaml -n hlf-production-network
 echo "Creating Org2 CA service"
 kubectl create -f $K8S/org2-ca/org2-ca-service.yaml -n hlf-production-network
 
-export CA_ORG2_HOST=$(minikube service rca-org2 --url -n hlf-production-network | cut -c 8-)
-echo "Org2 CA service exposed on $CA_ORG2_HOST"
 small_sep
 
 # Wait until pod is ready
