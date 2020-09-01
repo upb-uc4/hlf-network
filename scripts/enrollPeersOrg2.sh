@@ -2,6 +2,7 @@ source ./util.sh
 
 # TODO: Change this to a k8s Job
 export CA_TLS_HOST=$(minikube service ca-tls --url -n hlf-production-network | cut -c 8-)
+export CA_ORG2_HOST=$(minikube service rca-org2 --url -n hlf-production-network | cut -c 8-)
 
 header "Org2 Peer1"
 
