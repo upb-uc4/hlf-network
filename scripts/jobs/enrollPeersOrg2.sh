@@ -5,9 +5,12 @@ source "$my_dir/../utils.sh"
 
 set -e
 
+export CA_ORG2_HOST=rca-org2.hlf-production-network:7055
+export CA_TLS_HOST=ca-tls.hlf-production-network:7052
+
+
 log "Enroll Peer1 at Org2-CA"
 
-export CA_ORG2_HOST=rca-org2.hlf-production-network:7055
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org2/peer1
 export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org2-ca-cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=msp
@@ -17,11 +20,8 @@ cp /tmp/hyperledger/org2/ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA
 fabric-ca-client enroll -u https://peer1-org2:peer1PW@$CA_ORG2_HOST
 
 
-
-
 log "Enroll Peer1 at TLS-CA"
 
-export CA_TLS_HOST=ca-tls.hlf-production-network:7052
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org2/peer1
 export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/tls-ca/tls-ca-cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=tls-msp
@@ -63,7 +63,8 @@ export FABRIC_CA_CLIENT_MSPDIR=msp
 fabric-ca-client enroll -u https://admin-org2:org2AdminPW@$CA_ORG2_HOST
 
 
-echo "Distribute admin certificate across peers"
+log "Distribute admin certificate across peers"
+
 mkdir /tmp/hyperledger/org2/peer1/msp/admincerts
 cp /tmp/hyperledger/org2/admin/msp/signcerts/cert.pem /tmp/hyperledger/org2/peer1/msp/admincerts/org2-admin-cert.pem
 # usually this would happen out-of-band
