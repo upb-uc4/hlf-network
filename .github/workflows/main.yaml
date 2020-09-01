@@ -44,7 +44,9 @@ jobs:
       - name: Create folder for mounts
         run: |
           sudo mkdir -p /data/uc4/development/hyperledger
-          sudo chmod 777 -R /data/uc4
+          sudo chmod 777 /data/uc4
+          sudo chmod 777 /data/uc4/development
+          sudo chmod 777 /data/uc4/development/hyperledger
       - name: Start KinD
         uses: engineerd/setup-kind@v0.4.0
         with:
