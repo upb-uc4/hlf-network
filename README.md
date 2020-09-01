@@ -4,15 +4,17 @@
 
 ## Introduction
 
-This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on Kubernetes minikube. The topology is based on the [Hyperledger Fabric CA operations guide (release 1.4)](
+This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on Kubernetes. The topology is based on the [Hyperledger Fabric CA operations guide (release 1.4)](
 https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html). 
 
 ## Table of Contents
 
 - [Hyperledger Fabric Network on Kubernetes](#hyperledger-fabric-network-on-kubernetes)
   * [Introduction](#introduction)
+  * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
-    + [Prerequisites](#prerequisites)
+    + [Prerequisites on Minikube](#prerequisites-on-minikube)
+    + [Prerequisites on Kubernetes in Docker (KinD)](#prerequisites-on-kubernetes-in-docker--kind-)
     + [Starting the Network](#starting-the-network)
   * [Network Topology](#network-topology)
   * [Deployment Steps](#deployment-steps)
@@ -33,9 +35,8 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   * [Versions](#versions)
   * [License](#license)
   * [Troubleshooting](#troubleshooting)
-  
+
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-  
   
 ## Getting Started
 
