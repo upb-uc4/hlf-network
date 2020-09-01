@@ -1,15 +1,9 @@
 #!/bin/bash
 
-set -e
+my_dir="$(dirname "$0")"
+source "$my_dir/utils.sh"
 
-function log {
-   if [ "$1" = "-n" ]; then
-      shift
-      echo -n "##### `date '+%Y-%m-%d %H:%M:%S'` $*"
-   else
-      echo "##### `date '+%Y-%m-%d %H:%M:%S'` $*"
-   fi
-}
+set -e
 
 log "Use CA-client to enroll admin"
 
@@ -29,3 +23,4 @@ fabric-ca-client register --id.name peer1-org2 --id.secret peer1PW --id.type pee
 fabric-ca-client register --id.name peer2-org2 --id.secret peer2PW --id.type peer -u https://$TLS_CA_HOST
 fabric-ca-client register --id.name orderer-org0 --id.secret ordererPW --id.type orderer -u https://$TLS_CA_HOST
 
+log "Finished registering TLS users"
