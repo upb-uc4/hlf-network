@@ -6,7 +6,7 @@ CLI1=$(get_pods "cli-org1")
 
 # Use CLI shell to create channel
 
-kubectl exec -n hlf-production-network $CLI1 -i -- sh < scripts/.createChannel.sh
+kubectl exec -n hlf-production-network $CLI1 -i -- sh < scripts/createChannel.sh
 
 # Copy mychannel.block from peer1-org1 to peer1-org2
 cp $TMP_FOLDER/hyperledger/org1/peer1/assets/mychannel.block $TMP_FOLDER/hyperledger/org2/peer1/assets/mychannel.block
