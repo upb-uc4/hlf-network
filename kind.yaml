@@ -1,0 +1,22 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: worker
+    extraMounts:
+      - hostPath: /data/production/database
+        containerPath: /mnt/database
+      - hostPath: /data/production/hyperledger
+        containerPath: /mnt/hyperledger
+  - role: control-plane
+    extraMounts:
+      - hostPath: /data/production/database
+        containerPath: /mnt/database
+      - hostPath: /data/production/hyperledger
+        containerPath: /mnt/hyperledger
+    extraPortMappings:
+      - containerPort: 30000
+        hostPort: 9001
+      - containerPort: 30080
+        hostPort: 9080
+      - containerPort: 30443
+        hostPort: 9443
