@@ -33,9 +33,8 @@ spec:
             path: /mnt/hyperledger/org1/peer1/
         - name: peer2-org1-mount
           hostPath:
-            path: /mnt/hyperledger/org1/peer1/
+            path: /mnt/hyperledger/org1/peer2/
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
       restartPolicy: Never
-  backoffLimit: 4
