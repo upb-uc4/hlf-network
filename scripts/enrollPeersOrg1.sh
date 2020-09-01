@@ -1,23 +1,17 @@
 header "Org1 Peer1"
 
+source ./util.sh
+
 # TODO: Change this to a k8s Job
 export CA_TLS_HOST=$(minikube service ca-tls --url -n hlf-production-network | cut -c 8-)
 export CA_ORG1_HOST=$(minikube service rca-org1 --url -n hlf-production-network | cut -c 8-)
 
-echo "Enroll Peer1 at Org1-CA"
-export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/peer1
-export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org1-ca-cert.pem
-export FABRIC_CA_CLIENT_MSPDIR=msp
-# We need to copy the certificate of Org1-CA into our tmp directory
-mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
-cp $TMP_FOLDER/hyperledger/org1/ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
-
-./$CA_CLIENT enroll $DEBUG -u https://peer1-org1:peer1PW@$CA_ORG1_HOST
-
-small_sep
+# TODO use secrete for distribution of root certificate
+kubectl create -f $K8S/enroll-peers-org1.yaml -n hlf-production-network
 
 
 echo "Enroll Peer1 at TLS-CA"
+export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/peer1
 export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/tls-ca/tls-ca-cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=tls-msp
 # We need to copy the certificate of the TLS CA into our tmp directory
@@ -57,6 +51,7 @@ cp $TMP_FOLDER/ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
 mv $TMP_FOLDER/hyperledger/org1/peer2/tls-msp/keystore/*_sk $TMP_FOLDER/hyperledger/org1/peer2/tls-msp/keystore/key.pem
 
 
+kubectl wait --for=condition=complete job -l app=enroll-peers --timeout=120s -n hlf-production-network
 
 header "Org1 Admin"
 
@@ -76,3 +71,4 @@ cp $TMP_FOLDER/hyperledger/org1/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperle
 # usually this would happen out-of-band
 mkdir $TMP_FOLDER/hyperledger/org1/peer2/msp/admincerts
 cp $TMP_FOLDER/hyperledger/org1/admin/msp/signcerts/cert.pem $TMP_FOLDER/hyperledger/org1/peer2/msp/admincerts/org1-admin-cert.pem
+
