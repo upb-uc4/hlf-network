@@ -3,6 +3,7 @@ source ./util.sh
 header "Orderer"
 
 # TODO: Change enrollment to a k8s Job
+export CA_ORDERER_HOST=$(minikube service rca-org0 --url -n hlf-production-network | cut -c 8-)
 
 echo "Enroll Orderer at Org0 enrollment ca"
 export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org0/orderer
