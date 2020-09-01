@@ -46,8 +46,8 @@ Execute `minikube start` to start Minikube.
 You need to mount the system folder ```/data/uc4/development/hyperledger``` to ```/mnt/data/hyperledger``` into the kubernetes nodes in order to use the hostPaths for volumes.
 You might need to create the directory and change permissions.
 ```
-sudo mkdir /data/uc4
-sudo chmod 755 /data/uc4
+sudo mkdir -p /data/uc4
+sudo chmod 777 /data/uc4
 ```
 If you use minikube, you can use the ```./setupMinikube.sh``` for creating the mount.
 
