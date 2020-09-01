@@ -18,4 +18,5 @@ sleep $SERVER_STARTUP_TIME
 
 kubectl exec -n hlf-production-network $(get_pods "ca-tls-root") -i -- bash /tmp/hyperledger/scripts/podStart/registerTLSusers.sh
 
+# TODO share trusted root certificate as secret
 cp $TMP_FOLDER/hyperledger/tls-ca/crypto/ca-cert.pem $TMP_FOLDER/ca-cert.pem
