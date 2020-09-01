@@ -39,7 +39,7 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   
 ## Getting Started
 
-### Prerequisites
+### Prerequisites on Minikube
 For setting up our project, you need to install [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 Execute `minikube start` to start Minikube.
 
@@ -51,6 +51,19 @@ sudo chmod 777 /data/uc4
 ```
 If you use minikube, you can use the ```./setupMinikube.sh``` for creating the mount.
 
+### Prerequisites on Kubernetes in Docker (KinD)
+For setting up our project, you need to install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
+
+You need to create the system folder ```/data/uc4/``` for mounting it later:
+```
+sudo mkdir -p /data/uc4
+sudo chmod 777 /data/uc4
+```
+You can now create the cluster using:
+```
+kind create cluster --config kind.yaml
+```
+
 ### Starting the Network
 
 To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard by typing `minikube dashboard`. 
@@ -58,6 +71,7 @@ The latter allows you to easily log into the pods and read the logs (make sure y
 
 Our chaincode can be installed on the channel by executing the script ```./installChaincode.sh [branch|tag]``` (default is the develop branch). 
 To delete the network, execute `./deleteNetwork.sh`. You can also delete everything and start the network directly using `./restartNetwork.sh`. 
+On KinD you need to run ```sudo rm -rf /data/uc4/development/hyperledger/``` after calling the delete script to ensure protected files are removed as well.
 
 ## Network Topology
 
