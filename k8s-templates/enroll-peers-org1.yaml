@@ -15,25 +15,15 @@ spec:
           volumeMounts:
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
-            - mountPath: /tmp/hyperledger/org1/peer1
-              name: peer1-org1-mount
-            - mountPath: /tmp/hyperledger/org1/peer2
-              name: peer2-org1-mount
-            - mountPath: /tmp/hyperledger/org1/ca
-              name: ca-org1-mount
+            - mountPath: /tmp/hyperledger/org1
+              name: org1-mount
           env:
             - name: FABRIC_CA_SERVER_DEBUG
               value: "true"
       volumes:
-        - name: ca-org1-mount
+        - name: org1-mount
           hostPath:
-            path: /mnt/hyperledger/org1/ca/
-        - name: peer1-org1-mount
-          hostPath:
-            path: /mnt/hyperledger/org1/peer1/
-        - name: peer2-org1-mount
-          hostPath:
-            path: /mnt/hyperledger/org1/peer2/
+            path: /mnt/hyperledger/org1
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
