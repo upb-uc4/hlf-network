@@ -2,6 +2,7 @@ header "Org1 Peer1"
 
 # TODO: Change this to a k8s Job
 export CA_TLS_HOST=$(minikube service ca-tls --url -n hlf-production-network | cut -c 8-)
+export CA_ORG1_HOST=$(minikube service rca-org1 --url -n hlf-production-network | cut -c 8-)
 
 echo "Enroll Peer1 at Org1-CA"
 export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/peer1

@@ -22,28 +22,7 @@ export ORG1_CA_NAME=$(get_pods "rca-org1-root")
 echo "Using pod $ORG1_CA_NAME"
 small_sep
 
-# TODO: change this to k8s Job and replace the $CA_ORG2_HOST by the service name
+# TODO share trusted root certificate as secret
+cp $TMP_FOLDER/ca-cert.pem $TMP_FOLDER/hyperledger/org1/ca/
 
-export FABRIC_CA_CLIENT_TLS_CERTFILES=../crypto/ca-cert.pem
-export FABRIC_CA_CLIENT_HOME=$TMP_FOLDER/hyperledger/org1/ca/admin
-mkdir -p $FABRIC_CA_CLIENT_HOME
-
-# Query TLS CA server to enroll an admin identity
-echo "Use CA-client to enroll admin"
-small_sep
-./$CA_CLIENT enroll $DEBUG -u https://rca-org1-admin:rca-org1-adminpw@$CA_ORG1_HOST
-small_sep
-
-# Query TLS CA server to register other identities
-echo "Use CA-client to register identities"
-small_sep
-# The id.secret password ca be used to enroll the registered users lateron
-./$CA_CLIENT register $DEBUG --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://$CA_ORG1_HOST
-small_sep
-./$CA_CLIENT register $DEBUG --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://$CA_ORG1_HOST
-small_sep
-./$CA_CLIENT register $DEBUG --id.name admin-org1 --id.secret org1AdminPW --id.type user -u https://$CA_ORG1_HOST
-small_sep
-./$CA_CLIENT register $DEBUG --id.name scala-admin-org1 --id.secret scalaAdminPW --id.type admin -u https://$CA_ORG1_HOST
-small_sep
-./$CA_CLIENT register $DEBUG --id.name user-org1 --id.secret org1UserPW --id.type user -u https://$CA_ORG1_HOST
+kubectl exec -n hlf-production-network $(get_pods "rca-org1-root") -i -- bash /tmp/hyperledger/scripts/podStart/registerOrg1CaUsers.sh
