@@ -115,7 +115,7 @@ channel create \
          -o orderer-org0:7050 \
          --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block \
          --tls \
-         --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}
+         --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-ca-tls-hlf-production-network-7052.pem
 ```
 For joining the channel we use the command
 ```
