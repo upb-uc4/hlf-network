@@ -1,3 +1,8 @@
+#!/bin/bash
+
+my_dir="$(dirname "$0")"
+source "$my_dir/../utils.sh"
+
 set -e
 
 echo "Enroll Peer1 at Org1-CA"
