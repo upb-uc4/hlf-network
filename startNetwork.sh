@@ -13,10 +13,6 @@ fi
 source ./env.sh
 source ./util.sh
 
-# Use configuration file to generate kubernetes setup from the template
-# TODO: Avoid necessity for configuring IPs by making use of kubernetes' internal DNS
-./applyConfig.sh
-
 mkdir -p $TMP_FOLDER/hyperledger
 cp -a ./scripts $TMP_FOLDER/hyperledger/scripts
 cp fabric-ca-client $TMP_FOLDER/hyperledger/scripts
