@@ -17,7 +17,21 @@ source ./util.sh
 
 mkdir -p $TMP_FOLDER/hyperledger
 cp -a ./scripts $TMP_FOLDER/hyperledger/scripts
-cp fabric-ca-client $TMP_FOLDER/hyperledger/scripts
+
+set +e
+mkdir -p $TMP_FOLDER/hyperledger/org0/admin/msp
+chmod 777 $TMP_FOLDER/hyperledger/org0/admin/msp
+mkdir -p $TMP_FOLDER/hyperledger/org1/admin/msp
+chmod 777 $TMP_FOLDER/hyperledger/org1/admin/msp
+mkdir -p $TMP_FOLDER/hyperledger/org2/admin/msp
+chmod 777 $TMP_FOLDER/hyperledger/org2/admin/msp
+mkdir -p $TMP_FOLDER/hyperledger/org0/orderer
+chmod 777 $TMP_FOLDER/hyperledger/org0/orderer
+mkdir -p $TMP_FOLDER/hyperledger/org1/peer1/assets
+chmod 777 $TMP_FOLDER/hyperledger/org1/peer1/assets
+mkdir -p $TMP_FOLDER/hyperledger/org2/peer1/assets
+chmod 777 $TMP_FOLDER/hyperledger/org2/peer1/assets
+set -e
 
 small_sep
 kubectl create -f $K8S/namespace.yaml
