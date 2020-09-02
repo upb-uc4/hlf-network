@@ -46,22 +46,22 @@ spec:
             - name: CORE_PEER_TLS_ENABLED
               value: "true"
             - name: CORE_PEER_TLS_ROOTCERT_FILE
-              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}"
+              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-ca-tls-hlf-production-network-7052.pem"
             - name: CORE_PEER_MSPCONFIGPATH
               value: "/tmp/hyperledger/org1/peer1/msp"
       volumes:
         - name: org1-peer1-mount
           hostPath:
-            path: /hyperledger/org1/peer1
+            path: /mnt/hyperledger/org1/peer1
         - name: org2-peer1-mount
           hostPath:
-            path: /hyperledger/org2/peer1
+            path: /mnt/hyperledger/org2/peer1
         - name: org1-admin-mount
           hostPath:
-            path: /hyperledger/org1/admin
+            path: /mnt/hyperledger/org1/admin
         - name: chaincode-mount
           hostPath:
-            path: /hyperledger/uc4/chaincode
+            path: /mnt/hyperledger/uc4/chaincode
         - name: docker-mount
           hostPath:
             path: /var/run/

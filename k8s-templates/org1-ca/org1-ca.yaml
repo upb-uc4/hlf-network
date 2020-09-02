@@ -21,6 +21,8 @@ spec:
                 volumeMounts:
                   - mountPath: /tmp/hyperledger/fabric-ca
                     name: ca-mount
+                  - mountPath: /tmp/hyperledger/scripts
+                    name: scripts
                 env:
                 - name: FABRIC_CA_HOME
                   value: "/tmp/hyperledger/fabric-ca/crypto"
@@ -29,10 +31,13 @@ spec:
                 - name: FABRIC_CA_SERVER_CSR_CN
                   value: "rca-org1"
                 - name: FABRIC_CA_SERVER_CSR_HOSTS
-                  value: "${IP}"
+                  value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org1.hlf-production-network"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
             volumes:
               - name: ca-mount
                 hostPath:
-                  path: /hyperledger/org1/ca
+                  path: /mnt/hyperledger/org1/ca
+              - name: scripts
+                hostPath:
+                  path: /mnt/hyperledger/scripts

@@ -4,15 +4,17 @@
 
 ## Introduction
 
-This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on Kubernetes minikube. The topology is based on the [Hyperledger Fabric CA operations guide (release 1.4)](
+This repository contains scripts and configuration files for a basic Hyperledger Fabric network running on Kubernetes. The topology is based on the [Hyperledger Fabric CA operations guide (release 1.4)](
 https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html). 
 
 ## Table of Contents
 
 - [Hyperledger Fabric Network on Kubernetes](#hyperledger-fabric-network-on-kubernetes)
   * [Introduction](#introduction)
+  * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
-    + [Prerequisites](#prerequisites)
+    + [Prerequisites on Minikube](#prerequisites-on-minikube)
+    + [Prerequisites on Kubernetes in Docker (KinD)](#prerequisites-on-kubernetes-in-docker--kind-)
     + [Starting the Network](#starting-the-network)
   * [Network Topology](#network-topology)
   * [Deployment Steps](#deployment-steps)
@@ -33,15 +35,46 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   * [Versions](#versions)
   * [License](#license)
   * [Troubleshooting](#troubleshooting)
-  
+
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-  
   
 ## Getting Started
 
-### Prerequisites
+### Prerequisites on Minikube
 For setting up our project, you need to install [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 Execute `minikube start` to start Minikube.
+
+You need to mount the system folder ```/data/uc4/development/hyperledger``` to ```/mnt/data/hyperledger``` into the kubernetes nodes in order to use the hostPaths for volumes.
+You might need to create the directory and change permissions.
+```
+sudo mkdir -p /data/uc4
+sudo chmod 777 /data/uc4
+```
+If you use minikube, you can use the ```./setupMinikube.sh``` for creating the mount.
+
+### Prerequisites on Kubernetes in Docker (KinD)
+For setting up our project, you need to install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
+
+You need to create the system folder ```/data/uc4/development/hyperledger``` for mounting it later:
+```
+sudo mkdir -p /data/uc4/development/hyperledger
+sudo chmod -R 777 /data/uc4
+```
+You can now create the cluster using:
+```
+kind create cluster --config kind.yaml
+```
+
+Typical workflow:
+```
+kind delete clusters kind
+sudo rm -rf /data
+sudo mkdir -p /data/uc4/development/hyperledger
+sudo chmod -R 777 /data/uc4
+kind create cluster --config kind.yaml
+./startNetwork.sh
+./installChaincode.sh
+```
 
 ### Starting the Network
 
@@ -50,6 +83,7 @@ The latter allows you to easily log into the pods and read the logs (make sure y
 
 Our chaincode can be installed on the channel by executing the script ```./installChaincode.sh [branch|tag]``` (default is the develop branch). 
 To delete the network, execute `./deleteNetwork.sh`. You can also delete everything and start the network directly using `./restartNetwork.sh`. 
+On KinD you need to run ```sudo rm -rf /data/uc4/development/hyperledger/``` after calling the delete script to ensure protected files are removed as well.
 
 ## Network Topology
 
@@ -107,7 +141,7 @@ channel create \
          -o orderer-org0:7050 \
          --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block \
          --tls \
-         --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}
+         --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-ca-tls-hlf-production-network-7052.pem
 ```
 For joining the channel we use the command
 ```
@@ -273,9 +307,7 @@ The structure of the organizations is very similar. Org0 has the extra folder `o
 
 ### Implementation Details
 
-We utilize environment variables to make our configurations flexible while keeping the needed tools at a bare minimum. When we start the network, we copy all configuration files from the templates folder to the `.k8s` folder where we replace placeholders (environment variables) by the values set in `settings.sh`. In addition to this, the minikube ip is read and set by the `applyConfig.sh` script which handles this process. If desired, users can overwrite these settings in a `user-settings.sh` script that is ignored by git.
-
-The startNetwork script uses these filled configuration files and deploys the corresponding entities to kubernetes. We mount the temporary `tmp` folder to kubernetes which allows us to easily copy certificates and provide resources to the containers.
+The startNetwork script uses these filled configuration files and deploys the corresponding entities to kubernetes. We mount the temporary `/data/uc4/deployment` folder to kubernetes which allows us to easily copy certificates and provide resources to the containers.
 
 We deploy all kubernetes components to the same `hlf-production-network` namespace which separates our components from other components running in Kubernetes and allows us to easily and safely delete and restart the network from scratch.
 

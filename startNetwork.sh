@@ -1,6 +1,7 @@
+#!/bin/bash
+
 # Exit on errors
 set -e
-
 
 # Debug commands using -d flag
 export DEBUG=""
@@ -13,18 +14,11 @@ fi
 source ./env.sh
 source ./util.sh
 
-# Use configuration file to generate kubernetes setup from the template
-# TODO: Avoid necessity for configuring IPs by making use of kubernetes' internal DNS
-./applyConfig.sh
-
+# Provide scripts via mount
 mkdir -p $TMP_FOLDER/hyperledger
+cp -a ./scripts $TMP_FOLDER/hyperledger/scripts
 
-# Mount tmp folder
-# TODO: Replace local mounts with PVCs
-small_sep
-echo "Mounting tmp folder to minikube"
-minikube mount $TMP_FOLDER/hyperledger:/hyperledger &
-sleep 3
+source ./scripts/fixPrepareHostPath.sh
 
 small_sep
 kubectl create -f $K8S/namespace.yaml
@@ -33,14 +27,12 @@ source ./scripts/setupTlsCa.sh
 source ./scripts/setupOrdererOrgCa.sh
 source ./scripts/setupOrg1Ca.sh
 source ./scripts/setupOrg2Ca.sh
-source ./scripts/enrollPeersOrg1.sh
-source ./scripts/enrollPeersOrg2.sh
+source ./scripts/enrollPeers.sh
 source ./scripts/startPeers.sh
 source ./scripts/setupOrderer.sh
 source ./scripts/startClis.sh
 source ./scripts/setupDind.sh
 source ./scripts/setupChannel.sh
-
 
 # For scala api
 rm -rf /tmp/hyperledger/
@@ -54,5 +46,4 @@ cp -a $TMP_FOLDER/hyperledger/org1/msp /tmp/hyperledger/org1
 cp -a $TMP_FOLDER/hyperledger/org2/msp /tmp/hyperledger/org2
 
 sep
-
-echo -e "Done. Execute \e[2mminikube dashboard\e[22m to open the dashboard or run \e[2m./deleteNetwork.sh\e[22m to shutdown and delete the network."
+echo "Done!"

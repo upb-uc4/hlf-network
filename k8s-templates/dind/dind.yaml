@@ -17,7 +17,7 @@ spec:
       volumes:
         - name: dind-mount
           hostPath:
-            path: /hyperledger/dind
+            path: /mnt/hyperledger/dind
       containers:
         - name: docker
           securityContext:

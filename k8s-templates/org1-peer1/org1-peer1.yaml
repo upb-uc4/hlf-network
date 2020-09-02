@@ -41,7 +41,7 @@ spec:
             - name: CORE_PEER_TLS_KEY_FILE
               value: "/tmp/hyperledger/org1/peer1/tls-msp/keystore/key.pem"
             - name: CORE_PEER_TLS_ROOTCERT_FILE
-              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/${PEERS_TLSCACERTS}"
+              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-ca-tls-hlf-production-network-7052.pem"
             - name: CORE_PEER_GOSSIP_USELEADERELECTION
               value: "true"
             - name: CORE_PEER_GOSSIP_ORGLEADER
@@ -67,4 +67,4 @@ spec:
       volumes:
         - name: peer1-org1-mount
           hostPath:
-            path: /hyperledger/org1/peer1
+            path: /mnt/hyperledger/org1/peer1
