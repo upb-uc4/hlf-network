@@ -2,6 +2,10 @@ source ./util.sh
 
 header "Org2 CA"
 
+# TODO share trusted root certificate as secret
+mkdir -p $TMP_FOLDER/hyperledger/org2/ca/
+cp $TMP_FOLDER/ca-cert.pem $TMP_FOLDER/hyperledger/org2/ca/
+
 # Create deployment for org2 ca
 echo "Creating Org2 CA deployment"
 kubectl create -f $K8S/org2-ca/org2-ca.yaml -n hlf-production-network
@@ -10,8 +14,6 @@ kubectl create -f $K8S/org2-ca/org2-ca.yaml -n hlf-production-network
 echo "Creating Org2 CA service"
 kubectl create -f $K8S/org2-ca/org2-ca-service.yaml -n hlf-production-network
 
-export CA_ORG2_HOST=$(minikube service rca-org2 --url -n hlf-production-network | cut -c 8-)
-echo "Org2 CA service exposed on $CA_ORG2_HOST"
 small_sep
 
 # Wait until pod is ready
@@ -21,8 +23,5 @@ sleep $SERVER_STARTUP_TIME
 export ORG2_CA_NAME=$(get_pods "rca-org2-root")
 echo "Using pod $ORG2_CA_NAME"
 small_sep
-
-# TODO share trusted root certificate as secret
-cp $TMP_FOLDER/ca-cert.pem $TMP_FOLDER/hyperledger/org2/ca/
 
 kubectl exec -n hlf-production-network $(get_pods "rca-org2-root") -i -- bash /tmp/hyperledger/scripts/podStart/registerOrg2CaUsers.sh

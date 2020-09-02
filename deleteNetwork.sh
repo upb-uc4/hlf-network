@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Set environment variables
 
 source ./env.sh

@@ -1,6 +1,7 @@
+#!/bin/bash
+
 # Exit on errors
 set -e
-
 
 # Debug commands using -d flag
 export DEBUG=""
@@ -13,9 +14,11 @@ fi
 source ./env.sh
 source ./util.sh
 
+# Provide scripts via mount
 mkdir -p $TMP_FOLDER/hyperledger
 cp -a ./scripts $TMP_FOLDER/hyperledger/scripts
-cp fabric-ca-client $TMP_FOLDER/hyperledger/scripts
+
+source ./scripts/fixPrepareHostPath.sh
 
 small_sep
 kubectl create -f $K8S/namespace.yaml
@@ -31,7 +34,6 @@ source ./scripts/startClis.sh
 source ./scripts/setupDind.sh
 source ./scripts/setupChannel.sh
 
-
 # For scala api
 rm -rf /tmp/hyperledger/
 mkdir -p /tmp/hyperledger/
@@ -44,5 +46,4 @@ cp -a $TMP_FOLDER/hyperledger/org1/msp /tmp/hyperledger/org1
 cp -a $TMP_FOLDER/hyperledger/org2/msp /tmp/hyperledger/org2
 
 sep
-
-echo -e "Done. Execute \e[2mminikube dashboard\e[22m to open the dashboard or run \e[2m./deleteNetwork.sh\e[22m to shutdown and delete the network."
+echo "Done!"

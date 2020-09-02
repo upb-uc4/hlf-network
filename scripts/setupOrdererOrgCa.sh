@@ -2,6 +2,10 @@ source ./util.sh
 
 header "Orderer Org CA"
 
+# TODO use serets to distribute tls root certificate
+mkdir -p $TMP_FOLDER/hyperledger/org0/ca
+cp $TMP_FOLDER/ca-cert.pem $TMP_FOLDER/hyperledger/org0/ca
+
 # Create deployment for orderer org ca
 if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
   echo "Creating Orderer Org CA deployment"
@@ -22,9 +26,6 @@ fi
 echo "Waiting for pod"
 kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=120s -n hlf-production-network
 sleep $SERVER_STARTUP_TIME
-
-# TODO share trusted root certificate as secret
-cp $TMP_FOLDER/ca-cert.pem $TMP_FOLDER/hyperledger/tls-ca/
 
 kubectl exec -n hlf-production-network $(get_pods "rca-org0-root") -i -- bash /tmp/hyperledger/scripts/podStart/registerOrdererOrgUsers.sh
 
