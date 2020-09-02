@@ -1,10 +1,31 @@
+# [v.0.7.1](https://github.com/upb-uc4/hlf-network/compare/v0.7.0...v0.7.1) (2020-09-02)
+
+## Feature 
+
+ - Support Kubernetes in Docker (KinD) besides Minikube
+ 
+## Refactor
+
+ - Move scripts for enrollment and registration into the cluster
+ - Remove templating and replacement of environment variables in files by static network parameters
+
+## Testing 
+
+ - Add CI pipeline for KinD that runs the network and installs chaincode
+ 
+## Documentation
+
+ - Add instructions on how to use the network on KinD and Minikube 
+ 
 # [v.0.7.0](https://github.com/upb-uc4/hlf-network/compare/v0.6.0...v0.7.0) (2020-08-28)
 
 ## Refactor
+
  - Change chaincode repository url
  - Refactor scripts
 
 ## Documentation
+
  - Update and extend README.md
 
 # [v.0.6.0](https://github.com/upb-uc4/hlf-network/compare/v0.5.1...v0.6.0) (2020-08-14)
