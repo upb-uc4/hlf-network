@@ -2,7 +2,7 @@ source ./util.sh
 
 header "Starting CLIs"
 
-echo "Starting Org 1 CLI"
+echo "Starting Org1 CLI"
 
 # Provide admincerts to admin msp
 d=$TMP_FOLDER/hyperledger/org1/admin/msp/admincerts/
@@ -12,9 +12,9 @@ kubectl create -f "$K8S/org1-cli.yaml" -n hlf-production-network
 # Copy channel.tx from orderer to peer1 to create the initial channel
 cp $TMP_FOLDER/hyperledger/org0/orderer/channel.tx $TMP_FOLDER/hyperledger/org1/peer1/assets/
 
-sep
+small_sep
 
-echo "Starting ORG2 CLI"
+echo "Starting Org2 CLI"
 
 # Provide admincerts to admin msp
 d=$TMP_FOLDER/hyperledger/org2/admin/msp/admincerts/
