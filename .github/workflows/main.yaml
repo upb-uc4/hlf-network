@@ -15,7 +15,7 @@ on:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    name: Deploy network and install chaincode on Minikube
+    name: Test network on Minikube
     steps:
       - uses: actions/checkout@v2
       - name: Start minikube
@@ -38,15 +38,13 @@ jobs:
 
   job2:
     runs-on: ubuntu-latest
-    name: Deploy network and install chaincode on KinD
+    name: Test network on KinD
     steps:
       - uses: actions/checkout@v2
       - name: Create folder for mounts
         run: |
           sudo mkdir -p /data/uc4/development/hyperledger
-          sudo chmod 777 /data/uc4
-          sudo chmod 777 /data/uc4/development
-          sudo chmod 777 /data/uc4/development/hyperledger
+          sudo chmod -R 777 /data/uc4
       - name: Start KinD
         uses: engineerd/setup-kind@v0.4.0
         with:
