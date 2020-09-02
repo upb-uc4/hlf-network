@@ -55,14 +55,24 @@ If you use minikube, you can use the ```./setupMinikube.sh``` for creating the m
 ### Prerequisites on Kubernetes in Docker (KinD)
 For setting up our project, you need to install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 
-You need to create the system folder ```/data/uc4/``` for mounting it later:
+You need to create the system folder ```/data/uc4/development/hyperledger``` for mounting it later:
 ```
-sudo mkdir -p /data/uc4
-sudo chmod 777 /data/uc4
+sudo mkdir -p /data/uc4/development/hyperledger
+sudo chmod -R 777 /data/uc4
 ```
 You can now create the cluster using:
 ```
 kind create cluster --config kind.yaml
+```
+
+Typical workflow:
+```
+sudo rm -rf /data
+sudo mkdir -p /data/uc4/development/hyperledger
+sudo chmod -R 777 /data/uc4
+kind create cluster --config kind.yaml
+./startNetwork.sh
+./installChaincode.sh
 ```
 
 ### Starting the Network
