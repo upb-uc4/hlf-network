@@ -1,4 +1,5 @@
 source ./util.sh
+source ./env.sh
 
 header "Orderer Org CA"
 
@@ -24,7 +25,7 @@ fi
 
 # Wait until pod is ready
 echo "Waiting for pod"
-kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=120s -n hlf-production-network
+kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
 sleep $SERVER_STARTUP_TIME
 
 kubectl exec -n hlf-production-network $(get_pods "rca-org0-root") -i -- bash /tmp/hyperledger/scripts/podStart/registerOrdererOrgUsers.sh

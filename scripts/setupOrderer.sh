@@ -1,10 +1,11 @@
 source ./util.sh
+source ./env.sh
 
 header "Orderer"
 
 
 kubectl create -f $K8S/enroll-orderer-org0.yaml -n hlf-production-network
-kubectl wait --for=condition=complete job -l app=enroll-orderer --timeout=120s -n hlf-production-network
+kubectl wait --for=condition=complete job -l app=enroll-orderer --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
 
 echo "Creating MSP directories"
 # Setup Orderer MSP

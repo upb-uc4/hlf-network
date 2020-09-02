@@ -1,4 +1,5 @@
 source ./util.sh
+source ./env.sh
 
 header "Org2 CA"
 
@@ -18,7 +19,7 @@ small_sep
 
 # Wait until pod is ready
 echo "Waiting for pod"
-kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=120s -n hlf-production-network
+kubectl wait --for=condition=ready pod -l app=rca-org2-root --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
 sleep $SERVER_STARTUP_TIME
 export ORG2_CA_NAME=$(get_pods "rca-org2-root")
 echo "Using pod $ORG2_CA_NAME"
