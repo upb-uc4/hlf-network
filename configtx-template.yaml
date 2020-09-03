@@ -33,7 +33,7 @@ Organizations:
         ID: org0MSP
 
         # MSPDir is the filesystem path which contains the MSP configuration.
-        MSPDir: /data/uc4/development/hyperledger/org0/msp
+        MSPDir: $HL_MOUNT/org0/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -82,7 +82,7 @@ Organizations:
         ID: org1MSP
 
         # MSPDir is the filesystem path which contains the MSP configuration.
-        MSPDir: /data/uc4/development/hyperledger/org1/msp
+        MSPDir: $HL_MOUNT/org1/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -133,7 +133,7 @@ Organizations:
         ID: org2MSP
 
         # MSPDir is the filesystem path which contains the MSP configuration.
-        MSPDir: /data/uc4/development/hyperledger/org2/msp
+        MSPDir: $HL_MOUNT/org2/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
