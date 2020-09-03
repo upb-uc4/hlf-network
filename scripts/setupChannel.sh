@@ -9,7 +9,7 @@ CLI1=$(get_pods "cli-org1")
 kubectl exec -n hlf-production-network $CLI1 -i -- sh < scripts/createChannel.sh
 
 # Copy mychannel.block from peer1-org1 to peer1-org2
-cp $TMP_FOLDER/hyperledger/org1/peer1/assets/mychannel.block $TMP_FOLDER/hyperledger/org2/peer1/assets/mychannel.block
+cp $HL_MOUNT/org1/peer1/assets/mychannel.block $HL_MOUNT/org2/peer1/assets/mychannel.block
 
 sep
 

@@ -1,9 +1,15 @@
+source env.sh
+
+set +e
 kind delete clusters kind
-sudo rm -rf /data
+sudo rm -rf $K8S_MOUNT
 
 set -e
-sudo mkdir -p /data/uc4/development/hyperledger
-sudo chmod -R 777 /data/uc4
+sudo mkdir -p $HL_MOUNT
+sudo chmod -R 777 $K8S_MOUNT
+
+./scripts/setMountFolder.sh
 kind create cluster --config kind.yaml
+
 ./startNetwork.sh
 ./installChaincode.sh

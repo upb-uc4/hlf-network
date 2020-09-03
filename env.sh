@@ -1,5 +1,7 @@
-export TMP_FOLDER=/data/uc4/development
+# This is the path to the mount folder
+export K8S_MOUNT=/data/uc4/development
+export HL_MOUNT=$K8S_MOUNT/hyperledger
 export CA_CLIENT=fabric-ca-client
-export K8S=k8s-templates
+export K8S=k8s
 export CONTAINER_TIMEOUT=300s
 export SERVER_STARTUP_TIME=5

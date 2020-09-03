@@ -4,8 +4,8 @@ source ./env.sh
 header "Orderer Org CA"
 
 # TODO use serets to distribute tls root certificate
-mkdir -p $TMP_FOLDER/hyperledger/org0/ca
-cp $TMP_FOLDER/ca-cert.pem $TMP_FOLDER/hyperledger/org0/ca
+mkdir -p $HL_MOUNT/org0/ca
+cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org0/ca
 
 # Create deployment for orderer org ca
 if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then

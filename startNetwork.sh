@@ -15,8 +15,8 @@ source ./env.sh
 source ./util.sh
 
 # Provide scripts via mount
-mkdir -p $TMP_FOLDER/hyperledger
-cp -a ./scripts $TMP_FOLDER/hyperledger/scripts
+mkdir -p $HL_MOUNT
+cp -a ./scripts $HL_MOUNT/scripts
 
 source ./scripts/fixPrepareHostPath.sh
 
@@ -40,10 +40,10 @@ mkdir -p /tmp/hyperledger/
 mkdir -p /tmp/hyperledger/org0
 mkdir -p /tmp/hyperledger/org1
 mkdir -p /tmp/hyperledger/org2
-cp $TMP_FOLDER/ca-cert.pem /tmp/hyperledger/
-cp -a $TMP_FOLDER/hyperledger/org0/msp /tmp/hyperledger/org0
-cp -a $TMP_FOLDER/hyperledger/org1/msp /tmp/hyperledger/org1
-cp -a $TMP_FOLDER/hyperledger/org2/msp /tmp/hyperledger/org2
+cp $HL_MOUNT/ca-cert.pem /tmp/hyperledger/
+cp -a $HL_MOUNT/org0/msp /tmp/hyperledger/org0
+cp -a $HL_MOUNT/org1/msp /tmp/hyperledger/org1
+cp -a $HL_MOUNT/org2/msp /tmp/hyperledger/org2
 
 sep
 echo "Done!"

@@ -22,11 +22,11 @@ echo ""
 source ./env.sh
 
 echo "Download chaincode"
-mkdir -p $TMP_FOLDER/hyperledger/uc4
-wget -c https://github.com/upb-uc4/hlf-chaincode/archive/"$BRANCH_TAG".tar.gz -O - | tar -xz -C $TMP_FOLDER/hyperledger/uc4 --strip-components=1
+mkdir -p $HL_MOUNT/uc4
+wget -c https://github.com/upb-uc4/hlf-chaincode/archive/"$BRANCH_TAG".tar.gz -O - | tar -xz -C $HL_MOUNT/uc4 --strip-components=1
 
 echo "Build chaincode using gradle"
-pushd $TMP_FOLDER/hyperledger/uc4/chaincode
+pushd $HL_MOUNT/uc4/chaincode
 ./gradlew installDist
 popd
 
