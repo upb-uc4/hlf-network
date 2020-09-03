@@ -48,7 +48,7 @@ jobs:
           sudo chmod -R 777 $K8S_MOUNT
       - name: Generate files from templates
         run:
-          ./setMountFolder.sh
+          ./scripts/setMountFolder.sh
       - name: Start KinD
         uses: engineerd/setup-kind@v0.4.0
         with:
