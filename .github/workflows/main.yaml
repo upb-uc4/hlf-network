@@ -22,8 +22,12 @@ jobs:
         uses: medyagh/setup-minikube@master
       - name: Create folder for mounts
         run: |
-          sudo mkdir -p /data/uc4
-          sudo chmod 777 /data/uc4
+          source ./env.sh
+          sudo mkdir -p $HL_MOUNT
+          sudo chmod 777 $K8S_MOUNT
+      - name: Generate files from templates
+        run:
+          ./scripts/setMountFolder.sh
       - name: Setup mounts for minikube
         run :
           ./setupMinikube.sh
