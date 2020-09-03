@@ -24,7 +24,7 @@ jobs:
         run: |
           source ./env.sh
           sudo mkdir -p $HL_MOUNT
-          sudo chmod 777 $K8S_MOUNT
+          sudo chmod -R 777 $K8S_MOUNT
       - name: Generate files from templates
         run:
           ./scripts/setMountFolder.sh
