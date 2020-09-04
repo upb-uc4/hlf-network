@@ -112,12 +112,12 @@ The Orderer is represented by an organization in the network. Its task is to ord
 The orderer's identity needs to be enrolled with a CA in order to <!---get/--> generate its local MSP<!---(artifacts)-->.\
 The orderer requires a genesis block to launch itself. The genesis block provides configurations for a channel, which are specified in the configtx file. This file also contains all information to generate the genesis block itself. More information on the channel configuration file can be found in the [Hyperledger Fabric documentation](https://hyperledger-fabric.readthedocs.io/en/release-1.4/configtx.html?channel-configuration-configtx). The commands 
 ```
-/configtxgen -profile OrgsOrdererGenesis -outputBlock $TMP_FOLDER/hyperledger/org0/orderer/genesis.block -channelID syschannel
+/configtxgen -profile OrgsOrdererGenesis -outputBlock $HL_MOUNT/org0/orderer/genesis.block -channelID syschannel
 ```
 and
 
 ```
- ./configtxgen -profile OrgsChannel -outputCreateChannelTx $TMP_FOLDER/hyperledger/org0/orderer/channel.tx -channelID mychannel
+ ./configtxgen -profile OrgsChannel -outputCreateChannelTx $HL_MOUNT/org0/orderer/channel.tx -channelID mychannel
 ``` 
  
 generate the `genesis.block` and the `channel.tx` files. The `channel.tx` file will be used to create the channel.

@@ -4,8 +4,8 @@ source ./env.sh
 header "Org1 CA"
 
 # TODO share trusted root certificate as secret
-mkdir -p $TMP_FOLDER/hyperledger/org1/ca/
-cp $TMP_FOLDER/ca-cert.pem $TMP_FOLDER/hyperledger/org1/ca/
+mkdir -p $HL_MOUNT/org1/ca/
+cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org1/ca/
 
 # Create deployment for org1 ca
 echo "Creating Org1 CA deployment"
