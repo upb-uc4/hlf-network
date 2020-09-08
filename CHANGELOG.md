@@ -1,3 +1,13 @@
+# [v.0.7.2](https://github.com/upb-uc4/hlf-network/compare/v0.7.1...v0.7.2) (2020-09-02)
+
+## Feature
+
+ - Support dynamic mount paths for multiple clusters
+
+## Testing
+
+ - Change testing pipelines to support the new dynamic mount paths
+
 # [v.0.7.1](https://github.com/upb-uc4/hlf-network/compare/v0.7.0...v0.7.1) (2020-09-02)
 
 ## Feature 
