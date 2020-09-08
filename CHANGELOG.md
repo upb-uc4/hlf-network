@@ -1,4 +1,4 @@
-# [v.0.7.2](https://github.com/upb-uc4/hlf-network/compare/v0.7.1...v0.7.2) (2020-09-02)
+# [v.0.7.2](https://github.com/upb-uc4/hlf-network/compare/v0.7.1...v0.7.2) (2020-09-08)
 
 ## Feature
 
