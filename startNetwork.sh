@@ -34,16 +34,21 @@ source ./scripts/startClis.sh
 source ./scripts/setupDind.sh
 source ./scripts/setupChannel.sh
 
-# For scala api
-rm -rf /tmp/hyperledger/
-mkdir -p /tmp/hyperledger/
-mkdir -p /tmp/hyperledger/org0
-mkdir -p /tmp/hyperledger/org1
-mkdir -p /tmp/hyperledger/org2
-cp $HL_MOUNT/ca-cert.pem /tmp/hyperledger/
-cp -a $HL_MOUNT/org0/msp /tmp/hyperledger/org0
-cp -a $HL_MOUNT/org1/msp /tmp/hyperledger/org1
-cp -a $HL_MOUNT/org2/msp /tmp/hyperledger/org2
+# For scala api on kubernetes
+mkdir -p $HL_MOUNT/api
+cp connection_profile_kubernetes.yaml $HL_MOUNT/api
+cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/api/ca-cert.pem
+
+# For scala api locally
+# rm -rf /tmp/hyperledger/
+# mkdir -p /tmp/hyperledger/
+# mkdir -p /tmp/hyperledger/org0
+# mkdir -p /tmp/hyperledger/org1
+# mkdir -p /tmp/hyperledger/org2
+# cp $HL_MOUNT/ca-cert.pem /tmp/hyperledger/
+# cp -a $HL_MOUNT/org0/msp /tmp/hyperledger/org0
+# cp -a $HL_MOUNT/org1/msp /tmp/hyperledger/org1
+# cp -a $HL_MOUNT/org2/msp /tmp/hyperledger/org2
 
 sep
 echo "Done!"
