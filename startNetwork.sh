@@ -16,7 +16,7 @@ source ./util.sh
 
 # Provide scripts via mount
 mkdir -p $HL_MOUNT
-cp -r ./scripts/* $HL_MOUNT/scripts/
+cp -r ./scripts $HL_MOUNT
 
 source ./scripts/fixPrepareHostPath.sh
 
