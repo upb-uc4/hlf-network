@@ -140,7 +140,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: "/tmp/hyperledger/ca-cert.pem"
+      path: "/var/lib/hyperledger/data/api/ca-cert.pem"
 
 #
 # List of peers to send various requests to, including endorsement, query
@@ -162,7 +162,7 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: "/tmp/hyperledger/ca-cert.pem"
+      path: "/var/lib/hyperledger/data/api/ca-cert.pem"
 
   peer2-org1:
     # this URL is used to send endorsement and query requests
@@ -180,7 +180,7 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: "/tmp/hyperledger/ca-cert.pem"
+      path: "/var/lib/hyperledger/data/api/ca-cert.pem"
 
   peer1-org2:
     # this URL is used to send endorsement and query requests
@@ -195,7 +195,7 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: "/tmp/hyperledger/ca-cert.pem"
+      path: "/var/lib/hyperledger/data/api/ca-cert.pem"
 
   peer2-org2:
     # this URL is used to send endorsement and query requests
@@ -210,5 +210,5 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: "/tmp/hyperledger/ca-cert.pem"
+      path: "/var/lib/hyperledger/data/api/ca-cert.pem"
 
