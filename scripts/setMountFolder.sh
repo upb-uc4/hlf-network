@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source env.sh
 
 rm configtx.yaml
