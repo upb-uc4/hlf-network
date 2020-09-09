@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: ca-tls
+    labels:
+        app: ca-tls-root
+spec:
+    selector:
+        matchLabels:
+            app: ca-tls-root
+    template:
+        metadata: 
+            labels:
+                app: ca-tls-root
+        spec:
+            containers:
+              - name: ca-tls
+                image: hyperledger/fabric-ca:1.4.7
+                imagePullPolicy: IfNotPresent
+                command: ["fabric-ca-server", "start", "-b", "tls-ca-admin:tls-ca-adminpw", "--port", "7052"]
+                volumeMounts:
+                  - mountPath: /tmp/hyperledger/fabric-ca
+                    name: ca-mount
+                  - mountPath: /tmp/hyperledger/scripts
+                    name: scripts
+                env:
+                - name: FABRIC_CA_HOME
+                  value: "/tmp/hyperledger/fabric-ca/crypto"
+                - name: FABRIC_CA_SERVER_TLS_ENABLED
+                  value: "true"
+                - name: FABRIC_CA_SERVER_CSR_CN
+                  value: "ca-tls"
+                - name: FABRIC_CA_SERVER_CSR_HOSTS
+                  value: "172.17.0.2,172.17.0.3,0.0.0.0,ca-tls.hlf-production-network"
+                - name: FABRIC_CA_SERVER_DEBUG
+                  value: "true"
+            volumes:
+              - name: ca-mount
+                hostPath:
+                  path: /mnt/hyperledger/tls-ca
+              - name: scripts
+                hostPath:
+                  path: /mnt/hyperledger/scripts

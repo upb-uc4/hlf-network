@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: peer2-org1
+  labels:
+    app: peer2-org1
+spec:
+  selector:
+    matchLabels:
+      app: peer2-org1
+  template:
+    metadata:
+      labels:
+        app: peer2-org1
+    spec:
+      containers:
+        - name: peer2-org1
+          image: hyperledger/fabric-peer:2.2
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/org1/peer2
+              name: peer2-org1-mount
+          env:
+            - name: CORE_PEER_ID
+              value: "peer2-org1"
+            - name: CORE_PEER_LISTENADDRESS
+              value: "0.0.0.0:7051"
+            - name: CORE_PEER_ADDRESS
+              value: "peer2-org1:7051"
+            - name: CORE_PEER_CHAINCODELISTENADDRESS
+              value: "0.0.0.0:7052"
+            - name: CORE_PEER_CHAINCODEADDRESS
+              value: "peer2-org1:7052"
+            - name: CORE_PEER_LOCALMSPID
+              value: "org1MSP"
+            - name: CORE_PEER_MSPCONFIGPATH
+              value: "/tmp/hyperledger/org1/peer2/msp"
+            - name: CORE_VM_ENDPOINT
+              value: "tcp://dind:2375"
+            - name: FABRIC_LOGGING_SPEC
+              value: "debug:gossip,msp=info"
+            - name: CORE_PEER_TLS_ENABLED
+              value: "true"
+            - name: CORE_PEER_TLS_CERT_FILE
+              value: "/tmp/hyperledger/org1/peer2/tls-msp/signcerts/cert.pem"
+            - name: CORE_PEER_TLS_KEY_FILE
+              value: "/tmp/hyperledger/org1/peer2/tls-msp/keystore/key.pem"
+            - name: CORE_PEER_TLS_ROOTCERT_FILE
+              value: "/tmp/hyperledger/org1/peer2/tls-msp/tlscacerts/tls-ca-tls-hlf-production-network-7052.pem"
+            - name: CORE_PEER_GOSSIP_USELEADERELECTION
+              value: "true"
+            - name: CORE_PEER_GOSSIP_ORGLEADER
+              value: "false"
+            - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
+              value: "peer2-org1:7051"
+            - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
+              value: "true"
+            - name: CORE_PEER_GOSSIP_BOOTSTRAP
+              value: "peer1-org1:7051"
+            - name: CORE_LEDGER_STATE_STATEDATABASE
+              value: "CouchDB"
+            - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+              value: "localhost:5984"
+        - name: couchdb
+          image: hyperledger/fabric-couchdb:latest
+          ports:
+            - containerPort: 5984
+      volumes:
+        - name: peer2-org1-mount
+          hostPath:
+            path: /mnt/hyperledger/org1/peer2
