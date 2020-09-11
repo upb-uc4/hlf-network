@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: enroll-peers-org2
+  labels:
+    app: enroll-peers
+spec:
+  template:
+    spec:
+      containers:
+        - name: fabric-ca
+          image: hyperledger/fabric-ca:1.4.7
+          imagePullPolicy: IfNotPresent
+          command: ["bash", "./tmp/hyperledger/scripts/jobs/enrollPeersOrg2.sh"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
+            - mountPath: /tmp/hyperledger/org2
+              name: org2-mount
+          env:
+            - name: FABRIC_CA_SERVER_DEBUG
+              value: "true"
+      volumes:
+        - name: org2-mount
+          hostPath:
+            path: /mnt/hyperledger/org2
+        - name: scripts
+          hostPath:
+            path: /mnt/hyperledger/scripts
+      restartPolicy: Never

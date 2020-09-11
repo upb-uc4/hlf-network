@@ -1,6 +1,7 @@
+#!/bin/bash
+
 # Exit on errors
 set -e
-
 
 # Debug commands using -d flag
 export DEBUG=""
@@ -13,18 +14,11 @@ fi
 source ./env.sh
 source ./util.sh
 
-# Use configuration file to generate kubernetes setup from the template
-# TODO: Avoid necessity for configuring IPs by making use of kubernetes' internal DNS
-./applyConfig.sh
+# Provide scripts via mount
+mkdir -p $HL_MOUNT
+cp -r ./scripts $HL_MOUNT
 
-mkdir -p $TMP_FOLDER/hyperledger
-
-# Mount tmp folder
-# TODO: Replace local mounts with PVCs
-small_sep
-echo "Mounting tmp folder to minikube"
-minikube mount $TMP_FOLDER/hyperledger:/hyperledger &
-sleep 3
+source ./scripts/fixPrepareHostPath.sh
 
 small_sep
 kubectl create -f $K8S/namespace.yaml
@@ -33,26 +27,36 @@ source ./scripts/setupTlsCa.sh
 source ./scripts/setupOrdererOrgCa.sh
 source ./scripts/setupOrg1Ca.sh
 source ./scripts/setupOrg2Ca.sh
-source ./scripts/enrollPeersOrg1.sh
-source ./scripts/enrollPeersOrg2.sh
+source ./scripts/enrollPeers.sh
 source ./scripts/startPeers.sh
 source ./scripts/setupOrderer.sh
 source ./scripts/startClis.sh
 source ./scripts/setupDind.sh
 source ./scripts/setupChannel.sh
 
+# For scala api on kubernetes
+mkdir -p $HL_MOUNT/api
+cp connection_profile_kubernetes.yaml $HL_MOUNT/api
+cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/api/ca-cert.pem
+mkdir -p $HL_MOUNT/api/msp/org0
+mkdir -p $HL_MOUNT/api/msp/org1
+mkdir -p $HL_MOUNT/api/msp/org2
+cp -r $HL_MOUNT/org0/msp $HL_MOUNT/api/org0
+cp -r $HL_MOUNT/org1/msp $HL_MOUNT/api/org1
+cp -r $HL_MOUNT/org2/msp $HL_MOUNT/api/org2
 
-# For scala api
+set +e
+# For scala api locally
 rm -rf /tmp/hyperledger/
 mkdir -p /tmp/hyperledger/
 mkdir -p /tmp/hyperledger/org0
 mkdir -p /tmp/hyperledger/org1
 mkdir -p /tmp/hyperledger/org2
-cp $TMP_FOLDER/ca-cert.pem /tmp/hyperledger/
-cp -a $TMP_FOLDER/hyperledger/org0/msp /tmp/hyperledger/org0
-cp -a $TMP_FOLDER/hyperledger/org1/msp /tmp/hyperledger/org1
-cp -a $TMP_FOLDER/hyperledger/org2/msp /tmp/hyperledger/org2
+cp $HL_MOUNT/ca-cert.pem /tmp/hyperledger/
+cp -a $HL_MOUNT/org0/msp /tmp/hyperledger/org0
+cp -a $HL_MOUNT/org1/msp /tmp/hyperledger/org1
+cp -a $HL_MOUNT/org2/msp /tmp/hyperledger/org2
+set -e
 
 sep
-
-echo -e "Done. Execute \e[2mminikube dashboard\e[22m to open the dashboard or run \e[2m./deleteNetwork.sh\e[22m to shutdown and delete the network."
+echo "Done!"

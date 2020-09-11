@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dind
+  labels:
+    app: dind
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dind
+  template:
+    metadata:
+      labels:
+        app: dind
+    spec:
+      volumes:
+        - name: dind-mount
+          hostPath:
+            path: /mnt/hyperledger/dind
+      containers:
+        - name: docker
+          securityContext:
+            privileged: true
+          image: "docker:18.05.0-dind"
+          ports:
+            - containerPort: 2375
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/dind
+              name: dind-mount
