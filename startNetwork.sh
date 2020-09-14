@@ -38,12 +38,12 @@ source ./scripts/setupChannel.sh
 mkdir -p $HL_MOUNT/api
 cp connection_profile_kubernetes.yaml $HL_MOUNT/api
 cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/api/ca-cert.pem
-mkdir -p $HL_MOUNT/api/msp/org0
-mkdir -p $HL_MOUNT/api/msp/org1
-mkdir -p $HL_MOUNT/api/msp/org2
-cp -r $HL_MOUNT/org0/msp $HL_MOUNT/api/org0
-cp -r $HL_MOUNT/org1/msp $HL_MOUNT/api/org1
-cp -r $HL_MOUNT/org2/msp $HL_MOUNT/api/org2
+mkdir -p $HL_MOUNT/api/org0/msp
+mkdir -p $HL_MOUNT/api/org1/msp
+mkdir -p $HL_MOUNT/api/org2/msp
+cp -r $HL_MOUNT/org0/msp $HL_MOUNT/api/org0/
+cp -r $HL_MOUNT/org1/msp $HL_MOUNT/api/org1/
+cp -r $HL_MOUNT/org2/msp $HL_MOUNT/api/org2/
 
 set +e
 # For scala api locally
