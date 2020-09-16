@@ -26,8 +26,8 @@ fabric-ca-client register \
     --id.name scala-registration-admin-org1 \
     --id.secret scalaAdminPW \
     --id.type admin \
-    --id.attrs "hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert" \
-    -u https://$CA_ORG1_HOST \
+    --id.attrs "hf.Registrar.Roles=client,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert" \
+    -u https://$CA_ORG1_HOST 
 fabric-ca-client register --id.name user-org1 --id.secret org1UserPW --id.type user -u https://$CA_ORG1_HOST
 
 log "Finished registering users"
