@@ -4,4 +4,4 @@ export HL_MOUNT=$K8S_MOUNT/hyperledger
 export CA_CLIENT=fabric-ca-client
 export K8S=k8s
 export CONTAINER_TIMEOUT=300s
-export SERVER_STARTUP_TIME=5
+export SERVER_STARTUP_TIME=10
