@@ -1,5 +1,11 @@
 name: Deployment test
 on:
+  # daily at 00:00
+  schedule:
+    - cron: '0 0 * * *'
+  # manual triggers (can be parameterized later)
+  workflow_dispatch:
+  # push
   push:
     branches:
       - master
@@ -8,6 +14,7 @@ on:
       - README.md
       - LICENSE
       - CHANGELOG.md
+  # pull request
   pull_request:
     branches:
       - master
