@@ -7,5 +7,5 @@ nodes:
         containerPath: /mnt/hyperledger
   - role: control-plane
     extraMounts:
-      - hostPath: /data/developmen/hyperledger
+      - hostPath: /data/development/hyperledger
         containerPath: /mnt/hyperledger
