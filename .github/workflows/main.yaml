@@ -20,56 +20,21 @@ on:
       - master
       - develop
 jobs:
+
   job1:
     runs-on: ubuntu-latest
-    name: Test network on Minikube
+    name: Test network on kind
     steps:
       - uses: actions/checkout@v2
-      - name: Start minikube
-        uses: medyagh/setup-minikube@master
-      - name: Create folder for mounts
+      - name: Create folder for mounts of default cluster
         run: |
-          source ./env.sh
-          sudo mkdir -p $HL_MOUNT
-          sudo chmod -R 777 $K8S_MOUNT
-      - name: Generate files from templates
-        run:
-          ./scripts/setMountFolder.sh
-      - name: Setup mounts for minikube
-        run :
-          ./setupMinikube.sh
-      - name: Start Network
-        run:
-          ./startNetwork.sh
-      - name: Check Network
-        run: kubectl get all -n hlf-production-network
-      - name: Install Chaincode
-        run:
-          ./installChaincode.sh
-
-  job2:
-    runs-on: ubuntu-latest
-    name: Test network on KinD
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create folder for mounts
-        run: |
-          source ./env.sh
-          sudo mkdir -p $HL_MOUNT
-          sudo chmod -R 777 $K8S_MOUNT
-      - name: Generate files from templates
-        run:
-          ./scripts/setMountFolder.sh
-      - name: Start KinD
+          sudo mkdir -p /data/development/hyperledger
+          sudo chmod -R 777 /data/development
+      - name: Start KinD with default cluster config
         uses: engineerd/setup-kind@v0.4.0
         with:
           version: "v0.7.0"
           config: kind.yaml
-      - name: Start Network
+      - name: Deploy network using deployment script
         run:
-          ./startNetwork.sh
-      - name: Check Network
-        run: kubectl get all -n hlf-production-network
-      - name: Install Chaincode
-        run:
-          ./installChaincode.sh
+          ./deploy.sh

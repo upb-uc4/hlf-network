@@ -2,21 +2,29 @@
 
 source env.sh
 
-# read parameter
-if [ -z "$1" ]
-then
-  # BRANCH_TAG default branch = develop
-  echo "Installing latest chaincode from develop."
-  echo "Use './installChaincode.sh [branch|tag]' to specify another branch or tag."
-  export BRANCH_TAG=develop
-else
-  # BRANCH_TAG read from parameter
-  export BRANCH_TAG=$1
-fi
-echo "######################################################"
-echo "#   Clone chaincode with branch / tag: $BRANCH_TAG   #"
-echo "######################################################"
+BRANCH_TAG="develop"
+VERBOSE=""
+
+print_usage() {
+  printf "Usage: ..."
+  printf "./deploy -v -b [branch or tag]"
+  printf "Use -v for verbose output and -b to specify a branch or tag (default develop)\n"
+}
+
+
+while getopts 'vb:' flag; do
+  case "${flag}" in
+    b) BRANCH_TAG="${OPTARG}"
+       printf "Branch / Tag: $BRANCH_TAG selected\n" ;;
+    v) VERBOSE="-d"
+       printf "Verbose activated\n" ;;
+    ?) print_usage
+       exit 1 ;;
+  esac
+done
+
+set -e
 
 ./scripts/setMountFolder.sh
-./startNetwork.sh
-./installChaincode.sh $BRANCH_TAG
+./scripts/startNetwork.sh $VERBOSE
+./scripts/installChaincode.sh $BRANCH_TAG

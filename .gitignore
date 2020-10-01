@@ -2,13 +2,7 @@
 # Custom settings                                                              #
 ################################################################################
 
-# Legacy
-tmp/
-.k8s/
-user-settings.sh
-
 # Generated files
-kind.yaml
 configtx.yaml
 
 
