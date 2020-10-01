@@ -18,5 +18,5 @@ echo "#   Clone chaincode with branch / tag: $BRANCH_TAG   #"
 echo "######################################################"
 
 ./scripts/setMountFolder.sh
-./startNetwork.sh
-./installChaincode.sh $BRANCH_TAG
+./scripts/startNetwork.sh
+./scripts/installChaincode.sh $BRANCH_TAG
