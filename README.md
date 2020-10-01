@@ -13,8 +13,6 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   * [Introduction](#introduction)
   * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
-    + [Prerequisites on Kubernetes in Docker (KinD)](#prerequisites-on-kubernetes-in-docker--kind-)
-    + [Starting the Network](#starting-the-network)
   * [Network Topology](#network-topology)
   * [Deployment Steps](#deployment-steps)
     + [TLS-CA](#tls-ca)
