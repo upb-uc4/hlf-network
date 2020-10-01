@@ -39,7 +39,7 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
 
 For setting up our project, you need to install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 
-To start a cluster for development, run ```./restartKindCluster.sh```.
+To start a cluster for development, run ```./restartOnKind.sh```.
 
 To deploy the network, execute ```./deploy.sh [chaincode-branch]```, if no branch is given the current develop chaincode in installed.
 
