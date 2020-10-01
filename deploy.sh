@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source env.sh
-
 # read parameter
 if [ -z "$1" ]
 then
@@ -13,6 +11,10 @@ else
   # BRANCH_TAG read from parameter
   export BRANCH_TAG=$1
 fi
+
+set -e
+sed -e 's/:[^:\/\/]/="/g;s/$/"/g;s/ *=/=/g' default-config.yaml > env.sh
+
 echo "######################################################"
 echo "#   Clone chaincode with branch / tag: $BRANCH_TAG   #"
 echo "######################################################"
