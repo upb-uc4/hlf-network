@@ -3,9 +3,9 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
   - role: worker
     extraMounts:
-      - hostPath: $HL_MOUNT
+      - hostPath: /data/development/hyperledger
         containerPath: /mnt/hyperledger
   - role: control-plane
     extraMounts:
-      - hostPath: $HL_MOUNT
+      - hostPath: /data/developmen/hyperledger
         containerPath: /mnt/hyperledger
