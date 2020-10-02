@@ -1,4 +1,6 @@
-source ./util.sh
+#!/bin/bash
+
+source ./scripts/util.sh
 
 header "Setting up channel using CLI1 on Org1 Peer1"
 

@@ -11,8 +11,8 @@ if [[ $1 == "-d" ]]; then
 fi
 
 # Set environment variables
-source ./env.sh
-source ./util.sh
+source ./scripts/env.sh
+source ./scripts/util.sh
 
 # Provide scripts via mount
 mkdir -p $HL_MOUNT

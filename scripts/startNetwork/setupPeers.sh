@@ -1,5 +1,7 @@
-source ./util.sh
-source ./env.sh
+#!/bin/bash
+
+source ./scripts/util.sh
+source ./scripts/env.sh
 
 
 header "Enroll peers"
