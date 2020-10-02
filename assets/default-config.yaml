@@ -1,3 +1,0 @@
-HL_MOUNT: /data/development/hyperledger
-CONTAINER_TIMEOUT: 300s
-SERVER_STARTUP_TIME: 10

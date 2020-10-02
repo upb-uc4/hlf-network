@@ -4,38 +4,37 @@
 [[ -e scripts/util.sh ]] || { echo >&2 "Please cd into repositories main directory before running this script."; exit 1; }
 
 BRANCH_TAG="develop"
-CONFIG_FILE="assets/default-config.yaml"
+CLUSTER_MOUNT="/data/development/hyperledger/"
 VERBOSE=""
 
 print_usage() {
   printf "Usage: ./deploy -v -b [branch or tag] -c [custom config file]\n"
   printf "Use -v for verbose output and -b to specify a branch or tag (default develop)\n"
-  printf "Use -c to specify a custom config file for production deployment\n"
+  printf "Use -c to specify a cluster mount path (default %s)\n" "$CLUSTER_MOUNT"
 }
 
 
 while getopts 'vb:c:' flag; do
   case "${flag}" in
     b) BRANCH_TAG="${OPTARG}"
-       printf "Branch / Tag: %s selected\n" "$BRANCH_TAG" ;;
+       printf 'Using branch or tag "%s"\n' "$BRANCH_TAG" ;;
     v) VERBOSE="-d"
-       printf "Verbose activated\n" ;;
-    c) CONFIG_FILE="${OPTARG}"
-       if [ -f "$CONFIG_FILE" ]; then
-         printf "Using config: %s" "$CONFIG_FILE"
-       else
-         echo "Config file $CONFIG_FILE does not exist."
-         exit
-       fi ;;
+       printf 'Using verbose mode\n' ;;
+    c) CLUSTER_MOUNT="${OPTARG}"
+       printf 'Using hyperledger mount path "%s"\n' "$CLUSTER_MOUNT";;
     ?) print_usage
        exit 1 ;;
   esac
 done
 
 set -e
-sed -e 's/:[^:\/\/]/="/g;s/$/"/g;s/ *=/=/g' $CONFIG_FILE > scripts/env.sh
-sed -i -e 's/^/export /' scripts/env.sh
+# Remove old CLUSTER_MOUNT value
+sed -i '/.$/a\' scripts/env.sh                                          # Newline at end of file
+sed -i "/\bCLUSTER_MOUNT\b/d" scripts/env.sh                            # Remove line with CLUSTER_MOUNT
+printf 'export CLUSTER_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER_MOUNT environment variable
 
+
+# Start network and deploy chaincode
 
 ./scripts/setMountFolder.sh
 ./scripts/startNetwork.sh $VERBOSE
