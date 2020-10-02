@@ -13,9 +13,6 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   * [Introduction](#introduction)
   * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
-    + [Prerequisites on Minikube](#prerequisites-on-minikube)
-    + [Prerequisites on Kubernetes in Docker (KinD)](#prerequisites-on-kubernetes-in-docker--kind-)
-    + [Starting the Network](#starting-the-network)
   * [Network Topology](#network-topology)
   * [Deployment Steps](#deployment-steps)
     + [TLS-CA](#tls-ca)
@@ -40,50 +37,16 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   
 ## Getting Started
 
-### Prerequisites on Minikube
-For setting up our project, you need to install [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
-Execute `minikube start` to start Minikube.
-
-You need to mount the system folder ```/data/uc4/development/hyperledger``` to ```/mnt/data/hyperledger``` into the kubernetes nodes in order to use the hostPaths for volumes.
-You might need to create the directory and change permissions.
-```
-sudo mkdir -p /data/uc4
-sudo chmod 777 /data/uc4
-```
-If you use minikube, you can use the ```./setupMinikube.sh``` for creating the mount.
-
-### Prerequisites on Kubernetes in Docker (KinD)
 For setting up our project, you need to install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 
-You need to create the system folder ```/data/uc4/development/hyperledger``` for mounting it later:
-```
-sudo mkdir -p /data/uc4/development/hyperledger
-sudo chmod -R 777 /data/uc4
-```
-You can now create the cluster using:
-```
-kind create cluster --config kind.yaml
-```
+To start a cluster for development, run ```./overwriteKindCluster.sh```. This script can also be used to delete the current cluster and create a new cluster.
 
-Typical workflow:
-```
-kind delete clusters kind
-sudo rm -rf /data
-sudo mkdir -p /data/uc4/development/hyperledger
-sudo chmod -R 777 /data/uc4
-kind create cluster --config kind.yaml
-./startNetwork.sh
-./installChaincode.sh
-```
+To deploy the network, execute ```./deploy.sh -v -b [chaincode-branch]```. The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default) and ```-v``` to activate a verbose output.
 
-### Starting the Network
+To delete the cluster, run ```kind delete cluster```, to remove all files ```sudo rm -rf /data/development/hyperledger/```. 
 
-To start the network execute `./startNetwork.sh`. Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard by typing `minikube dashboard`. 
+Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard by typing `minikube dashboard`. 
 The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace in the dashboard GUI on the left handside). Use the `-d` flag to activate debug output.
-
-Our chaincode can be installed on the channel by executing the script ```./installChaincode.sh [branch|tag]``` (default is the develop branch). 
-To delete the network, execute `./deleteNetwork.sh`. You can also delete everything and start the network directly using `./restartNetwork.sh`. 
-On KinD you need to run ```sudo rm -rf /data/uc4/development/hyperledger/``` after calling the delete script to ensure protected files are removed as well.
 
 ## Network Topology
 
