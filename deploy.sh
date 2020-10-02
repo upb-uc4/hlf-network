@@ -39,4 +39,10 @@ sed -i -e 's/^/export /' scripts/env.sh
 
 ./scripts/setMountFolder.sh
 ./scripts/startNetwork.sh $VERBOSE
-./scripts/installChaincode.sh $BRANCH_TAG
+
+if test -z "$BRANCH_TAG"
+then
+  ./scripts/installChaincode.sh
+else
+  ./scripts/installChaincode.sh -b $BRANCH_TAG
+fi
