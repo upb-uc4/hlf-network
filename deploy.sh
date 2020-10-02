@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Ensure PWD is correct http://mywiki.wooledge.org/BashFAQ/028
+[[ -e scripts/utils.sh ]] || { echo >&2 "Please cd into repositories main directory before running this script."; exit 1; }
+
 BRANCH_TAG="develop"
-CONFIG_FILE="default-config.yaml"
+CONFIG_FILE="assets/default-config.yaml"
 VERBOSE=""
 
 print_usage() {
