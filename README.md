@@ -39,14 +39,14 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
 
 For setting up our project, you need to install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 
-To start a cluster for development, run ```./restartOnKind.sh```.
+To start a cluster for development, run ```./overwriteKindCluster.sh```. This script can also be used to delete the current cluster and create a new cluster.
 
-To deploy the network, execute ```./deploy.sh [chaincode-branch]```, if no branch is given the current develop chaincode in installed.
+To deploy the network, execute ```./deploy.sh -v -b [chaincode-branch]```. The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default) and ```-v``` to activate a verbose output.
 
-To delete the cluster, run ```kind delete cluster```, to remove all files ```sudo rm -rf /data/development/hyperledger/```.
+To delete the cluster, run ```kind delete cluster```, to remove all files ```sudo rm -rf /data/development/hyperledger/```. 
 
-Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard by typing `minikube dashboard`. 
-The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace in the dashboard GUI on the left handside). Use the `-d` flag to activate debug output.
+Check the status of your network with `kubectl get all -n hlf-production-network`.
+Use the `-d` flag to activate debug output.
 
 ## Network Topology
 
