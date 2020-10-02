@@ -5,8 +5,7 @@ CONFIG_FILE="default-config.yaml"
 VERBOSE=""
 
 print_usage() {
-  printf "Usage: ..."
-  printf "./deploy -v -b [branch or tag] -c [custom config file]"
+  printf "Usage: ./deploy -v -b [branch or tag] -c [custom config file]\n"
   printf "Use -v for verbose output and -b to specify a branch or tag (default develop)\n"
   printf "Use -c to specify a custom config file for production deployment\n"
 }
