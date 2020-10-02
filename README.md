@@ -317,3 +317,13 @@ both published under the Apache-2.0 license.
 ## Troubleshooting
 
 * The error ```mount: /hyperledger: mount(2) system call failed: Connection timed out.``` arose when running our ```startNetwork.sh``` script and set up mounts for our Kubernetes cluster. Currently, we solve this issue by disabling any firewall running on our systems using the command ```sudo ufw disable```. This is just a workaround for testing, we hope to find a real fix in the near future.
+* To fix 
+    ```
+    =================================================================================
+    Starting Docker in Docker in Kubernetes
+    =================================================================================
+    deployment.apps/dind created
+    service/dind created
+    error: no matching resources found
+    ```
+    try reinstalling the current version of kubectl (https://kubernetes.io/docs/tasks/tools/install-kubectl/)
