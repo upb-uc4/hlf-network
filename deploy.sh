@@ -18,7 +18,12 @@ while getopts 'vb:c:' flag; do
     v) VERBOSE="-d"
        printf "Verbose activated\n" ;;
     c) CONFIG_FILE="${OPTARG}"
-       printf "Using config: %s" "$CONFIG_FILE" ;;
+       if [ -f "$CONFIG_FILE" ]; then
+         printf "Using config: %s" "$CONFIG_FILE"
+       else
+         echo "Config file $CONFIG_FILE does not exist."
+         exit
+       fi ;;
     ?) print_usage
        exit 1 ;;
   esac

@@ -45,8 +45,8 @@ To deploy the network, execute ```./deploy.sh -v -b [chaincode-branch]```. The `
 
 To delete the cluster, run ```kind delete cluster```, to remove all files ```sudo rm -rf /data/development/hyperledger/```. 
 
-Check the status of your network with `kubectl get all -n hlf-production-network` or in the browser dashboard by typing `minikube dashboard`. 
-The latter allows you to easily log into the pods and read the logs (make sure you select the hlf-production-network workspace in the dashboard GUI on the left handside). Use the `-d` flag to activate debug output.
+Check the status of your network with `kubectl get all -n hlf-production-network`.
+Use the `-d` flag to activate debug output.
 
 ## Network Topology
 
