@@ -1,7 +1,7 @@
 #!/bin/bash
 
 my_dir="$(dirname "$0")"
-source "$my_dir/../utils.sh"
+source "$my_dir/../util.sh"
 
 set -e
 

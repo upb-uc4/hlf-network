@@ -1,6 +1,14 @@
 source ./util.sh
 source ./env.sh
 
+
+header "Enroll peers"
+
+# TODO use secrete for distribution of root certificate
+kubectl create -f $K8S/enroll-peers-org1.yaml -n hlf-production-network
+kubectl create -f $K8S/enroll-peers-org2.yaml -n hlf-production-network
+kubectl wait --for=condition=complete job -l app=enroll-peers --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
+
 header "Starting Peers"
 
 echo "org1-peer1"
