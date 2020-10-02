@@ -1,3 +1,5 @@
+#!/bin/bash
+
 peer lifecycle chaincode querycommitted \
   -o orderer-org0:7050 \
   --channelID mychannel \

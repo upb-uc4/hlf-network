@@ -7,7 +7,7 @@ get_pods() {
 
 if [ -z "$1" ]
 then
-  echo "Usage: ./getLogs.sh deployment-name [containername]"
+  echo "Usage: ./scripts/getLogs.sh deployment-name [containername]"
 else
   if [ -z "$2" ]
   then
