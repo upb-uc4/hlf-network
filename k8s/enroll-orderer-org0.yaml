@@ -11,7 +11,7 @@ spec:
         - name: fabric-ca
           image: hyperledger/fabric-ca:1.4.7
           imagePullPolicy: IfNotPresent
-          command: ["bash", "./tmp/hyperledger/scripts/jobs/enrollOrdererOrg0.sh"]
+          command: ["bash", "./tmp/hyperledger/scripts/startNetwork/enrollJobs/enrollOrdererOrg0.sh"]
           volumeMounts:
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
