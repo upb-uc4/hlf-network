@@ -48,8 +48,8 @@ cp $HL_MOUNT/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
 sep
 
 echo "Generate genesis block"
-./configtxgen -profile OrgsOrdererGenesis -outputBlock $HL_MOUNT/org0/orderer/genesis.block -channelID syschannel
-./configtxgen -profile OrgsChannel -outputCreateChannelTx $HL_MOUNT/org0/orderer/channel.tx -channelID mychannel
+./assets/configtxgen -configPath $PWD/assets/ -profile OrgsOrdererGenesis -outputBlock $HL_MOUNT/org0/orderer/genesis.block -channelID syschannel
+./assets/configtxgen -configPath $PWD/assets/ -profile OrgsChannel -outputCreateChannelTx $HL_MOUNT/org0/orderer/channel.tx -channelID mychannel
 
 sep
 

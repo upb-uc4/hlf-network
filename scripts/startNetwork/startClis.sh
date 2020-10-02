@@ -23,6 +23,6 @@ echo "Starting Org2 CLI"
 d=$HL_MOUNT/org2/admin/msp/admincerts/
 mkdir -p "$d" && cp $HL_MOUNT/org2/msp/admincerts/admin-org2-cert.pem "$d"
 
-kubectl create -f "$K8S/org2-cli.yaml" -n hlf-production-network
+kubectl create -f $K8S/org2-cli.yaml -n hlf-production-network
 kubectl wait --for=condition=ready pod -l app=cli-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
 kubectl wait --for=condition=ready pod -l app=cli-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network

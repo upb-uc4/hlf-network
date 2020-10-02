@@ -27,4 +27,4 @@ export ORG2_CA_NAME=$(get_pods "rca-org2-root")
 echo "Using pod $ORG2_CA_NAME"
 small_sep
 
-kubectl exec -n hlf-production-network $(get_pods "rca-org2-root") -i -- bash /tmp/hyperledger/scripts/podStart/registerOrg2CaUsers.sh
+kubectl exec -n hlf-production-network $(get_pods "rca-org2-root") -i -- bash /tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrg2CaUsers.sh

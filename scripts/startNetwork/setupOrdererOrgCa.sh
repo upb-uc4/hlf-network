@@ -30,5 +30,5 @@ echo "Waiting for pod"
 kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
 sleep $SERVER_STARTUP_TIME
 
-kubectl exec -n hlf-production-network $(get_pods "rca-org0-root") -i -- bash /tmp/hyperledger/scripts/podStart/registerOrdererOrgUsers.sh
+kubectl exec -n hlf-production-network $(get_pods "rca-org0-root") -i -- bash /tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrdererOrgUsers.sh
 

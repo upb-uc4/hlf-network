@@ -19,7 +19,7 @@ echo "Waiting for pod"
 kubectl wait --for=condition=ready pod -l app=ca-tls-root --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
 sleep $SERVER_STARTUP_TIME
 
-kubectl exec -n hlf-production-network $(get_pods "ca-tls-root") -i -- bash /tmp/hyperledger/scripts/podStart/registerTLSusers.sh
+kubectl exec -n hlf-production-network $(get_pods "ca-tls-root") -i -- bash /tmp/hyperledger/scripts/startNetwork/registerUsers/registerTLSusers.sh
 
 # TODO share trusted root certificate as secret
 cp $HL_MOUNT/tls-ca/crypto/ca-cert.pem $HL_MOUNT/ca-cert.pem
