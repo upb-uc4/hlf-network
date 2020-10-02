@@ -1,4 +1,17 @@
-# [v.0.8.0](https://github.com/upb-uc4/hlf-network/compare/v0.7.2...v0.8.0) (2020-09-11)
+# [v.0.9.0](https://github.com/upb-uc4/hlf-network/compare/v0.8.0...v0.9.0) (Draft) 
+## Feature
+
+ - Add registration admin user for registering new users from Org1
+ - Add configuration files to support multiple deployments
+ 
+## Refactor
+ 
+ - Remove Minikube related scripts since we do not support Minikube anymore
+ - Add getopts to deploy script
+ - Switch to only one script for setting up a dev cluster
+ - Move scripts to scripts folder
+ 
+# [v.0.8.0](https://github.com/upb-uc4/hlf-network/compare/v0.7.2...v0.8.0) (2020-09-11) 
 
 ## Feature
 
