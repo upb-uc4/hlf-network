@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./env.sh
+source ./scripts/env.sh
 
-rm configtx.yaml
-envsubst \$HL_MOUNT < configtx-template.yaml > configtx.yaml
+rm assets/configtx.yaml
+envsubst \$HL_MOUNT < assets/configtx-template.yaml > assets/configtx.yaml
