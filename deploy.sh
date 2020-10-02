@@ -33,8 +33,8 @@ while getopts 'vb:c:' flag; do
 done
 
 set -e
-sed -e 's/:[^:\/\/]/="/g;s/$/"/g;s/ *=/=/g' $CONFIG_FILE > env.sh
-sed -i -e 's/^/export /' env.sh
+sed -e 's/:[^:\/\/]/="/g;s/$/"/g;s/ *=/=/g' $CONFIG_FILE > scripts/env.sh
+sed -i -e 's/^/export /' scripts/env.sh
 
 
 ./scripts/setMountFolder.sh

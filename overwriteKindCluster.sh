@@ -12,4 +12,4 @@ set -e
 sudo mkdir -p /data/development/hyperledger
 sudo chmod -R 777 /data/development
 
-kind create cluster --config kind.yaml
+kind create cluster --config assets/kind.yaml
