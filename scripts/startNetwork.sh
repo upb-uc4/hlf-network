@@ -27,8 +27,7 @@ source ./scripts/setupTlsCa.sh
 source ./scripts/setupOrdererOrgCa.sh
 source ./scripts/setupOrg1Ca.sh
 source ./scripts/setupOrg2Ca.sh
-source ./scripts/enrollPeers.sh
-source ./scripts/startPeers.sh
+source ./scripts/setupPeers.sh
 source ./scripts/setupOrderer.sh
 source ./scripts/startClis.sh
 source ./scripts/setupDind.sh
