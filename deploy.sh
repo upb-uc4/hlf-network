@@ -1,12 +1,14 @@
 #!/bin/bash
 
 BRANCH_TAG="develop"
+CONFIG_FILE="default-config.yaml"
 VERBOSE=""
 
 print_usage() {
   printf "Usage: ..."
-  printf "./deploy -v -b [branch or tag]"
+  printf "./deploy -v -b [branch or tag] -c [custom config file]"
   printf "Use -v for verbose output and -b to specify a branch or tag (default develop)\n"
+  printf "Use -c to specify a custom config file for production deployment\n"
 }
 
 
@@ -24,7 +26,7 @@ while getopts 'vb:c:' flag; do
 done
 
 set -e
-sed -e 's/:[^:\/\/]/="/g;s/$/"/g;s/ *=/=/g' default-config.yaml > env.sh
+sed -e 's/:[^:\/\/]/="/g;s/$/"/g;s/ *=/=/g' $CONFIG_FILE > env.sh
 sed -i -e 's/^/export /' env.sh
 
 
