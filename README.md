@@ -13,6 +13,8 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   * [Introduction](#introduction)
   * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
+    + [Kubernetes Cluster](#kubernetes-cluster)
+    + [Deploy the Network](#deploy-the-network)
   * [Network Topology](#network-topology)
   * [Deployment Steps](#deployment-steps)
     + [TLS-CA](#tls-ca)
@@ -37,16 +39,20 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   
 ## Getting Started
 
+### Kubernetes Cluster 
+
 For setting up our project, you need to install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 
-To start a cluster for development, run ```./overwriteKindCluster.sh```. This script can also be used to delete the current cluster and create a new cluster.
-
-To deploy the network, execute ```./deploy.sh -v -b [chaincode-branch]```. The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default) and ```-v``` to activate a verbose output.
+We provide a KinD cluster configuration for local development. To create the cluster, run ```./overwriteKindCluster.sh```. You can also use this script to delete the old cluster and files and create a new cluster.
 
 To delete the cluster, run ```kind delete cluster```, to remove all files ```sudo rm -rf /data/development/hyperledger/```. 
 
-Check the status of your network with `kubectl get all -n hlf-production-network`.
-Use the `-d` flag to activate debug output.
+### Deploy the Network
+
+To deploy the network, execute ```./deploy.sh -v -b [chaincode-branch] -c [config]```.
+The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default). Use the ```-v``` for verbose output. The ```-c``` option allows specifying configuration files that carry paths to the mount folder and timeout settings. The default config is given at ```assets/default-config.yaml``` and has the configuration of the development cluster.
+
+You can use ```kubectl get all -n hlf-production-network``` to check the status of the network.
 
 ## Network Topology
 
