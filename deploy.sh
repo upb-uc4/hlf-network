@@ -31,7 +31,7 @@ set -e
 # Remove old CLUSTER_MOUNT value
 sed -i '/.$/a\' scripts/env.sh                                          # Newline at end of file
 sed -i "/\bCLUSTER_MOUNT\b/d" scripts/env.sh                            # Remove line with CLUSTER_MOUNT
-printf 'export CLUSTER_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER_MOUNT environment variable
+printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER_MOUNT environment variable
 
 
 # Start network and deploy chaincode
