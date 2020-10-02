@@ -49,8 +49,8 @@ To delete the cluster, run ```kind delete cluster```, to remove all files ```sud
 
 ### Deploy the Network
 
-To deploy the network, execute ```./deploy.sh -v -b [chaincode-branch] -c [config]```.
-The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default). Use the ```-v``` for verbose output. The ```-c``` option allows specifying configuration files that carry paths to the mount folder and timeout settings. The default config is given at ```assets/default-config.yaml``` and has the configuration of the development cluster.
+To deploy the network, execute ```./deploy.sh -v -b [chaincode branch or tag] -c [cluster mount]```.
+The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default). Use the ```-v``` for verbose output. The ```-c``` option allows to specify the mount path for hyperledger. The default folder matches the configuration of the development cluster.
 
 You can use ```kubectl get all -n hlf-production-network``` to check the status of the network.
 
