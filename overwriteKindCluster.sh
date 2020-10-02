@@ -2,7 +2,7 @@
 # For production, deploy the cluster first and use the deploy script to start the network
 
 # Ensure PWD is correct http://mywiki.wooledge.org/BashFAQ/028
-[[ -e scripts/utils.sh ]] || { echo >&2 "Please cd into repositories main directory before running this script."; exit 1; }
+[[ -e scripts/util.sh ]] || { echo >&2 "Please cd into repositories main directory before running this script."; exit 1; }
 
 set +e
 kind delete clusters kind
