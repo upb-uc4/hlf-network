@@ -1,7 +1,6 @@
 #!/bin/bash
 
-my_dir="$(dirname "$0")"
-source "$my_dir/../util.sh"
+source "/tmp/hyperledger/scripts/util.sh"
 
 set -e
 
