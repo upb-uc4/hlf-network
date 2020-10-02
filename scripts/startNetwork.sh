@@ -21,7 +21,7 @@ cp -r ./scripts $HL_MOUNT
 source ./scripts/startNetwork/fixPrepareHostPath.sh
 
 small_sep
-kubectl create -f $K8S/namespace.yaml
+kubectl create -f k8s/namespace.yaml
 
 source ./scripts/startNetwork/setupTlsCa.sh
 source ./scripts/startNetwork/setupOrdererOrgCa.sh

@@ -6,7 +6,7 @@ source ./scripts/env.sh
 header "Orderer"
 
 
-kubectl create -f $K8S/enroll-orderer-org0.yaml -n hlf-production-network
+kubectl create -f k8s/enroll-orderer-org0.yaml -n hlf-production-network
 kubectl wait --for=condition=complete job -l app=enroll-orderer --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
 
 echo "Creating MSP directories"
@@ -54,5 +54,5 @@ echo "Generate genesis block"
 sep
 
 echo "Starting Orderer"
-kubectl create -f "$K8S/orderer/orderer.yaml" -n hlf-production-network
-kubectl create -f "$K8S/orderer/orderer-service.yaml" -n hlf-production-network
+kubectl create -f "k8s/orderer/orderer.yaml" -n hlf-production-network
+kubectl create -f "k8s/orderer/orderer-service.yaml" -n hlf-production-network

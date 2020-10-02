@@ -7,12 +7,12 @@ header "TLS CA"
 
 # Create deployment for tls root ca
 echo "Creating TLS CA deployment"
-kubectl create -f $K8S/tls-ca/tls-ca.yaml -n hlf-production-network
+kubectl create -f k8s/tls-ca/tls-ca.yaml -n hlf-production-network
 
 
 # Expose service for tls root ca
 echo "Creating TLS CA service"
-kubectl create -f $K8S/tls-ca/tls-ca-service.yaml -n hlf-production-network
+kubectl create -f k8s/tls-ca/tls-ca-service.yaml -n hlf-production-network
 
 # Wait until pod and service are ready
 echo "Waiting for pod"

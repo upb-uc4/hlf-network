@@ -11,11 +11,11 @@ cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org2/ca/
 
 # Create deployment for org2 ca
 echo "Creating Org2 CA deployment"
-kubectl create -f $K8S/org2-ca/org2-ca.yaml -n hlf-production-network
+kubectl create -f k8s/org2-ca/org2-ca.yaml -n hlf-production-network
 
 # Expose service for org2 ca
 echo "Creating Org2 CA service"
-kubectl create -f $K8S/org2-ca/org2-ca-service.yaml -n hlf-production-network
+kubectl create -f k8s/org2-ca/org2-ca-service.yaml -n hlf-production-network
 
 small_sep
 

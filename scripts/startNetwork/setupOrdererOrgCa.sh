@@ -12,7 +12,7 @@ cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org0/ca
 # Create deployment for orderer org ca
 if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
   echo "Creating Orderer Org CA deployment"
-  kubectl create -f $K8S/orderer-org-ca/orderer-org-ca.yaml -n hlf-production-network
+  kubectl create -f k8s/orderer-org-ca/orderer-org-ca.yaml -n hlf-production-network
 else
   echo "Orderer Org CA deployment already exists"
 fi
@@ -20,7 +20,7 @@ fi
 # Expose service for orderer org ca
 if (($(kubectl get service -l app=rca-org0-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
   echo "Creating Orderer Org CA service"
-  kubectl create -f $K8S/orderer-org-ca/orderer-org-ca-service.yaml -n hlf-production-network
+  kubectl create -f k8s/orderer-org-ca/orderer-org-ca-service.yaml -n hlf-production-network
 else
   echo "Orderer Org CA service already exists"
 fi
