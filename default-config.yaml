@@ -1,6 +1,0 @@
-K8S_MOUNT: /data/development
-HL_MOUNT: /data/development/hyperledger
-CA_CLIENT: fabric-ca-client
-K8S: k8s
-CONTAINER_TIMEOUT: 300s
-SERVER_STARTUP_TIME: 10
