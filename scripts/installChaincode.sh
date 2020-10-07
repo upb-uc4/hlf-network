@@ -35,22 +35,22 @@ pushd $HL_MOUNT/uc4/chaincode
 popd
 
 echo "Package chaincode on CLI1"
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/packageChaincode.sh
+kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/packageChaincode.sh
 
 echo "Install chaincode on Org1 Peers"
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/installChaincodeOrg1.sh
+kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/installChaincodeOrg1.sh
 
 echo "Install chaincode on Org2 Peers"
-kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/installChaincode/installChaincodeOrg2.sh
+kubectl exec -n hlf $(get_pods "cli-org2") -i -- sh < scripts/installChaincode/installChaincodeOrg2.sh
 
 echo "Approve chaincode on Org1"
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/approveChaincodeOrg1.sh
+kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/approveChaincodeOrg1.sh
 
 echo "Approve chaincode on Org2"
-kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/installChaincode/approveChaincodeOrg2.sh
+kubectl exec -n hlf $(get_pods "cli-org2") -i -- sh < scripts/installChaincode/approveChaincodeOrg2.sh
 
 echo "Check Commit Readiness for channel chaincode"
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/checkCommitReadiness.sh
+kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/checkCommitReadiness.sh
 
 echo "Commit chaincode"
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/commitChaincode.sh
+kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/commitChaincode.sh

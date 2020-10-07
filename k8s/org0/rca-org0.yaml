@@ -32,7 +32,7 @@ spec:
                 - name: FABRIC_CA_SERVER_CSR_CN
                   value: "rca-org0"
                 - name: FABRIC_CA_SERVER_CSR_HOSTS
-                  value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org0.hlf-production-network"
+                  value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org0.hlf"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
             volumes:
@@ -47,6 +47,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rca-org0
+  namespace: hlf
   labels:
     app: rca-org0
 spec:

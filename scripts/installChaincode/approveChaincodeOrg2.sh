@@ -11,5 +11,5 @@ peer lifecycle chaincode approveformyorg \
   --package-id "$CHAINCODE_ID" \
   --sequence 1 \
   --tls \
-  --cafile /tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-production-network-7052.pem \
+  --cafile /tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem \
   --collections-config /tmp/hyperledger/chaincode/collections_config.json

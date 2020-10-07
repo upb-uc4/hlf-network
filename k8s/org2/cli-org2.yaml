@@ -45,7 +45,7 @@ spec:
             - name: CORE_PEER_TLS_ENABLED
               value: "true"
             - name: CORE_PEER_TLS_ROOTCERT_FILE
-              value: "/tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-production-network-7052.pem"
+              value: "/tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem"
             - name: CORE_PEER_MSPCONFIGPATH
               value: "/tmp/hyperledger/org2/peer1/msp"
       volumes:

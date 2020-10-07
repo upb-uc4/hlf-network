@@ -52,7 +52,7 @@ To delete the cluster, run ```kind delete cluster```, to remove all files ```sud
 To deploy the network, execute ```./deploy.sh -v -b [chaincode branch or tag] -c [cluster mount]```.
 The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default). Use the ```-v``` for verbose output. The ```-c``` option allows to specify the mount path for hyperledger. The default folder matches the configuration of the development cluster.
 
-You can use ```kubectl get all -n hlf-production-network``` to check the status of the network.
+You can use ```kubectl get all -n hlf``` to check the status of the network.
 
 ## Network Topology
 
@@ -100,7 +100,7 @@ Therefore, we use one CLI container for each organization that has the respectiv
 The CLI containers are started in the same host machine as peer1 for each organization.
 Using these CLIs, we can create a channel and let peers join it. For this, the following command can be used to execute shell scripts in the CLIs:
 ```
-kubectl exec -n hlf-production-network $CLI1 -i -- sh < $someScript.sh
+kubectl exec -n hlf $CLI1 -i -- sh < $someScript.sh
 ``` 
 This command generates the mychannel.block on peer1 which can be used by other peers in the network to join the channel:
 ```
@@ -110,7 +110,7 @@ channel create \
          -o orderer-org0:7050 \
          --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block \
          --tls \
-         --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-production-network-7052.pem
+         --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem
 ```
 For joining the channel we use the command
 ```
@@ -278,17 +278,17 @@ The structure of the organizations is very similar. Org0 has the extra folder `o
 
 The startNetwork script uses these filled configuration files and deploys the corresponding entities to kubernetes. We mount the temporary `/data/uc4/deployment` folder to kubernetes which allows us to easily copy certificates and provide resources to the containers.
 
-We deploy all kubernetes components to the same `hlf-production-network` namespace which separates our components from other components running in Kubernetes and allows us to easily and safely delete and restart the network from scratch.
+We deploy all kubernetes components to the same `hlf` namespace which separates our components from other components running in Kubernetes and allows us to easily and safely delete and restart the network from scratch.
 
 ### Using kubectl
 
-List the name of all pods: `kubectl get pods -n hlf-production-network`.
+List the name of all pods: `kubectl get pods -n hlf`.
 
-Get shell on CLI container `kubectl exec -n hlf-production-network {CLI-POD} -it -- sh`.
+Get shell on CLI container `kubectl exec -n hlf {CLI-POD} -it -- sh`.
 
-Get logs of container `kubectl logs {POD} -n hlf-production-network`.
+Get logs of container `kubectl logs {POD} -n hlf`.
 
-You can omit the namespace parameter, if you set the context of kubectl `kubectl config set-context --current --namespace=hlf-production-network`.
+You can omit the namespace parameter, if you set the context of kubectl `kubectl config set-context --current --namespace=hlf`.
 
 ### Debugging
 

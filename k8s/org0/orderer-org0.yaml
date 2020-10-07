@@ -43,7 +43,7 @@ spec:
             - name: ORDERER_GENERAL_TLS_PRIVATEKEY
               value: "/tmp/hyperledger/org0/orderer/tls-msp/keystore/key.pem"
             - name: ORDERER_GENERAL_TLS_ROOTCAS
-              value: "[/tmp/hyperledger/org0/orderer/tls-msp/tlscacerts/tls-tls-ca-hlf-production-network-7052.pem]"
+              value: "[/tmp/hyperledger/org0/orderer/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem]"
             - name: ORDERER_GENERAL_LOGLEVEL
               value: "debug"
             - name: FABRIC_LOGGING_SPEC
@@ -63,6 +63,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: orderer-org0
+  namespace: hlf
   labels:
     app: orderer-org0
 spec:

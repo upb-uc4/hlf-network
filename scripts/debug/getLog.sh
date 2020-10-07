@@ -8,8 +8,8 @@ then
 else
   if [ -z "$2" ]
   then
-    kubectl logs $(get_pods "$1") -n hlf-production-network
+    kubectl logs $(get_pods "$1") -n hlf
   else
-    kubectl logs $(get_pods "$1") -c $2 -n hlf-production-network
+    kubectl logs $(get_pods "$1") -c $2 -n hlf
   fi
 fi

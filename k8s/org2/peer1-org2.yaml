@@ -38,7 +38,7 @@ spec:
             - name: CORE_PEER_TLS_KEY_FILE
               value: "/tmp/hyperledger/org2/peer1/tls-msp/keystore/key.pem"
             - name: CORE_PEER_TLS_ROOTCERT_FILE
-              value: "/tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-production-network-7052.pem"
+              value: "/tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem"
             - name: CORE_PEER_GOSSIP_USELEADERELECTION
               value: "true"
             - name: CORE_PEER_GOSSIP_ORGLEADER
@@ -64,6 +64,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: peer1-org2
+  namespace: hlf
   labels:
     app: peer1-org2
 spec:

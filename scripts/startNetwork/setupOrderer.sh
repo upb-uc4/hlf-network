@@ -7,8 +7,8 @@ header "Orderer"
 
 
 # Run kubernetes job to enroll orderer
-kubectl create -f k8s/org0/enroll-orderer-org0.yaml -n hlf-production-network
-kubectl wait --for=condition=complete job -l app=enroll-orderer --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
+kubectl create -f k8s/org0/enroll-orderer-org0.yaml
+kubectl wait --for=condition=complete job -l app=enroll-orderer --timeout=${CONTAINER_TIMEOUT} -n hlf
 
 echo "Creating MSP directories"
 # Setup Orderer MSP
@@ -55,4 +55,4 @@ echo "Generate genesis block"
 sep
 
 echo "Starting Orderer"
-kubectl create -f "k8s/org0/orderer-org0.yaml" -n hlf-production-network
+kubectl create -f k8s/org0/orderer-org0.yaml
