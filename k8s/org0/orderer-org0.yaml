@@ -42,7 +42,7 @@ spec:
             - name: ORDERER_GENERAL_TLS_PRIVATEKEY
               value: "/tmp/hyperledger/org0/orderer/tls-msp/keystore/key.pem"
             - name: ORDERER_GENERAL_TLS_ROOTCAS
-              value: "[/tmp/hyperledger/org0/orderer/tls-msp/tlscacerts/tls-ca-tls-hlf-production-network-7052.pem]"
+              value: "[/tmp/hyperledger/org0/orderer/tls-msp/tlscacerts/tls-tls-ca-hlf-production-network-7052.pem]"
             - name: ORDERER_GENERAL_LOGLEVEL
               value: "debug"
             - name: FABRIC_LOGGING_SPEC
@@ -57,3 +57,19 @@ spec:
         - name: orderer-mount
           hostPath:
             path: /mnt/hyperledger/org0/orderer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderer-org0
+  labels:
+    app: orderer-org0
+spec:
+  type: NodePort
+  selector:
+    app: orderer-org0
+  ports:
+    - protocol: TCP
+      targetPort: 7050
+      port: 7050
+      nodePort: 30010
