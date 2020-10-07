@@ -1,3 +1,11 @@
+# [v.0.10.0](https://github.com/upb-uc4/hlf-network/compare/v0.9.0...v0.10.0) (Draft) 
+
+## Refactor
+ 
+ - Refactor kubernetes config files
+ - Change namespace from `hlf-production-network` to `hlf` and service `ca-tls` to `tls-ca`
+
+
 # [v.0.9.0](https://github.com/upb-uc4/hlf-network/compare/v0.8.0...v0.9.0) (2020-10-05) 
 
 ## Feature
