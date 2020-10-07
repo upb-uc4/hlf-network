@@ -4,6 +4,6 @@ peer lifecycle chaincode checkcommitreadiness \
     --version 1.0 \
     --sequence 1 \
     --tls \
-    --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-172-17-0-2-30905.pem \
+    --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem \
     --output json \
     --collections-config /tmp/hyperledger/chaincode/collections_config.json

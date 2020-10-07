@@ -9,26 +9,12 @@ header "Orderer Org CA"
 mkdir -p $HL_MOUNT/org0/ca
 cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org0/ca
 
-# Create deployment for orderer org ca
-if (($(kubectl get deployment -l app=rca-org0-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
-  echo "Creating Orderer Org CA deployment"
-  kubectl create -f k8s/orderer-org-ca/orderer-org-ca.yaml -n hlf-production-network
-else
-  echo "Orderer Org CA deployment already exists"
-fi
-
-# Expose service for orderer org ca
-if (($(kubectl get service -l app=rca-org0-root --ignore-not-found -n hlf-production-network | wc -l) < 2)); then
-  echo "Creating Orderer Org CA service"
-  kubectl create -f k8s/orderer-org-ca/orderer-org-ca-service.yaml -n hlf-production-network
-else
-  echo "Orderer Org CA service already exists"
-fi
+kubectl create -f k8s/org0/rca-org0.yaml
 
 # Wait until pod is ready
 echo "Waiting for pod"
-kubectl wait --for=condition=ready pod -l app=rca-org0-root --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
+kubectl wait --for=condition=ready pod -l app=rca-org0 --timeout=${CONTAINER_TIMEOUT} -n hlf
 sleep $SERVER_STARTUP_TIME
 
-kubectl exec -n hlf-production-network $(get_pods "rca-org0-root") -i -- bash /tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrdererOrgUsers.sh
+kubectl exec -n hlf $(get_pods "rca-org0") -i -- bash /tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrdererOrgUsers.sh
 

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cli-org1
+  namespace: hlf
   labels:
     app: cli-org1
 spec:
@@ -46,7 +47,7 @@ spec:
             - name: CORE_PEER_TLS_ENABLED
               value: "true"
             - name: CORE_PEER_TLS_ROOTCERT_FILE
-              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-ca-tls-hlf-production-network-7052.pem"
+              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem"
             - name: CORE_PEER_MSPCONFIGPATH
               value: "/tmp/hyperledger/org1/peer1/msp"
       volumes:

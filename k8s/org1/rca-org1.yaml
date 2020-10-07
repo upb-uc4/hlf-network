@@ -1,23 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: rca-org0
+    name: rca-org1
+    namespace: hlf
     labels:
-        app: rca-org0-root
+        app: rca-org1
 spec:
     selector:
         matchLabels:
-            app: rca-org0-root
+            app: rca-org1
     template:
         metadata: 
             labels:
-                app: rca-org0-root
+                app: rca-org1
         spec:
             containers:
-              - name: rca-org0
+              - name: rca-org1
                 image: hyperledger/fabric-ca:1.4.7
                 imagePullPolicy: IfNotPresent
-                command: ["fabric-ca-server", "start", "-b", "rca-org0-admin:rca-org0-adminpw", "--port", "7053"]
+                command: ["fabric-ca-server", "start", "-b", "rca-org1-admin:rca-org1-adminpw", "--port", "7054"]
                 volumeMounts:
                   - mountPath: /tmp/hyperledger/fabric-ca
                     name: ca-mount
@@ -29,16 +30,32 @@ spec:
                 - name: FABRIC_CA_SERVER_TLS_ENABLED
                   value: "true"
                 - name: FABRIC_CA_SERVER_CSR_CN
-                  value: "rca-org0"
+                  value: "rca-org1"
                 - name: FABRIC_CA_SERVER_CSR_HOSTS
-                  value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org0.hlf-production-network"
+                  value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org1.hlf"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
             volumes:
               - name: ca-mount
                 hostPath:
-                  path: /mnt/hyperledger/org0/ca
+                  path: /mnt/hyperledger/org1/ca
               - name: scripts
                 hostPath:
                   path: /mnt/hyperledger/scripts
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rca-org1
+  namespace: hlf
+  labels:
+    app: rca-org1
+spec:
+  type: NodePort
+  selector:
+    app: rca-org1
+  ports:
+    - protocol: TCP
+      nodePort: 30907
+      targetPort: 7054
+      port: 7054

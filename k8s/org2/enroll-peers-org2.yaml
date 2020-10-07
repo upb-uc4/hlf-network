@@ -1,7 +1,8 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: enroll-peers-org1
+  name: enroll-peers-org2
+  namespace: hlf
   labels:
     app: enroll-peers
 spec:
@@ -11,19 +12,19 @@ spec:
         - name: fabric-ca
           image: hyperledger/fabric-ca:1.4.7
           imagePullPolicy: IfNotPresent
-          command: ["bash", "./tmp/hyperledger/scripts/startNetwork/enrollJobs/enrollPeersOrg1.sh"]
+          command: ["bash", "./tmp/hyperledger/scripts/startNetwork/enrollJobs/enrollPeersOrg2.sh"]
           volumeMounts:
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
-            - mountPath: /tmp/hyperledger/org1
-              name: org1-mount
+            - mountPath: /tmp/hyperledger/org2
+              name: org2-mount
           env:
             - name: FABRIC_CA_SERVER_DEBUG
               value: "true"
       volumes:
-        - name: org1-mount
+        - name: org2-mount
           hostPath:
-            path: /mnt/hyperledger/org1
+            path: /mnt/hyperledger/org2
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
