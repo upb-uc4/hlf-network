@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: rca-org1
+    namespace: hlf
     labels:
         app: rca-org1
 spec:

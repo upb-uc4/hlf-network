@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cli-org1
+  namespace: hlf
   labels:
     app: cli-org1
 spec:

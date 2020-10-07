@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: enroll-orderer-org0
+  namespace: hlf
   labels:
     app: enroll-orderer
 spec:

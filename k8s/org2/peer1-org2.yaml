@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: peer1-org2
+  namespace: hlf
   labels:
     app: peer1-org2
 spec:

@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: enroll-peers-org2
+  namespace: hlf
   labels:
     app: enroll-peers
 spec:
