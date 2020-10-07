@@ -5,7 +5,7 @@ source "/tmp/hyperledger/scripts/util.sh"
 set -e
 
 export CA_ORG2_HOST=rca-org2.hlf-production-network:7055
-export CA_TLS_HOST=ca-tls.hlf-production-network:7052
+export CA_TLS_HOST=tls-ca.hlf-production-network:7052
 
 
 log "Enroll Peer1 at Org2-CA"
