@@ -3,15 +3,15 @@ kind: Deployment
 metadata:
     name: rca-org2
     labels:
-        app: rca-org2-root
+        app: rca-org2
 spec:
     selector:
         matchLabels:
-            app: rca-org2-root
+            app: rca-org2
     template:
         metadata: 
             labels:
-                app: rca-org2-root
+                app: rca-org2
         spec:
             containers:
               - name: rca-org2
@@ -41,3 +41,19 @@ spec:
               - name: scripts
                 hostPath:
                   path: /mnt/hyperledger/scripts
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rca-org2
+  labels:
+    app: rca-org2
+spec:
+  type: NodePort
+  selector:
+    app: rca-org2
+  ports:
+    - protocol: TCP
+      nodePort: 30908
+      targetPort: 7055
+      port: 7055
