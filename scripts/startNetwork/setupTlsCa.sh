@@ -13,8 +13,8 @@ openssl req -new -x509 -key $TMP_CERT-key.pem -out $TMP_CERT-cert.pem -days 730 
       -addext keyUsage=keyCertSign
 
 echo "Provide certificate and privkey as kubernetes secret"
-kubectl create secret generic tls-ca-server-ca-key -n hlf --from-file=key.pem=$TMP_CERT-key.pem
-kubectl create secret generic tls-ca-server-ca-cert -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
+kubectl create secret generic key.tls-ca -n hlf --from-file=key.pem=$TMP_CERT-key.pem
+kubectl create secret generic cert.tls-ca -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 
 
 echo "Creating TLS CA"
