@@ -24,6 +24,10 @@ spec:
                     name: ca-mount
                   - mountPath: /tmp/hyperledger/scripts
                     name: scripts
+                  - mountPath: /tmp/secrets/tls-ca-cert.pem
+                    name: tls-ca-cert
+                    subPath: tls-ca-cert.pem
+                    readOnly: true
                 env:
                 - name: FABRIC_CA_HOME
                   value: "/tmp/hyperledger/fabric-ca/crypto"
@@ -42,6 +46,10 @@ spec:
               - name: scripts
                 hostPath:
                   path: /mnt/hyperledger/scripts
+              - name: tls-ca-cert
+                secret:
+                  secretName: cert.tls-ca
+
 ---
 apiVersion: v1
 kind: Service

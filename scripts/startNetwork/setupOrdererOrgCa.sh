@@ -6,8 +6,9 @@ source ./scripts/env.sh
 header "Orderer Org CA"
 
 # TODO use serets to distribute tls root certificate
-mkdir -p $HL_MOUNT/org0/ca
-cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org0/ca
+# mkdir -p $HL_MOUNT/org0/ca
+# cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org0/ca
+# TODO SECRETS
 
 kubectl create -f k8s/org0/rca-org0.yaml
 
