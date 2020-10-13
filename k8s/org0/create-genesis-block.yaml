@@ -40,7 +40,7 @@ spec:
             path: /mnt/hyperledger/org2/
         - name: scripts
           hostPath:
-            path: /mnt/hyperledger/scripts
+            path: /mnt/hyperledger/scripts/
         - name: tls-ca-cert
           secret:
             secretName: cert.tls-ca
