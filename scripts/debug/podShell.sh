@@ -8,8 +8,8 @@ then
 else
   if [ -z "$2" ]
   then
-    kubectl exec -n hlf $(get_pods "$1")  -it -- sh
+    kubectl -n hlf exec --stdin --tty $(get_pods "$1") -- bash
   else
-    kubectl exec -n hlf $(get_pods "$1")  -c $2 -it -- sh
+    kubectl -n hlf exec --stdin --tty $(get_pods "$1")  -c $2  -- bash
   fi
 fi
