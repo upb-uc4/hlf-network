@@ -15,6 +15,7 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   * [Getting Started](#getting-started)
     + [Kubernetes Cluster](#kubernetes-cluster)
     + [Deploy the Network](#deploy-the-network)
+    + [Kubernetes Dashbaord](#kubernetes-dashboard)
   * [Network Topology](#network-topology)
   * [Deployment Steps](#deployment-steps)
     + [TLS-CA](#tls-ca)
@@ -53,6 +54,40 @@ To deploy the network, execute ```./deploy.sh -v -b [chaincode branch or tag] -c
 The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default). Use the ```-v``` for verbose output. The ```-c``` option allows to specify the mount path for hyperledger. The default folder matches the configuration of the development cluster.
 
 You can use ```kubectl get all -n hlf``` to check the status of the network.
+
+### Kubernetes Dashboard
+
+Kubernetes provides a [dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/) which helps with debugging and controlling the cluster. To install the dasboard, run `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml`. Execute `kubectl proxy` to make the dashboard available under http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.
+
+To access the dashboard, you need to generate a Bearer Token. To do so, just run the follwing commands ([reference](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md)) in your command line:
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF
+```
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF
+```
+You can then execute `kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+` to see your freshly generated Bearer Token and log into the dashboard.
+
 
 ## Network Topology
 
