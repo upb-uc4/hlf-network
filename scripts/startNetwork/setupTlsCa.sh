@@ -12,12 +12,14 @@ openssl req -new -key $TMP_CERT-key.pem -config assets/tls-ca-root-cert.cnf -out
       -subj "/C=DE/ST=Paderborn/L=Paderborn/O=UC4/OU=UC4/CN=tls-ca" 
 openssl x509 -req -days 730 -in $TMP_CERT.csr -signkey $TMP_CERT-key.pem -out $TMP_CERT-cert.pem \
       -extensions v3_req -extfile assets/tls-ca-root-cert.cnf
-      
+
+small_sep
 
 echo "Provide certificate and privkey as kubernetes secret"
 kubectl create secret generic key.tls-ca -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.tls-ca -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 
+small_sep
 
 echo "Creating TLS CA"
 kubectl create -f k8s/tls-ca.yaml
