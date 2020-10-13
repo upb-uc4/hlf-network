@@ -15,7 +15,7 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   * [Getting Started](#getting-started)
     + [Kubernetes Cluster](#kubernetes-cluster)
     + [Deploy the Network](#deploy-the-network)
-    + [Kubernetes Dashbaord](#kubernetes-dashboard)
+    + [Kubernetes Dashboard](#kubernetes-dashboard)
   * [Network Topology](#network-topology)
   * [Deployment Steps](#deployment-steps)
     + [TLS-CA](#tls-ca)
