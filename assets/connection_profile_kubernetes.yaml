@@ -129,7 +129,7 @@ organizations:
 #
 orderers:
   orderer-org0:
-    url: grpcs://orderer-org0.hlf:7050
+    url: grpcs://_grpcs._tcp.orderer-org0.hlf
 
     grpcOptions:
       ssl-target-name-override: orderer-org0
@@ -150,7 +150,7 @@ orderers:
 peers:
   peer1-org1:
     # this URL is used to send endorsement and query requests
-    url: grpcs://peer1-org1.hlf:7051
+    url: grpcs://_grpcs._tcp.peer1-org1.hlf
 
     grpcOptions:
       ssl-target-name-override: peer1-org1
@@ -159,15 +159,14 @@ peers:
       sslProvider: openSSL
       hostnameOverride: peer1-org1
 
-
     tlsCACerts:
       # Certificate location absolute path
       path: "/var/lib/hyperledger/data/api/ca-cert.pem"
 
+
   peer2-org1:
     # this URL is used to send endorsement and query requests
-    url: grpcs://peer2-org1.hlf:7051
-
+    url: grpcs://_grpcs._tcp.peer2-org1.hlf
 
     grpcOptions:
       ssl-target-name-override: peer2-org1
@@ -176,15 +175,14 @@ peers:
       sslProvider: openSSL
       hostnameOverride: peer2-org1
 
-
-
     tlsCACerts:
       # Certificate location absolute path
       path: "/var/lib/hyperledger/data/api/ca-cert.pem"
 
+
   peer1-org2:
     # this URL is used to send endorsement and query requests
-    url: grpcs://peer1-org2.hlf:7051
+    url: grpcs://_grpcs._tcp.peer1-org2.hlf
 
     grpcOptions:
       ssl-target-name-override: peer1-org2
@@ -197,9 +195,10 @@ peers:
       # Certificate location absolute path
       path: "/var/lib/hyperledger/data/api/ca-cert.pem"
 
+
   peer2-org2:
     # this URL is used to send endorsement and query requests
-    url: grpcs://peer2-org2.hlf:7051
+    url: grpcs://_grpcs._tcp.peer2-org2.hlf
 
     grpcOptions:
       ssl-target-name-override: peer2-org2
