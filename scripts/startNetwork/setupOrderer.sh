@@ -21,7 +21,6 @@ mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
 cp $HL_MOUNT/org0/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org0-cert.pem
 cp $HL_MOUNT/org0/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org0-ca-cert.pem
-cp $HL_MOUNT/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
 
 # Create MSP directory for org1
 export MSP_DIR=$HL_MOUNT/org1/msp
@@ -32,7 +31,6 @@ mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
 cp $HL_MOUNT/org1/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org1-cert.pem
 cp $HL_MOUNT/org1/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org1-ca-cert.pem
-cp $HL_MOUNT/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
 
 # Create MSP directory for org2
 export MSP_DIR=$HL_MOUNT/org2/msp
@@ -43,7 +41,7 @@ mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
 cp $HL_MOUNT/org2/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org2-cert.pem
 cp $HL_MOUNT/org2/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org2-ca-cert.pem
-cp $HL_MOUNT/ca-cert.pem $MSP_DIR/tlscacerts/tls-ca-cert.pem
+
 
 
 sep
