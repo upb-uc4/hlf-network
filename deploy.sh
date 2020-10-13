@@ -36,7 +36,6 @@ printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER
 
 # Start network and deploy chaincode
 
-./scripts/setMountFolder.sh
 ./scripts/startNetwork.sh $VERBOSE
 
 if test -z "$BRANCH_TAG"
