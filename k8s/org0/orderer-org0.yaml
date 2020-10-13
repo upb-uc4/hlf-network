@@ -71,7 +71,8 @@ spec:
   selector:
     app: orderer-org0
   ports:
-    - protocol: TCP
+    - name: grpcs
+      protocol: TCP
       targetPort: 7050
       port: 7050
       nodePort: 30010

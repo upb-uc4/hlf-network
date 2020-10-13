@@ -41,6 +41,7 @@ spec:
   selector:
     app: dind
   ports:
-    - protocol: TCP
+    - name: docker-host
+      protocol: TCP
       targetPort: 2375
       port: 2375
