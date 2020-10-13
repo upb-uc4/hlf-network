@@ -6,8 +6,8 @@ source ./scripts/env.sh
 header "Org2 CA"
 
 # TODO share trusted root certificate as secret
-mkdir -p $HL_MOUNT/org2/ca/
-cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org2/ca/
+#mkdir -p $HL_MOUNT/org2/ca/
+#cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org2/ca/
 
 # Create deployment for org2 ca
 echo "Creating Org2 CA"

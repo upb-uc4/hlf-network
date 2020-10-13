@@ -6,8 +6,8 @@ source ./scripts/env.sh
 header "Org1 CA"
 
 # TODO share trusted root certificate as secret
-mkdir -p $HL_MOUNT/org1/ca/
-cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org1/ca/
+#mkdir -p $HL_MOUNT/org1/ca/
+#cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org1/ca/
 
 echo "Creating Org1 CA"
 kubectl create -f k8s/org1/rca-org1.yaml
