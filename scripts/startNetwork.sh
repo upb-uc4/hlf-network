@@ -15,6 +15,7 @@ source ./scripts/env.sh
 source ./scripts/util.sh
 
 # Provide scripts via mount
+echo $HL_MOUNT
 mkdir -p $HL_MOUNT
 cp -r ./scripts $HL_MOUNT
 

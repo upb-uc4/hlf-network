@@ -8,7 +8,7 @@ log "Use CA-client to enroll admin"
 
 export CA_ORDERER_HOST=0.0.0.0:7053
 
-export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/tls-ca/cert.pem
+export FABRIC_CA_CLIENT_TLS_CERTFILES=ca-cert.pem
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/ca-client/
 mkdir -p $FABRIC_CA_CLIENT_HOME
 

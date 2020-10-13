@@ -1,0 +1,27 @@
+[req]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+
+[req_distinguished_name]
+countryName = DE
+countryName_default = DE
+stateOrProvinceName = NRW
+stateOrProvinceName_default = NRW
+localityName = Paderborn
+localityName_default = Paderborn
+organizationalUnitName = UC4
+organizationalUnitName_default  = UC4
+commonName = tls-ca
+commonName_max = 64
+
+[ v3_req ]
+# Extensions to add to a certificate request
+basicConstraints = critical, CA:TRUE, pathlen:1
+keyUsage = critical, keyCertSign, cRLSign
+subjectAltName = @alt_names
+subjectKeyIdentifier = hash
+
+[alt_names]
+IP.1 = 172.17.0.2
+IP.2 = 172.17.0.3
+IP.3 = 0.0.0.0

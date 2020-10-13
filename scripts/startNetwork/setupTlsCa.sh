@@ -8,9 +8,11 @@ header "TLS CA"
 echo "Generate TLS CA root certificate and private key"
 TMP_CERT=$(mktemp)
 openssl ecparam -name prime256v1 -genkey -noout -out $TMP_CERT-key.pem
-openssl req -new -x509 -key $TMP_CERT-key.pem -out $TMP_CERT-cert.pem -days 730 \
-      -subj "/C=DE/ST=Paderborn/L=Paderborn/O=UC4/OU=UC4/CN=uc4.cs.uni-paderborn.de" \
-      -addext keyUsage=keyCertSign
+openssl req -new -key $TMP_CERT-key.pem -config assets/tls-ca-root-cert.cnf -out $TMP_CERT.csr \
+      -subj "/C=DE/ST=Paderborn/L=Paderborn/O=UC4/OU=UC4/CN=tls-ca" 
+openssl x509 -req -days 730 -in $TMP_CERT.csr -signkey $TMP_CERT-key.pem -out $TMP_CERT-cert.pem \
+      -extensions v3_req -extfile assets/tls-ca-root-cert.cnf
+      
 
 echo "Provide certificate and privkey as kubernetes secret"
 kubectl create secret generic key.tls-ca -n hlf --from-file=key.pem=$TMP_CERT-key.pem
