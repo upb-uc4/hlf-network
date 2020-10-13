@@ -22,10 +22,10 @@ fabric-ca-client enroll -u https://peer1-org1:peer1PW@$CA_ORG1_HOST
 log "Enroll Peer1 at TLS-CA"
 
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org1/peer1
-export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/tls-ca/tls-ca-cert.pem
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/tls-ca/cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=tls-msp
 mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
-cp /tmp/hyperledger/org1/ca/ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
+#cp /tmp/hyperledger/org1/ca/ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
 
 fabric-ca-client enroll -u https://peer1-org1:peer1PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer1-org1
 
@@ -45,10 +45,10 @@ fabric-ca-client enroll -u https://peer2-org1:peer2PW@$CA_ORG1_HOST
 
 log "Enroll Peer2 at TLS-CA"
 
-export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/tls-ca/tls-ca-cert.pem
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/tls-ca/cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=tls-msp
 mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
-cp /tmp/hyperledger/org1/ca/ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
+#cp /tmp/hyperledger/org1/ca/ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
 
 fabric-ca-client enroll -u https://peer2-org1:peer2PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer2-org1
 

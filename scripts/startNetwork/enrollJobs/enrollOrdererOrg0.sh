@@ -22,9 +22,8 @@ fabric-ca-client enroll -u https://orderer-org0:ordererpw@$CA_ORDERER_HOST
 log "Enroll Orderer at TLS Ca"
 
 export FABRIC_CA_CLIENT_MSPDIR=tls-msp
-export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/tls-ca/tls-ca-cert.pem
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/tls-ca/cert.pem
 mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
-cp /tmp/hyperledger/org0/ca/ca-cert.pem $FABRIC_CA_CLIENT_HOME/assets/tls-ca/tls-ca-cert.pem
 
 fabric-ca-client enroll -u https://orderer-org0:ordererPW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts orderer-org0
 

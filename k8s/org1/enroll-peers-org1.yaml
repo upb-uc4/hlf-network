@@ -18,6 +18,9 @@ spec:
               name: scripts
             - mountPath: /tmp/hyperledger/org1
               name: org1-mount
+            - mountPath: /tmp/secrets/tls-ca
+              name: tls-ca-cert
+              readOnly: true
           env:
             - name: FABRIC_CA_SERVER_DEBUG
               value: "true"
@@ -28,4 +31,7 @@ spec:
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
+        - name: tls-ca-cert
+          secret:
+            secretName: cert.tls-ca
       restartPolicy: Never
