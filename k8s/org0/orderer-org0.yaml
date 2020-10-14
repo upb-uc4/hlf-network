@@ -54,10 +54,49 @@ spec:
               value: "/tmp/hyperledger/org0/orderer/tls-msp/keystore/key.pem"
             - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
               value: "/tmp/hyperledger/org0/orderer/tls-msp/signcerts/cert.pem"
+      initContainers:
+        - name: fabric-tools
+          image: hyperledger/fabric-tools:2.2.1
+          imagePullPolicy: IfNotPresent
+          command: ["bash", "/tmp/hyperledger/scripts/startNetwork/createGenesisBlock.sh"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
+            - mountPath: /tmp/hyperledger/org0
+              name: org0-mount
+            - mountPath: /tmp/hyperledger/org1
+              name: org1-mount
+            - mountPath: /tmp/hyperledger/org2
+              name: org2-mount
+            - mountPath: /tmp/secrets/tls-ca
+              name: tls-ca-cert
+              readOnly: true
+            - mountPath: /tmp/configmaps
+              name: configtx
+              readOnly: true
+
       volumes:
         - name: orderer-mount
           hostPath:
             path: /mnt/hyperledger/org0/orderer
+        - name: org0-mount
+          hostPath:
+            path: /mnt/hyperledger/org0/
+        - name: org1-mount
+          hostPath:
+            path: /mnt/hyperledger/org1/
+        - name: org2-mount
+          hostPath:
+            path: /mnt/hyperledger/org2/
+        - name: scripts
+          hostPath:
+            path: /mnt/hyperledger/scripts/
+        - name: tls-ca-cert
+          secret:
+            secretName: cert.tls-ca
+        - name: configtx
+          configMap:
+            name: configtx
 ---
 apiVersion: v1
 kind: Service
