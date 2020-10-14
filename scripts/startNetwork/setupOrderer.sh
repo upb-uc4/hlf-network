@@ -17,6 +17,7 @@ kubectl create -f k8s/org0/create-genesis-block.yaml
 kubectl wait --for=condition=complete job -l app=create-genesis-block --timeout=${CONTAINER_TIMEOUT} -n hlf
 
 # TODO save genensis.block and channel.tx to secret or configmap
+# Note: This will not work, unfortunately
 
 sep
 
