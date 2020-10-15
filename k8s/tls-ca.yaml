@@ -1,61 +1,61 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: tls-ca
-    namespace: hlf
-    labels:
-        app: tls-ca
+  name: tls-ca
+  namespace: hlf
+  labels:
+    app: tls-ca
 spec:
-    selector:
-        matchLabels:
-            app: tls-ca
-    template:
-        metadata: 
-            labels:
-                app: tls-ca
-        spec:
-            containers:
-              - name: tls-ca
-                image: hyperledger/fabric-ca:1.4.7
-                imagePullPolicy: IfNotPresent
-                command: ["fabric-ca-server", "start", "-b", "tls-ca-admin:tls-ca-adminpw", "--port", "7052"]
-                volumeMounts:
-                  - mountPath: /tmp/hyperledger/scripts
-                    name: scripts
-                  - mountPath: /tmp/secrets/cert.pem
-                    name: cert
-                    subPath: cert.pem
-                    readOnly: true
-                  - mountPath: /tmp/secrets/key.pem
-                    name: key
-                    subPath: key.pem
-                    readOnly: true
-                env:
-                - name: FABRIC_CA_HOME
-                  value: "/tmp/hyperledger/fabric-ca/crypto"
-                - name: FABRIC_CA_SERVER_TLS_ENABLED
-                  value: "true"
-                - name: FABRIC_CA_SERVER_CSR_CN
-                  value: "tls-ca"
-                - name: FABRIC_CA_SERVER_CSR_HOSTS
-                  value: "172.17.0.2,172.17.0.3,0.0.0.0,tls-ca.hlf"
-                - name: FABRIC_CA_SERVER_DEBUG
-                  value: "true"
-                - name: FABRIC_CA_SERVER_CA_CERTFILE
-                  value: "/tmp/secrets/cert.pem"
-                - name: FABRIC_CA_SERVER_CA_KEYFILE
-                  value: "/tmp/secrets/key.pem"
+  selector:
+    matchLabels:
+      app: tls-ca
+  template:
+    metadata:
+      labels:
+        app: tls-ca
+    spec:
+      containers:
+        - name: tls-ca
+          image: hyperledger/fabric-ca:1.4.7
+          imagePullPolicy: IfNotPresent
+          command: ["fabric-ca-server", "start", "-b", "tls-ca-admin:tls-ca-adminpw", "--port", "7052"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
+            - mountPath: /tmp/secrets/cert.pem
+              name: cert
+              subPath: cert.pem
+              readOnly: true
+            - mountPath: /tmp/secrets/key.pem
+              name: key
+              subPath: key.pem
+              readOnly: true
+          env:
+            - name: FABRIC_CA_HOME
+              value: "/tmp/hyperledger/fabric-ca/crypto"
+            - name: FABRIC_CA_SERVER_TLS_ENABLED
+              value: "true"
+            - name: FABRIC_CA_SERVER_CSR_CN
+              value: "tls-ca"
+            - name: FABRIC_CA_SERVER_CSR_HOSTS
+              value: "172.17.0.2,172.17.0.3,0.0.0.0,tls-ca.hlf"
+            - name: FABRIC_CA_SERVER_DEBUG
+              value: "true"
+            - name: FABRIC_CA_SERVER_CA_CERTFILE
+              value: "/tmp/secrets/cert.pem"
+            - name: FABRIC_CA_SERVER_CA_KEYFILE
+              value: "/tmp/secrets/key.pem"
 
-            volumes:
-              - name: scripts
-                hostPath:
-                  path: /mnt/hyperledger/scripts
-              - name: cert
-                secret:
-                  secretName: cert.tls-ca
-              - name: key
-                secret:
-                  secretName: key.tls-ca
+      volumes:
+        - name: scripts
+          hostPath:
+            path: /mnt/hyperledger/scripts
+        - name: cert
+          secret:
+            secretName: cert.tls-ca
+        - name: key
+          secret:
+            secretName: key.tls-ca
 ---
 apiVersion: v1
 kind: Service
