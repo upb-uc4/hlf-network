@@ -20,8 +20,6 @@ spec:
                 imagePullPolicy: IfNotPresent
                 command: ["fabric-ca-server", "start", "-b", "rca-org2-admin:rca-org2-adminpw", "--port", "7055"]
                 volumeMounts:
-                  - mountPath: /tmp/hyperledger/fabric-ca
-                    name: ca-mount
                   - mountPath: /tmp/hyperledger/scripts
                     name: scripts
                   - mountPath: /tmp/secrets/cert.pem
@@ -48,9 +46,6 @@ spec:
                 - name: FABRIC_CA_SERVER_CA_KEYFILE
                   value: "/tmp/secrets/key.pem"
             volumes:
-              - name: ca-mount
-                hostPath:
-                  path: /mnt/hyperledger/org2/ca
               - name: scripts
                 hostPath:
                   path: /mnt/hyperledger/scripts

@@ -20,8 +20,6 @@ spec:
                 imagePullPolicy: IfNotPresent
                 command: ["fabric-ca-server", "start", "-b", "tls-ca-admin:tls-ca-adminpw", "--port", "7052"]
                 volumeMounts:
-                  - mountPath: /tmp/hyperledger/fabric-ca
-                    name: ca-mount
                   - mountPath: /tmp/hyperledger/scripts
                     name: scripts
                   - mountPath: /tmp/secrets/cert.pem
@@ -49,9 +47,6 @@ spec:
                   value: "/tmp/secrets/key.pem"
 
             volumes:
-              - name: ca-mount
-                hostPath:
-                  path: /mnt/hyperledger/tls-ca
               - name: scripts
                 hostPath:
                   path: /mnt/hyperledger/scripts
