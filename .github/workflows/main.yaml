@@ -35,6 +35,9 @@ jobs:
         with:
           version: "v0.7.0"
           config: assets/kind.yaml
+      - name: (Temporary) install faketime to prevent clockdrifts
+        run:
+          sudo apt-get install faketime
       - name: Deploy network using deployment script
         run:
           ./deploy.sh
