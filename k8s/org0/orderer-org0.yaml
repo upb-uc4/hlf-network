@@ -55,6 +55,24 @@ spec:
             - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
               value: "/tmp/hyperledger/org0/orderer/tls-msp/signcerts/cert.pem"
       initContainers:
+        - name: fabric-ca
+          image: hyperledger/fabric-ca:1.4.7
+          imagePullPolicy: IfNotPresent
+          command: ["bash", "./tmp/hyperledger/scripts/startNetwork/enrollJobs/enrollOrdererOrg0.sh"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
+            - mountPath: /tmp/hyperledger/org0
+              name: org0-mount
+            - mountPath: /tmp/secrets/tls-ca
+              name: tls-ca-cert
+              readOnly: true
+            - mountPath: /tmp/secrets/rca-org0
+              name: rca-org0-cert
+              readOnly: true
+          env:
+            - name: FABRIC_CA_SERVER_DEBUG
+              value: "true"
         - name: fabric-tools
           image: hyperledger/fabric-tools:2.2.1
           imagePullPolicy: IfNotPresent
@@ -83,7 +101,6 @@ spec:
             - mountPath: /tmp/configmaps
               name: configtx
               readOnly: true
-
       volumes:
         - name: orderer-mount
           hostPath:

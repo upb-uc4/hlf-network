@@ -5,11 +5,6 @@ source ./scripts/env.sh
 
 header "Orderer"
 
-
-# Run kubernetes job to enroll orderer
-kubectl create -f k8s/org0/enroll-orderer-org0.yaml
-kubectl wait --for=condition=complete job -l app=enroll-orderer --timeout=${CONTAINER_TIMEOUT} -n hlf
-
 # Create configmap to serve configtx to job
 kubectl create configmap configtx --from-file=assets/configtx.yaml -n hlf
 
