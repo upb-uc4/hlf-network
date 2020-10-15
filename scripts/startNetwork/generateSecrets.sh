@@ -26,7 +26,7 @@ TMP_CERT=$(mktemp)
 openssl ecparam -name prime256v1 -genkey -noout -out $TMP_CERT-key.pem
 openssl req -new -key $TMP_CERT-key.pem -config assets/rca-org0-cert.cnf -out $TMP_CERT.csr \
       -subj "/C=DE/ST=NRW/L=Paderborn/O=UC4/OU=UC4/CN=tls-ca"
-openssl x509 -req -days 730 -in $TMP_CERT.csr -signkey $TMP_CERT-key.pem -out $TMP_CERT-cert.pem \
+openssl x509 -req -days 730  -in $TMP_CERT.csr -signkey $TMP_CERT-key.pem -out $TMP_CERT-cert.pem \
       -extensions v3_req -extfile assets/rca-org0-cert.cnf
 
 small_sep
@@ -66,4 +66,3 @@ small_sep
 echo "Provide certificate and privkey as kubernetes secret"
 kubectl create secret generic key.rca-org2 -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.rca-org2 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
-

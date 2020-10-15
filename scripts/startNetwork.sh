@@ -24,7 +24,7 @@ source ./scripts/startNetwork/fixPrepareHostPath.sh
 small_sep
 kubectl create -f k8s/namespace.yaml
 
-source ./scripts/startNetwork/generateSecrets.sh
+faketime -m -f -1h /bin/bash -c scripts/startNetwork/generateSecrets.sh
 source ./scripts/startNetwork/setupTlsCa.sh
 source ./scripts/startNetwork/setupOrdererOrgCa.sh
 source ./scripts/startNetwork/setupOrg1Ca.sh
