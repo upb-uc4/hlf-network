@@ -12,7 +12,8 @@ mkdir -p $MSP_DIR/cacerts
 mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
 cp /tmp/hyperledger/org0/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org0-cert.pem
-cp /tmp/hyperledger/org0/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org0-ca-cert.pem
+# TODO copy from secrets
+cp /tmp/secrets/rca-org0/cert.pem $MSP_DIR/cacerts/org0-ca-cert.pem
 cp /tmp/secrets/tls-ca/cert.pem $MSP_DIR/tlscacerts/cert.pem
 
 # Create MSP directory for org1
@@ -23,7 +24,7 @@ mkdir -p $MSP_DIR/cacerts
 mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
 cp /tmp/hyperledger/org1/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org1-cert.pem
-cp /tmp/hyperledger/org1/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org1-ca-cert.pem
+cp /tmp/secrets/rca-org1/cert.pem $MSP_DIR/cacerts/org1-ca-cert.pem
 cp /tmp/secrets/tls-ca/cert.pem $MSP_DIR/tlscacerts/cert.pem
 
 # Create MSP directory for org2
@@ -34,7 +35,7 @@ mkdir -p $MSP_DIR/cacerts
 mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
 cp /tmp/hyperledger/org2/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org2-cert.pem
-cp /tmp/hyperledger/org2/ca/crypto/ca-cert.pem $MSP_DIR/cacerts/org2-ca-cert.pem
+cp /tmp/secrets/rca-org2/cert.pem $MSP_DIR/cacerts/org2-ca-cert.pem
 cp /tmp/secrets/tls-ca/cert.pem $MSP_DIR/tlscacerts/cert.pem
 
 # Create Genesis Block

@@ -71,6 +71,15 @@ spec:
             - mountPath: /tmp/secrets/tls-ca
               name: tls-ca-cert
               readOnly: true
+            - mountPath: /tmp/secrets/rca-org0
+              name: rca-org0-cert
+              readOnly: true
+            - mountPath: /tmp/secrets/rca-org1
+              name: rca-org1-cert
+              readOnly: true
+            - mountPath: /tmp/secrets/rca-org2
+              name: rca-org2-cert
+              readOnly: true
             - mountPath: /tmp/configmaps
               name: configtx
               readOnly: true
@@ -94,6 +103,15 @@ spec:
         - name: tls-ca-cert
           secret:
             secretName: cert.tls-ca
+        - name: rca-org0-cert
+          secret:
+            secretName: cert.rca-org0
+        - name: rca-org1-cert
+          secret:
+            secretName: cert.rca-org1
+        - name: rca-org2-cert
+          secret:
+            secretName: cert.rca-org2
         - name: configtx
           configMap:
             name: configtx
