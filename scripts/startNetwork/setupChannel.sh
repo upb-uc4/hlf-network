@@ -10,9 +10,6 @@ CLI1=$(get_pods "cli-org1")
 
 kubectl exec -n hlf $CLI1 -i -- sh < scripts/startNetwork/setupChannel/createChannel.sh
 
-# Copy mychannel.block from peer1-org1 to peer1-org2
-cp $HL_MOUNT/org1/peer1/assets/mychannel.block $HL_MOUNT/org2/peer1/assets/mychannel.block
-
 sep
 
 echo "Joining channel using CLI1 on Org1 Peer1 and Peer2"
