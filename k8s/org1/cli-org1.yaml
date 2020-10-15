@@ -22,14 +22,14 @@ spec:
           command: ["sh"]
           workingDir: /tmp/hyperledger/chaincode
           volumeMounts:
-            - mountPath: /tmp/hyperledger/org1/admin
-              name: org1-admin-mount
-            - mountPath: /tmp/hyperledger/org1/peer1
-              name: org1-peer1-mount
-            - mountPath: /tmp/hyperledger/org2/peer1
-              name: org2-peer1-mount
             - mountPath: /tmp/hyperledger/chaincode
               name: chaincode-mount
+            - mountPath: /tmp/hyperledger/org1/admin
+              name: pod-data
+            - mountPath: /tmp/hyperledger/shared
+              name: shared-volume
+            - mountPath: /tmp/secrets/tls-ca
+              name: tls-ca-cert
           env:
             - name: GOPATH
               value: "/opt/gopath"
@@ -47,22 +47,49 @@ spec:
             - name: CORE_PEER_TLS_ENABLED
               value: "true"
             - name: CORE_PEER_TLS_ROOTCERT_FILE
-              value: "/tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem"
+              value: "/tmp/secrets/tls-ca/cert.pem"
             - name: CORE_PEER_MSPCONFIGPATH
-              value: "/tmp/hyperledger/org1/peer1/msp"
+              value: "/tmp/hyperledger/org1/admin/msp"
+      initContainers:
+        - name: fabric-ca
+          image: hyperledger/fabric-ca:1.4.7
+          imagePullPolicy: IfNotPresent
+          command: ["bash", "./tmp/hyperledger/scripts/startNetwork/enrollJobs/enrollAdmin.sh"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
+            - mountPath: /tmp/secrets/rca-org1
+              name: rca-org1-cert
+              readOnly: true
+            - mountPath: /tmp/hyperledger/shared
+              name: shared-volume
+            - mountPath: /tmp/hyperledger/org1/admin
+              name: pod-data
+          env:
+            - name: FABRIC_CA_SERVER_DEBUG
+              value: "true"
+            - name: ORG_NUM
+              value: "1"
+            - name: ORG_CA_PORT
+              value: "7054"
       volumes:
-        - name: org1-peer1-mount
-          hostPath:
-            path: /mnt/hyperledger/org1/peer1
-        - name: org2-peer1-mount
-          hostPath:
-            path: /mnt/hyperledger/org2/peer1
-        - name: org1-admin-mount
-          hostPath:
-            path: /mnt/hyperledger/org1/admin
+        - name: pod-data
+          emptyDir: {}
         - name: chaincode-mount
           hostPath:
             path: /mnt/hyperledger/uc4/chaincode
         - name: docker-mount
           hostPath:
             path: /var/run/
+        - name: scripts
+          hostPath:
+            path: /mnt/hyperledger/scripts
+        - name: tls-ca-cert
+          secret:
+            secretName: cert.tls-ca
+        - name: rca-org1-cert
+          secret:
+            secretName: cert.rca-org1
+        - name: shared-volume
+          hostPath:
+            path: /mnt/hyperledger/shared

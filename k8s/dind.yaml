@@ -15,10 +15,6 @@ spec:
       labels:
         app: dind
     spec:
-      volumes:
-        - name: dind-mount
-          hostPath:
-            path: /mnt/hyperledger/dind
       containers:
         - name: docker
           securityContext:
@@ -26,9 +22,6 @@ spec:
           image: "docker:18.05.0-dind"
           ports:
             - containerPort: 2375
-          volumeMounts:
-            - mountPath: /tmp/hyperledger/dind
-              name: dind-mount
 ---
 apiVersion: v1
 kind: Service
