@@ -7,12 +7,8 @@ set -e
 log "Use CA-client to enroll admin"
 
 export CA_ORDERER_HOST=0.0.0.0:7053
-
-export FABRIC_CA_CLIENT_TLS_CERTFILES=ca-cert.pem
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/cert.pem
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/ca-client/
-mkdir -p $FABRIC_CA_CLIENT_HOME
-
-cp /tmp/hyperledger/fabric-ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
 
 fabric-ca-client enroll -u https://rca-org0-admin:rca-org0-adminpw@$CA_ORDERER_HOST
 
