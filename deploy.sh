@@ -4,7 +4,7 @@
 [[ -e scripts/util.sh ]] || { echo >&2 "Please cd into repositories main directory before running this script."; exit 1; }
 
 BRANCH_TAG="develop"
-CLUSTER_MOUNT="/data/development/hyperledger/"
+CLUSTER_MOUNT="/data/development/hyperledger"
 VERBOSE=""
 
 print_usage() {
