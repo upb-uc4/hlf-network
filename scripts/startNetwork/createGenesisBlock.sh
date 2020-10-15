@@ -11,7 +11,7 @@ mkdir -p $MSP_DIR/admincerts
 mkdir -p $MSP_DIR/cacerts
 mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
-cp /tmp/hyperledger/org0/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org0-cert.pem
+cp /tmp/hyperledger/shared/org0/msp/admincerts/cert.pem $MSP_DIR/admincerts/admin-org0-cert.pem
 # TODO copy from secrets
 cp /tmp/secrets/rca-org0/cert.pem $MSP_DIR/cacerts/org0-ca-cert.pem
 cp /tmp/secrets/tls-ca/cert.pem $MSP_DIR/tlscacerts/cert.pem
@@ -23,7 +23,7 @@ mkdir -p $MSP_DIR/admincerts
 mkdir -p $MSP_DIR/cacerts
 mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
-cp /tmp/hyperledger/org1/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org1-cert.pem
+cp /tmp/hyperledger/shared/org1/msp/admincerts/cert.pem $MSP_DIR/admincerts/admin-org1-cert.pem
 cp /tmp/secrets/rca-org1/cert.pem $MSP_DIR/cacerts/org1-ca-cert.pem
 cp /tmp/secrets/tls-ca/cert.pem $MSP_DIR/tlscacerts/cert.pem
 
@@ -34,12 +34,12 @@ mkdir -p $MSP_DIR/admincerts
 mkdir -p $MSP_DIR/cacerts
 mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
-cp /tmp/hyperledger/org2/admin/msp/signcerts/cert.pem $MSP_DIR/admincerts/admin-org2-cert.pem
+cp /tmp/hyperledger/shared/org2/msp/admincerts/cert.pem $MSP_DIR/admincerts/admin-org2-cert.pem
 cp /tmp/secrets/rca-org2/cert.pem $MSP_DIR/cacerts/org2-ca-cert.pem
 cp /tmp/secrets/tls-ca/cert.pem $MSP_DIR/tlscacerts/cert.pem
 
 # Create Genesis Block
-configtxgen -configPath /tmp/configmaps/ -profile OrgsOrdererGenesis -outputBlock /tmp/hyperledger/org0/orderer/genesis.block -channelID syschannel
-configtxgen -configPath /tmp/configmaps/ -profile OrgsChannel -outputCreateChannelTx /tmp/hyperledger/org0/orderer/channel.tx -channelID mychannel
+configtxgen -configPath /tmp/configmaps/ -profile OrgsOrdererGenesis -outputBlock /tmp/hyperledger/shared/channel/genesis.block -channelID syschannel
+configtxgen -configPath /tmp/configmaps/ -profile OrgsChannel -outputCreateChannelTx /tmp/hyperledger/shared/channel/channel.tx -channelID mychannel
 
-chmod 644 /tmp/hyperledger/org0/orderer/channel.tx 
+chmod 644 /tmp/hyperledger/shared/channel/channel.tx
