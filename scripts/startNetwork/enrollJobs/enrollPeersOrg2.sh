@@ -11,10 +11,9 @@ export CA_TLS_HOST=tls-ca.hlf:7052
 log "Enroll Peer1 at Org2-CA"
 
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org2/peer1
-export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org2-ca-cert.pem
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/rca-org2/cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=msp
 mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
-cp /tmp/hyperledger/org2/ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
 
 fabric-ca-client enroll -u https://peer1-org2:peer1PW@$CA_ORG2_HOST
 
@@ -35,10 +34,9 @@ mv /tmp/hyperledger/org2/peer1/tls-msp/keystore/*_sk /tmp/hyperledger/org2/peer1
 log "Enroll Peer2 at Org2-CA"
 
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org2/peer2
-export FABRIC_CA_CLIENT_TLS_CERTFILES=assets/ca/org2-ca-cert.pem
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/rca-org2/cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=msp
 mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
-cp /tmp/hyperledger/org2/ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
 
 fabric-ca-client enroll -u https://peer2-org2:peer2PW@$CA_ORG2_HOST
 
@@ -57,7 +55,7 @@ mv /tmp/hyperledger/org2/peer2/tls-msp/keystore/*_sk /tmp/hyperledger/org2/peer2
 echo "Enroll org2 admin identity"
 # Note that we assume that peer 1 holds the admin identity
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org2/admin
-export FABRIC_CA_CLIENT_TLS_CERTFILES=../../org2/peer1/assets/ca/org2-ca-cert.pem
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/rca-org2/cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=msp
 fabric-ca-client enroll -u https://admin-org2:org2AdminPW@$CA_ORG2_HOST
 
