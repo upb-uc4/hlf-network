@@ -27,6 +27,14 @@ spec:
                   - mountPath: /tmp/secrets/tls-ca
                     name: tls-ca-cert
                     readOnly: true
+                  - mountPath: /tmp/secrets/cert.pem
+                    name: cert
+                    subPath: cert.pem
+                    readOnly: true
+                  - mountPath: /tmp/secrets/key.pem
+                    name: key
+                    subPath: key.pem
+                    readOnly: true
                 env:
                 - name: FABRIC_CA_HOME
                   value: "/tmp/hyperledger/fabric-ca/crypto"
@@ -38,6 +46,10 @@ spec:
                   value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org0.hlf"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
+                - name: FABRIC_CA_SERVER_CA_CERTFILE
+                  value: "/tmp/secrets/cert.pem"
+                - name: FABRIC_CA_SERVER_CA_KEYFILE
+                  value: "/tmp/secrets/key.pem"
             volumes:
               - name: ca-mount
                 hostPath:
@@ -48,6 +60,12 @@ spec:
               - name: tls-ca-cert
                 secret:
                   secretName: cert.tls-ca
+              - name: cert
+                secret:
+                  secretName: cert.rca-org0
+              - name: key
+                secret:
+                  secretName: key.rca-org0
 
 ---
 apiVersion: v1

@@ -24,6 +24,14 @@ spec:
                     name: ca-mount
                   - mountPath: /tmp/hyperledger/scripts
                     name: scripts
+                  - mountPath: /tmp/secrets/cert.pem
+                    name: cert
+                    subPath: cert.pem
+                    readOnly: true
+                  - mountPath: /tmp/secrets/key.pem
+                    name: key
+                    subPath: key.pem
+                    readOnly: true
                 env:
                 - name: FABRIC_CA_HOME
                   value: "/tmp/hyperledger/fabric-ca/crypto"
@@ -35,6 +43,10 @@ spec:
                   value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org2.hlf"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
+                - name: FABRIC_CA_SERVER_CA_CERTFILE
+                  value: "/tmp/secrets/cert.pem"
+                - name: FABRIC_CA_SERVER_CA_KEYFILE
+                  value: "/tmp/secrets/key.pem"
             volumes:
               - name: ca-mount
                 hostPath:
@@ -42,6 +54,12 @@ spec:
               - name: scripts
                 hostPath:
                   path: /mnt/hyperledger/scripts
+              - name: cert
+                secret:
+                  secretName: cert.rca-org2
+              - name: key
+                secret:
+                  secretName: key.rca-org2
 ---
 apiVersion: v1
 kind: Service
