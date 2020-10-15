@@ -34,5 +34,12 @@ export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org0/admin
 export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/rca-org0/cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=msp
 fabric-ca-client enroll -u https://admin-org0:org0adminpw@$CA_ORDERER_HOST
+
+# Provide admin certificate to other entities
+mkdir -p /tmp/hyperledger/shared/org0/msp/admincerts
+cp /tmp/hyperledger/org0/admin/msp/signcerts/cert.pem /tmp/hyperledger/shared/org0/msp/admincerts/cert.pem
+
+# Provide admin certificate to orderer
 mkdir -p /tmp/hyperledger/org0/orderer/msp/admincerts
 cp /tmp/hyperledger/org0/admin/msp/signcerts/cert.pem /tmp/hyperledger/org0/orderer/msp/admincerts/orderer-admin-cert.pem
+
