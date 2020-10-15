@@ -21,6 +21,9 @@ spec:
             - mountPath: /tmp/secrets/tls-ca
               name: tls-ca-cert
               readOnly: true
+            - mountPath: /tmp/secrets/rca-org0
+              name: rca-org0-cert
+              readOnly: true
           env:
             - name: FABRIC_CA_SERVER_DEBUG
               value: "true"
@@ -34,4 +37,7 @@ spec:
         - name: tls-ca-cert
           secret:
             secretName: cert.tls-ca
+        - name: rca-org0-cert
+          secret:
+            secretName: cert.rca-org0
       restartPolicy: Never
