@@ -1,4 +1,8 @@
-# [v.0.10.0](https://github.com/upb-uc4/hlf-network/compare/v0.9.0...v0.10.0) (Draft) 
+# [v.0.10.0](https://github.com/upb-uc4/hlf-network/compare/v0.9.0...v0.10.0) (2015-10-13) 
+
+## Documentation
+
+ - Add instructions on how to deploy and use the Kubernetes Dashbaord.
 
 ## Refactor
  
