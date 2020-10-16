@@ -1,15 +1,12 @@
 #!/bin/bash
 
-get_pods() {
-  #1 - app name
-  kubectl get pods -l app=$1 --field-selector status.phase=Running -n hlf-production-network --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
-}
+source ./scripts/util.sh
 
 # Exit on errors
 set -e
 
 source ./env.sh
 
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/debug/debugChaincode/queryInstalledOrg1.sh
-kubectl exec -n hlf-production-network $(get_pods "cli-org2") -i -- sh < scripts/debug/debugChaincode/queryInstalledOrg2.sh
-kubectl exec -n hlf-production-network $(get_pods "cli-org1") -i -- sh < scripts/debug/debugChaincode/queryCommited.sh
+kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/debug/debugChaincode/queryInstalledOrg1.sh
+kubectl exec -n hlf $(get_pods "cli-org2") -i -- sh < scripts/debug/debugChaincode/queryInstalledOrg2.sh
+kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/debug/debugChaincode/queryCommited.sh

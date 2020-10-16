@@ -9,22 +9,16 @@ header "Org1 CA"
 mkdir -p $HL_MOUNT/org1/ca/
 cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/org1/ca/
 
-# Create deployment for org1 ca
-echo "Creating Org1 CA deployment"
-kubectl create -f k8s/org1-ca/org1-ca.yaml -n hlf-production-network
-
-# Expose service for org1 ca
-echo "Creating Org1 CA service"
-kubectl create -f k8s/org1-ca/org1-ca-service.yaml -n hlf-production-network
+echo "Creating Org1 CA"
+kubectl create -f k8s/org1/rca-org1.yaml
 
 small_sep
 
 # Wait until pod is ready
 echo "Waiting for pod"
-kubectl wait --for=condition=ready pod -l app=rca-org1-root --timeout=${CONTAINER_TIMEOUT} -n hlf-production-network
+kubectl wait --for=condition=ready pod -l app=rca-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
 sleep $SERVER_STARTUP_TIME
-export ORG1_CA_NAME=$(get_pods "rca-org1-root")
-echo "Using pod $ORG1_CA_NAME"
+
 small_sep
 
-kubectl exec -n hlf-production-network $(get_pods "rca-org1-root") -i -- bash /tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrg1CaUsers.sh
+kubectl exec -n hlf $(get_pods "rca-org1") -i -- bash /tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrg1CaUsers.sh

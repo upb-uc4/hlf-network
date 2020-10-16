@@ -5,4 +5,4 @@ peer channel create \
     -o orderer-org0:7050 \
     --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block \
     --tls \
-    --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-ca-tls-hlf-production-network-7052.pem
+    --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dind
+  namespace: hlf
   labels:
     app: dind
 spec:
@@ -28,3 +29,18 @@ spec:
           volumeMounts:
             - mountPath: /tmp/hyperledger/dind
               name: dind-mount
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dind
+  namespace: hlf
+  labels:
+    app: dind
+spec:
+  selector:
+    app: dind
+  ports:
+    - protocol: TCP
+      targetPort: 2375
+      port: 2375

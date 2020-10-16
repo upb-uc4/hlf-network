@@ -5,7 +5,7 @@ peer lifecycle chaincode commit \
     --version 1.0 \
     --sequence 1 \
     --tls \
-    --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-ca-tls-hlf-production-network-7052.pem \
+    --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-tls-ca-hlf-7052.pem \
     --peerAddresses peer1-org1:7051 \
     --tlsRootCertFiles /tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem \
     --peerAddresses peer1-org2:7051 \

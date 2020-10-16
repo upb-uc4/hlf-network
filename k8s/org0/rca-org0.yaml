@@ -1,23 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: rca-org1
+    name: rca-org0
+    namespace: hlf
     labels:
-        app: rca-org1-root
+        app: rca-org0
 spec:
     selector:
         matchLabels:
-            app: rca-org1-root
+            app: rca-org0
     template:
         metadata: 
             labels:
-                app: rca-org1-root
+                app: rca-org0
         spec:
             containers:
-              - name: rca-org1
+              - name: rca-org0
                 image: hyperledger/fabric-ca:1.4.7
                 imagePullPolicy: IfNotPresent
-                command: ["fabric-ca-server", "start", "-b", "rca-org1-admin:rca-org1-adminpw", "--port", "7054"]
+                command: ["fabric-ca-server", "start", "-b", "rca-org0-admin:rca-org0-adminpw", "--port", "7053"]
                 volumeMounts:
                   - mountPath: /tmp/hyperledger/fabric-ca
                     name: ca-mount
@@ -29,15 +30,32 @@ spec:
                 - name: FABRIC_CA_SERVER_TLS_ENABLED
                   value: "true"
                 - name: FABRIC_CA_SERVER_CSR_CN
-                  value: "rca-org1"
+                  value: "rca-org0"
                 - name: FABRIC_CA_SERVER_CSR_HOSTS
-                  value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org1.hlf-production-network"
+                  value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org0.hlf"
                 - name: FABRIC_CA_SERVER_DEBUG
                   value: "true"
             volumes:
               - name: ca-mount
                 hostPath:
-                  path: /mnt/hyperledger/org1/ca
+                  path: /mnt/hyperledger/org0/ca
               - name: scripts
                 hostPath:
                   path: /mnt/hyperledger/scripts
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rca-org0
+  namespace: hlf
+  labels:
+    app: rca-org0
+spec:
+  type: NodePort
+  selector:
+    app: rca-org0
+  ports:
+    - protocol: TCP
+      nodePort: 30906
+      targetPort: 7053
+      port: 7053
