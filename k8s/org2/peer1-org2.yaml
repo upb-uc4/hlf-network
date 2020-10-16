@@ -83,20 +83,20 @@ spec:
             - name: ORG_CA_PORT
               value: "7055"
       volumes:
-        - name: peer1-org2-mount
-          emptyDir: {}
+        - name: shared-volume
+          hostPath:
+            path: /mnt/hyperledger/shared
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
+        - name: peer1-org2-mount
+          emptyDir: {}
         - name: tls-ca-cert
           secret:
             secretName: cert.tls-ca
         - name: rca-org2-cert
           secret:
             secretName: cert.rca-org2
-        - name: shared-volume
-          hostPath:
-            path: /mnt/hyperledger/shared
 ---
 apiVersion: v1
 kind: Service

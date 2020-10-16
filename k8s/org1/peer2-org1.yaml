@@ -73,6 +73,8 @@ spec:
           volumeMounts:
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
+            - mountPath: /tmp/hyperledger/shared
+              name: shared-volume
             - mountPath: /tmp/hyperledger/org1/peer2
               name: peer2-org1-mount
             - mountPath: /tmp/secrets/tls-ca
@@ -81,8 +83,6 @@ spec:
             - mountPath: /tmp/secrets/rca-org1
               name: rca-org1-cert
               readOnly: true
-            - mountPath: /tmp/hyperledger/shared
-              name: shared-volume
           env:
             - name: FABRIC_CA_SERVER_DEBUG
               value: "true"
@@ -95,6 +95,9 @@ spec:
       volumes:
         - name: peer2-org1-mount
           emptyDir: {}
+        - name: shared-volume
+          hostPath:
+            path: /mnt/hyperledger/shared
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
@@ -104,9 +107,6 @@ spec:
         - name: rca-org1-cert
           secret:
             secretName: cert.rca-org1
-        - name: shared-volume
-          hostPath:
-            path: /mnt/hyperledger/shared
 ---
 apiVersion: v1
 kind: Service

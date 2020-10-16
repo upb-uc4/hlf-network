@@ -19,10 +19,10 @@ spec:
           image: hyperledger/fabric-orderer:2.2
           imagePullPolicy: IfNotPresent
           volumeMounts:
-            - mountPath: /tmp/hyperledger/org0/orderer
-              name: orderer-mount
             - mountPath: /tmp/hyperledger/shared
               name: shared-volume
+            - mountPath: /tmp/hyperledger/org0/orderer
+              name: orderer-mount
           env:
             - name: ORDERER_HOME
               value: "/tmp/hyperledger/orderer"
@@ -62,10 +62,10 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ["bash", "./tmp/hyperledger/scripts/startNetwork/enrollJobs/enrollOrdererOrg0.sh"]
           volumeMounts:
-            - mountPath: /tmp/hyperledger/scripts
-              name: scripts
             - mountPath: /tmp/hyperledger/shared
               name: shared-volume
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
             - mountPath: /tmp/hyperledger/org0/orderer
               name: orderer-mount
             - mountPath: /tmp/secrets/tls-ca
@@ -82,10 +82,10 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ["bash", "/tmp/hyperledger/scripts/startNetwork/createGenesisBlock.sh"]
           volumeMounts:
-            - mountPath: /tmp/hyperledger/scripts
-              name: scripts
             - mountPath: /tmp/hyperledger/shared
               name: shared-volume
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
             - mountPath: /tmp/configmaps
               name: configtx
               readOnly: true
@@ -102,14 +102,17 @@ spec:
               name: rca-org2-cert
               readOnly: true
       volumes:
-        - name: orderer-mount
-          emptyDir: {}
-        - name: scripts
-          hostPath:
-            path: /mnt/hyperledger/scripts
         - name: shared-volume
           hostPath:
             path: /mnt/hyperledger/shared
+        - name: scripts
+          hostPath:
+            path: /mnt/hyperledger/scripts
+        - name: orderer-mount
+          emptyDir: {}
+        - name: configtx
+          configMap:
+            name: configtx
         - name: tls-ca-cert
           secret:
             secretName: cert.tls-ca
@@ -122,9 +125,6 @@ spec:
         - name: rca-org2-cert
           secret:
             secretName: cert.rca-org2
-        - name: configtx
-          configMap:
-            name: configtx
 ---
 apiVersion: v1
 kind: Service
