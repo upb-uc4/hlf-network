@@ -54,7 +54,7 @@ spec:
             - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
               value: "localhost:5984"
         - name: couchdb
-          image: hyperledger/fabric-couchdb:latest
+          image: hyperledger/fabric-couchdb:3.1.1
           ports:
             - containerPort: 5984
       initContainers:
