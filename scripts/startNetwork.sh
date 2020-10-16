@@ -35,11 +35,10 @@ source ./scripts/startNetwork/setupOrderer.sh
 source ./scripts/startNetwork/setupDind.sh
 source ./scripts/startNetwork/setupChannel.sh
 
-# For scala api on kubernetes
-mkdir -p $HL_MOUNT/api
-cp assets/connection_profile_kubernetes.yaml $HL_MOUNT/api
-
 # TODO figure something out for distributing certificates :)
+# For scala api on kubernetes
+# mkdir -p $HL_MOUNT/api
+# cp assets/connection_profile_kubernetes.yaml $HL_MOUNT/api
 #cp $HL_MOUNT/ca-cert.pem $HL_MOUNT/api/ca-cert.pem
 # mkdir -p $HL_MOUNT/api/org0/msp
 # mkdir -p $HL_MOUNT/api/org1/msp
