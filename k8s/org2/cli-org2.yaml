@@ -36,8 +36,8 @@ spec:
             - name: CORE_VM_ENDPOINT
               value: "unix:///host/var/run/docker.sock"
             # Uncomment for debugging
-            - name: FABRIC_LOGGING_SPEC
-              value: "DEBUG"
+            # - name: FABRIC_LOGGING_SPEC
+            #   value: "DEBUG"
             - name: CORE_PEER_ID
               value: "cli-org2"
             - name: CORE_PEER_ADDRESS

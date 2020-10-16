@@ -5,6 +5,23 @@ source ./scripts/env.sh
 
 header "Generate credentials and store in secrets"
 
+# For use in api: prepare folders
+# Use in lagom:
+mkdir -p $HL_MOUNT/api/org0/msp/cacerts/
+mkdir -p $HL_MOUNT/api/org1/msp/cacerts/
+mkdir -p $HL_MOUNT/api/org2/msp/cacerts/
+# Copy connection_profile_kuberntes.yaml
+cp assets/connection_profile_kubernetes.yaml $HL_MOUNT/api
+
+# Use for testing without lagom
+rm -rf /tmp/hyperledger/
+mkdir -p /tmp/hyperledger/
+mkdir -p /tmp/hyperledger/org0/msp/cacerts
+mkdir -p /tmp/hyperledger/org1/msp/cacerts
+mkdir -p /tmp/hyperledger/org2/msp/cacerts
+
+
+
 echo "Generate TLS CA root certificate and private key"
 TMP_CERT=$(mktemp)
 openssl ecparam -name prime256v1 -genkey -noout -out $TMP_CERT-key.pem
@@ -18,6 +35,9 @@ small_sep
 echo "Provide certificate and privkey as kubernetes secret"
 kubectl create secret generic key.tls-ca -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.tls-ca -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
+
+cp $TMP_CERT-cert.pem /tmp/hyperledger/ca-cert.perm
+cp $TMP_CERT-cert.pem $HL_MOUNT/api/ca-cert.perm
 
 sep
 
@@ -35,6 +55,9 @@ echo "Provide certificate and privkey as kubernetes secret"
 kubectl create secret generic key.rca-org0 -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.rca-org0 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 
+cp $TMP_CERT-cert.pem /tmp/hyperledger/org0/msp/cacerts/org0-ca-cert.pem
+cp $TMP_CERT-cert.pem $HL_MOUNT/api/org0/msp/cacerts/org0-ca-cert.pem
+
 sep
 
 echo "Generate Org1 root certificate and private key"
@@ -51,6 +74,10 @@ echo "Provide certificate and privkey as kubernetes secret"
 kubectl create secret generic key.rca-org1 -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.rca-org1 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 
+cp $TMP_CERT-cert.pem /tmp/hyperledger/org1/msp/cacerts/org1-ca-cert.pem
+cp $TMP_CERT-cert.pem $HL_MOUNT/api/org1/msp/cacerts/org1-ca-cert.pem
+
+
 sep
 
 echo "Generate Org2 root certificate and private key"
@@ -66,3 +93,6 @@ small_sep
 echo "Provide certificate and privkey as kubernetes secret"
 kubectl create secret generic key.rca-org2 -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.rca-org2 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
+
+cp $TMP_CERT-cert.pem /tmp/hyperledger/org2/msp/cacerts/org2-ca-cert.pem
+cp $TMP_CERT-cert.pem $HL_MOUNT/api/org2/msp/cacerts/org2-ca-cert.pem
