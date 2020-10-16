@@ -33,7 +33,6 @@ source ./scripts/startNetwork/startClis.sh
 source ./scripts/startNetwork/setupPeers.sh
 source ./scripts/startNetwork/setupOrderer.sh
 source ./scripts/startNetwork/setupDind.sh
-sleep 10
 source ./scripts/startNetwork/setupChannel.sh
 
 # TODO figure something out for distributing certificates :)
