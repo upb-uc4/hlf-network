@@ -7,10 +7,8 @@ set -e
 log "Use CA-client to enroll admin"
 
 export TLS_CA_HOST=0.0.0.0:7052
-export FABRIC_CA_CLIENT_TLS_CERTFILES=tls-ca-cert.pem
+export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/cert.pem
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/ca-client/
-mkdir -p $FABRIC_CA_CLIENT_HOME
-cp /tmp/hyperledger/fabric-ca/crypto/ca-cert.pem $FABRIC_CA_CLIENT_HOME/$FABRIC_CA_CLIENT_TLS_CERTFILES
 
 fabric-ca-client enroll -u https://tls-ca-admin:tls-ca-adminpw@$TLS_CA_HOST
 

@@ -57,10 +57,48 @@ spec:
           image: hyperledger/fabric-couchdb:latest
           ports:
             - containerPort: 5984
+      initContainers:
+        - name: fabric-ca
+          image: hyperledger/fabric-ca:1.4.7
+          imagePullPolicy: IfNotPresent
+          command: ["bash", "./tmp/hyperledger/scripts/startNetwork/enrollJobs/enrollPeer.sh"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/shared
+              name: shared-volume
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
+            - mountPath: /tmp/hyperledger/org2/peer2
+              name: peer2-org2-mount
+            - mountPath: /tmp/secrets/tls-ca
+              name: tls-ca-cert
+              readOnly: true
+            - mountPath: /tmp/secrets/rca-org2
+              name: rca-org2-cert
+              readOnly: true
+          env:
+            - name: FABRIC_CA_SERVER_DEBUG
+              value: "true"
+            - name: PEER_NUM
+              value: "2"
+            - name: ORG_NUM
+              value: "2"
+            - name: ORG_CA_PORT
+              value: "7055"
       volumes:
-        - name: peer2-org2-mount
+        - name: shared-volume
           hostPath:
-            path: /mnt/hyperledger/org2/peer2
+            path: /mnt/hyperledger/shared
+        - name: scripts
+          hostPath:
+            path: /mnt/hyperledger/scripts
+        - name: peer2-org2-mount
+          emptyDir: {}
+        - name: tls-ca-cert
+          secret:
+            secretName: cert.tls-ca
+        - name: rca-org2-cert
+          secret:
+            secretName: cert.rca-org2
 ---
 apiVersion: v1
 kind: Service

@@ -19,6 +19,8 @@ spec:
           image: hyperledger/fabric-orderer:2.2
           imagePullPolicy: IfNotPresent
           volumeMounts:
+            - mountPath: /tmp/hyperledger/shared
+              name: shared-volume
             - mountPath: /tmp/hyperledger/org0/orderer
               name: orderer-mount
           env:
@@ -31,7 +33,7 @@ spec:
             - name: ORDERER_GENERAL_GENESISMETHOD
               value: "file"
             - name: ORDERER_GENERAL_GENESISFILE
-              value: "/tmp/hyperledger/org0/orderer/genesis.block"
+              value: "/tmp/hyperledger/shared/channel/genesis.block"
             - name: ORDERER_GENERAL_LOCALMSPID
               value: "org0MSP"
             - name: ORDERER_GENERAL_LOCALMSPDIR
@@ -54,10 +56,75 @@ spec:
               value: "/tmp/hyperledger/org0/orderer/tls-msp/keystore/key.pem"
             - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
               value: "/tmp/hyperledger/org0/orderer/tls-msp/signcerts/cert.pem"
+      initContainers:
+        - name: fabric-ca
+          image: hyperledger/fabric-ca:1.4.7
+          imagePullPolicy: IfNotPresent
+          command: ["bash", "./tmp/hyperledger/scripts/startNetwork/enrollJobs/enrollOrdererOrg0.sh"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/shared
+              name: shared-volume
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
+            - mountPath: /tmp/hyperledger/org0/orderer
+              name: orderer-mount
+            - mountPath: /tmp/secrets/tls-ca
+              name: tls-ca-cert
+              readOnly: true
+            - mountPath: /tmp/secrets/rca-org0
+              name: rca-org0-cert
+              readOnly: true
+          env:
+            - name: FABRIC_CA_SERVER_DEBUG
+              value: "true"
+        - name: fabric-tools
+          image: hyperledger/fabric-tools:2.2.1
+          imagePullPolicy: IfNotPresent
+          command: ["bash", "/tmp/hyperledger/scripts/startNetwork/createGenesisBlock.sh"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/shared
+              name: shared-volume
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
+            - mountPath: /tmp/configmaps
+              name: configtx
+              readOnly: true
+            - mountPath: /tmp/secrets/tls-ca
+              name: tls-ca-cert
+              readOnly: true
+            - mountPath: /tmp/secrets/rca-org0
+              name: rca-org0-cert
+              readOnly: true
+            - mountPath: /tmp/secrets/rca-org1
+              name: rca-org1-cert
+              readOnly: true
+            - mountPath: /tmp/secrets/rca-org2
+              name: rca-org2-cert
+              readOnly: true
       volumes:
-        - name: orderer-mount
+        - name: shared-volume
           hostPath:
-            path: /mnt/hyperledger/org0/orderer
+            path: /mnt/hyperledger/shared
+        - name: scripts
+          hostPath:
+            path: /mnt/hyperledger/scripts
+        - name: orderer-mount
+          emptyDir: {}
+        - name: configtx
+          configMap:
+            name: configtx
+        - name: tls-ca-cert
+          secret:
+            secretName: cert.tls-ca
+        - name: rca-org0-cert
+          secret:
+            secretName: cert.rca-org0
+        - name: rca-org1-cert
+          secret:
+            secretName: cert.rca-org1
+        - name: rca-org2-cert
+          secret:
+            secretName: cert.rca-org2
 ---
 apiVersion: v1
 kind: Service
