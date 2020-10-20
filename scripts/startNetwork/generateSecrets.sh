@@ -136,6 +136,23 @@ kubectl create secret generic credentials.tls.peer2-org1 -n hlf \
       --from-literal=username=peer2-org1 \
       --from-literal=password=$(generatePassword)
 
+echo "Generate credentials for org1 organization identities"
+kubectl create secret generic credentials.peer1-org1 -n hlf \
+      --from-literal=username=peer1-org1 \
+      --from-literal=password=$(generatePassword)
+
+kubectl create secret generic credentials.peer2-org1 -n hlf \
+      --from-literal=username=peer2-org1 \
+      --from-literal=password=$(generatePassword)
+
+kubectl create secret generic credentials.admin-org1 -n hlf \
+      --from-literal=username=admin-org1 \
+      --from-literal=password=$(generatePassword)
+
+kubectl create secret generic credentials.scala-admin-org1 -n hlf \
+      --from-literal=username=scala-admin-org1 \
+      --from-literal=password=$(generatePassword)
+
 sep
 
 

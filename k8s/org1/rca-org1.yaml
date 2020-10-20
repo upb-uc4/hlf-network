@@ -55,6 +55,56 @@ spec:
                 secretKeyRef:
                   name: credentials.rca-org1
                   key: password
+            - name: PEER1_ORG1_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer1-org1
+                  key: username
+            - name: PEER1_ORG1_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer1-org1
+                  key: password
+            - name: PEER2_ORG1_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer2-org1
+                  key: username
+            - name: PEER2_ORG1_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer2-org1
+                  key: password
+            - name: ADMIN_ORG1_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.admin-org1
+                  key: username
+            - name: ADMIN_ORG1_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.admin-org1
+                  key: password
+            - name: SCALA_ADMIN_ORG1_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.scala-admin-org1
+                  key: username
+            - name: SCALA_ADMIN_ORG1_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.scala-admin-org1
+                  key: password
+            - name: SCALA_REGISTRATION_ADMIN_ORG1_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.scala-admin-org1
+                  key: username
+            - name: SCALA_REGISTRATION_ADMIN_ORG1_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.scala-admin-org1
+                  key: password
       volumes:
         - name: scripts
           hostPath:
