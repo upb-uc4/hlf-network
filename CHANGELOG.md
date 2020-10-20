@@ -1,4 +1,11 @@
-# [v.0.11.0](https://github.com/upb-uc4/hlf-network/compare/v0.10.0...v0.11.0) (Draft) 
+# [v.0.10.2](https://github.com/upb-uc4/hlf-network/compare/v0.10.1...v0.10.2) (2020-10-20) 
+
+## Refactor
+ 
+ - Provide secrets and configmap to lagom namespace
+ - Change paths in connection_profile_kubernetes
+ 
+# [v.0.10.1](https://github.com/upb-uc4/hlf-network/compare/v0.10.0...v0.10.1) (2020-10-20) 
 
 ## Refactor
  
@@ -9,7 +16,7 @@
  - Reduce shared mounts to a minimum
  
 
-# [v.0.10.0](https://github.com/upb-uc4/hlf-network/compare/v0.9.0...v0.10.0) (2015-10-13) 
+# [v.0.10.0](https://github.com/upb-uc4/hlf-network/compare/v0.9.0...v0.10.0) (2020-10-13) 
 
 ## Documentation
 
