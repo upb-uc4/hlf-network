@@ -15,7 +15,7 @@ export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/rca-org${ORG_NUM}/cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=msp
 mkdir -p $FABRIC_CA_CLIENT_HOME/assets/ca
 
-fabric-ca-client enroll -u https://peer${PEER_NUM}-org${ORG_NUM}:peer${PEER_NUM}PW@$CA_ORG_HOST
+fabric-ca-client enroll -u https://$PEER_IDENTITY_USER:$PEER_IDENTITY_PASSWORD@$CA_ORG_HOST
 
 
 log "Enroll Peer at TLS-CA"

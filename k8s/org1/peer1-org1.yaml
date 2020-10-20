@@ -102,6 +102,16 @@ spec:
                 secretKeyRef:
                   name: credentials.tls.peer1-org1
                   key: password
+            - name: PEER_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer1-org1
+                  key: username
+            - name: PEER_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer1-org1
+                  key: password
             
       volumes:
         - name: scripts

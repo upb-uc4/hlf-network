@@ -94,6 +94,16 @@ spec:
                 secretKeyRef:
                   name: credentials.tls.peer2-org2
                   key: password
+            - name: PEER_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer2-org2
+                  key: username
+            - name: PEER_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer2-org2
+                  key: password
       volumes:
         - name: shared-volume
           hostPath:
