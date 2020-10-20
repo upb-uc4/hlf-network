@@ -10,7 +10,8 @@ export TLS_CA_HOST=0.0.0.0:7052
 export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/cert.pem
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/ca-client/
 
-fabric-ca-client enroll -u https://tls-ca-admin:tls-ca-adminpw@$TLS_CA_HOST
+echo $BOOTSTRAP_USER:$BOOTSTRAP_PASSWORD
+fabric-ca-client enroll -u https://$BOOTSTRAP_USER:$BOOTSTRAP_PASSWORD@$TLS_CA_HOST
 
 log "Use CA-client to register initial identities"
 
