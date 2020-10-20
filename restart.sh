@@ -26,81 +26,133 @@ while getopts 'd' flag; do
 done
 
 
+####################################################################################################
+# Variables
+####################################################################################################
+
+NEXT=1
+LAST=2
+NEXT_PATH=/data/development
+
+
+####################################################################################################
+# Functions
+####################################################################################################
+
 function createCluster() {
   set +e
   sudo rm -rf $1
   set -e
 
-  kind create cluster \
-    --config $2 \
-    --name "cluster-$3" \
-    --kubeconfig $(mktemp) \
-    >>log.txt 2>&1
-  echo "Successfully created cluster $3" >> log.txt
+  if [[ "$4" == "quiet" ]]
+  then
+    kind create cluster \
+      --config $2 \
+      --name "cluster-$3" \
+      --kubeconfig $(mktemp)\
+      >>log.txt 2>&1
+    echo "Successfully created cluster $3" >> log.txt
+  else
+    kind create cluster \
+      --config $2 \
+      --name "cluster-$3" \
+      --kubeconfig $(mktemp)
+  fi
 }
 
 function createCluster1() {
-  createCluster /data/development assets/kind.yaml 1
+  createCluster /data/development assets/kind.yaml 1 $1
 }
 
 function createCluster2() {
-  createCluster /data/development-2 assets/kind-2.yaml 2
+  createCluster /data/development-2 assets/kind-2.yaml 2 $1
 }
 
-# Prompt password
-header "🤖 Fast restart script (for development only)"
-sudo printf ""
-
-CURRENT_CONTEXT=$(kubectl config current-context)
-
-# Check if cluster 1 or cluster 2 is currently used, defaults to 1
-if [[ "$CURRENT_CONTEXT" == *"2" ]]
-then
-  CURRENT=2
-  NEXT=1
-  NEXT_PATH=/data/development
-else
-  CURRENT=1
-  NEXT=2
-  NEXT_PATH=/data/development-2
-fi
-
-CLUSTERS=$(kind get clusters)
-printf "🐨 Creating missing clusters\n"
-{
-  if [[ "$CLUSTERS" != *"cluster-1"* ]]
+function createNextCluster() {
+  if [[ "$1" == "again" ]]
   then
-    createCluster1
+    echo "😰 No speedup, need to create next cluster..."
   fi
-} &
-{
-  if [[ "$CLUSTERS" != *"cluster-2"* ]]
-  then
-    createCluster2
-  fi
-} &
-wait
 
-sudo mkdir -p /data/development/hyperledger
-sudo chmod -R 777 /data/development
-sudo mkdir -p /data/development-2/hyperledger
-sudo chmod -R 777 /data/development-2
+  set +e
+  kind delete clusters cluster-$NEXT
+  set -e
 
-echo "Clusters ready!"
-echo "Deploy network on current cluster and restart old cluster"
-
-set -e
-{
-  kind delete clusters cluster-$CURRENT >>log.txt 2>&1
-  if [[ "$CURRENT" == "1" ]]
+  if [[ "$NEXT" == "1" ]]
   then
     createCluster1
   else
     createCluster2
   fi
-} &
+}
 
-header "Deploy network on cluster $NEXT"
-kind export kubeconfig --name "cluster-$NEXT"
+function restartOldClusterInBackground() {
+  echo "🤯 Restart old cluster in background..."
+  kind delete clusters cluster-$LAST>>log.txt 2>&1
+  if [[ "$LAST" == "1" ]]
+  then
+    createCluster1 quiet
+  else
+    createCluster2 quiet
+  fi
+}
+
+
+####################################################################################################
+# Main script
+####################################################################################################
+
+# Prompt password
+header "🤖 Fast restart script (for development only)"
+sudo printf ""
+
+rm log.txt
+
+LAST_CONTEXT=$(kubectl config current-context)
+
+# Check if cluster 1 was last used
+if [[ "$LAST_CONTEXT" == *"1" ]]
+then
+  LAST=1
+  NEXT=2
+  NEXT_PATH=/data/development-2
+fi
+
+restartOldClusterInBackground &
+# For better ux
+sleep 1
+
+# Ensure next cluster exists
+CLUSTERS=$(kind get clusters)
+printf "🐨 Ensure next cluster is available\n"
+small_sep
+if [[ "$CLUSTERS" != *"cluster-$NEXT"* ]]
+then
+  echo "😀 Create initial cluster..."
+  createNextCluster
+fi
+
+(
+  kind export kubeconfig --name "cluster-$NEXT" &&\
+  kubectl wait --for=condition=Ready node --all --timeout 30s
+) || (
+  # Try again
+  echo "😱 Cluster not working" &&\
+  echo "🙄 Restart cluster..." &&\
+  createNextCluster again &&\
+  kind export kubeconfig --name "cluster-$NEXT"
+) || exit 1
+
+sudo mkdir -p $NEXT_PATH/hyperledger
+sudo chmod -R 777 $NEXT_PATH
+
+set -e
+
+small_sep
+echo "🦥 Cluster ready!"
+echo "😎 Deploy network..."
+small_sep
 ./deploy.sh -c $NEXT_PATH/hyperledger
+
+wait
 printf "🥳 Done!\n"
