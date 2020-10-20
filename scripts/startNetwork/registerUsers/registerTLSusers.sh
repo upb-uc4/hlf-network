@@ -15,10 +15,30 @@ fabric-ca-client enroll -u https://$BOOTSTRAP_USER:$BOOTSTRAP_PASSWORD@$TLS_CA_H
 
 log "Use CA-client to register initial identities"
 
-fabric-ca-client register --id.name peer1-org1 --id.secret peer1PW --id.type peer -u https://$TLS_CA_HOST
-fabric-ca-client register --id.name peer2-org1 --id.secret peer2PW --id.type peer -u https://$TLS_CA_HOST
-fabric-ca-client register --id.name peer1-org2 --id.secret peer1PW --id.type peer -u https://$TLS_CA_HOST
-fabric-ca-client register --id.name peer2-org2 --id.secret peer2PW --id.type peer -u https://$TLS_CA_HOST
-fabric-ca-client register --id.name orderer-org0 --id.secret ordererPW --id.type orderer -u https://$TLS_CA_HOST
+fabric-ca-client register \
+  --id.name $PEER1_ORG1_IDENTITY_USER \
+  --id.secret $PEER1_ORG1_IDENTITY_PASSWORD \
+  --id.type peer \
+  -u https://$TLS_CA_HOST
+fabric-ca-client register \
+  --id.name $PEER2_ORG1_IDENTITY_USER \
+  --id.secret $PEER2_ORG1_IDENTITY_PASSWORD \
+  --id.type peer \
+  -u https://$TLS_CA_HOST
+fabric-ca-client register \
+  --id.name $PEER1_ORG2_IDENTITY_USER \
+  --id.secret $PEER1_ORG2_IDENTITY_PASSWORD \
+  --id.type peer \
+  -u https://$TLS_CA_HOST
+fabric-ca-client register \
+  --id.name $PEER2_ORG2_IDENTITY_USER \
+  --id.secret $PEER2_ORG2_IDENTITY_PASSWORD \
+  --id.type peer \
+  -u https://$TLS_CA_HOST
+fabric-ca-client register \
+  --id.name $ORDERER_ORG0_IDENTITY_USER \
+  --id.secret $ORDERER_ORG0_IDENTITY_PASSWORD \
+  --id.type orderer \
+  -u https://$TLS_CA_HOST
 
 log "Finished registering TLS users"

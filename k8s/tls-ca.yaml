@@ -55,8 +55,56 @@ spec:
                 secretKeyRef:
                   name: credentials.tls-ca
                   key: password
-
-
+            - name: ORDERER_ORG0_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.orderer-org0
+                  key: username
+            - name: ORDERER_ORG0_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.orderer-org0
+                  key: password
+            - name: PEER1_ORG1_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer1-org1
+                  key: username
+            - name: PEER1_ORG1_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer1-org1
+                  key: password
+            - name: PEER2_ORG1_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer2-org1
+                  key: username
+            - name: PEER2_ORG1_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer2-org1
+                  key: password
+            - name: PEER1_ORG2_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer1-org2
+                  key: username
+            - name: PEER1_ORG2_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer1-org2
+                  key: password
+            - name: PEER2_ORG2_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer2-org2
+                  key: username
+            - name: PEER2_ORG2_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer2-org2
+                  key: password
       volumes:
         - name: scripts
           hostPath:
