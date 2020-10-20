@@ -92,6 +92,17 @@ spec:
               value: "1"
             - name: ORG_CA_PORT
               value: "7054"
+            - name: PEER_TLS_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer1-org1
+                  key: username
+            - name: PEER_TLS_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.peer1-org1
+                  key: password
+            
       volumes:
         - name: scripts
           hostPath:

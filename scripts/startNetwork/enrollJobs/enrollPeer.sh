@@ -24,7 +24,10 @@ export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/tls-ca/cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=tls-msp
 mkdir -p $FABRIC_CA_CLIENT_HOME/assets/tls-ca
 
-fabric-ca-client enroll -u https://peer${PEER_NUM}-org${ORG_NUM}:peer${PEER_NUM}PW@$CA_TLS_HOST --enrollment.profile tls --csr.hosts peer${PEER_NUM}-org${ORG_NUM}
+fabric-ca-client enroll \
+  -u https://$PEER_TLS_IDENTITY_USER:$PEER_TLS_IDENTITY_PASSWORD@$CA_TLS_HOST \
+  --enrollment.profile tls \
+  --csr.hosts peer${PEER_NUM}-org${ORG_NUM}
 
 mv /tmp/hyperledger/org${ORG_NUM}/peer${PEER_NUM}/tls-msp/keystore/*_sk /tmp/hyperledger/org${ORG_NUM}/peer${PEER_NUM}/tls-msp/keystore/key.pem
 
