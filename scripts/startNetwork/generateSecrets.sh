@@ -4,7 +4,7 @@ source ./scripts/util.sh
 source ./scripts/env.sh
 
 function generatePassword() {
-  openssl rand -base64 64 | tr -dc A-Za-y0-9 | head -c 32 ; echo ''
+  openssl rand -base64 64 | tr -dc A-Za-z0-9 | head -c 32 ; echo ''
 }
 
 
@@ -85,6 +85,11 @@ kubectl create secret generic credentials.rca-org0 -n hlf \
       --from-literal=username=admin \
       --from-literal=password=$(generatePassword)
 
+echo "Generate credentials for orderer tls identity"
+kubectl create secret generic credentials.tls.orderer-org0 -n hlf \
+      --from-literal=username=orderer-org0 \
+      --from-literal=password=$(generatePassword)
+
 sep
 
 
@@ -112,6 +117,15 @@ kubectl create secret generic credentials.rca-org1 -n hlf \
       --from-literal=username=admin \
       --from-literal=password=$(generatePassword)
 
+echo "Generate credentials for org1 tls identities"
+kubectl create secret generic credentials.tls.peer1-org1 -n hlf \
+      --from-literal=username=peer1-org1 \
+      --from-literal=password=$(generatePassword)
+
+kubectl create secret generic credentials.tls.peer2-org1 -n hlf \
+      --from-literal=username=peer2-org1 \
+      --from-literal=password=$(generatePassword)
+
 sep
 
 
@@ -137,4 +151,13 @@ cp $TMP_CERT-cert.pem $HL_MOUNT/api/org2/msp/cacerts/org2-ca-cert.pem
 echo "Generate admin credentials for org1 rca"
 kubectl create secret generic credentials.rca-org2 -n hlf \
       --from-literal=username=admin \
+      --from-literal=password=$(generatePassword)
+
+echo "Generate credentials for org2 tls identities"
+kubectl create secret generic credentials.tls.peer1-org2 -n hlf \
+      --from-literal=username=peer1-org2 \
+      --from-literal=password=$(generatePassword)
+
+kubectl create secret generic credentials.tls.peer2-org2 -n hlf \
+      --from-literal=username=peer2-org2 \
       --from-literal=password=$(generatePassword)
