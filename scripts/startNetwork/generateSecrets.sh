@@ -153,6 +153,10 @@ kubectl create secret generic credentials.scala-admin-org1 -n hlf \
       --from-literal=username=scala-admin-org1 \
       --from-literal=password=$(generatePassword)
 
+kubectl create secret generic credentials.scala-registration-admin-org1 -n hlf \
+      --from-literal=username=scala-registration-admin-org1 \
+      --from-literal=password=$(generatePassword)
+
 sep
 
 

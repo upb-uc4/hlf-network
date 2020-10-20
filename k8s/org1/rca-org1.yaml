@@ -98,12 +98,12 @@ spec:
             - name: SCALA_REGISTRATION_ADMIN_ORG1_IDENTITY_USER
               valueFrom:
                 secretKeyRef:
-                  name: credentials.scala-admin-org1
+                  name: credentials.scala-registration-admin-org1
                   key: username
             - name: SCALA_REGISTRATION_ADMIN_ORG1_IDENTITY_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: credentials.scala-admin-org1
+                  name: credentials.scala-registration-admin-org1
                   key: password
       volumes:
         - name: scripts
