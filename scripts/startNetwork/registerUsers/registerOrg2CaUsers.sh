@@ -10,7 +10,7 @@ export CA_ORG2_HOST=0.0.0.0:7055
 export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/cert.pem
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/ca-client/
 
-fabric-ca-client enroll -u https://rca-org2-admin:rca-org2-adminpw@$CA_ORG2_HOST
+fabric-ca-client enroll -u https://$BOOTSTRAP_USER:$BOOTSTRAP_PASSWORD@$CA_ORG2_HOST
 
 log "Use CA-client to register initial identities"
 
