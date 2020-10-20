@@ -36,8 +36,8 @@ echo "Provide certificate and privkey as kubernetes secret"
 kubectl create secret generic key.tls-ca -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.tls-ca -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 
-cp $TMP_CERT-cert.pem /tmp/hyperledger/ca-cert.perm
-cp $TMP_CERT-cert.pem $HL_MOUNT/api/ca-cert.perm
+cp $TMP_CERT-cert.pem /tmp/hyperledger/ca-cert.pem
+cp $TMP_CERT-cert.pem $HL_MOUNT/api/ca-cert.pem
 
 sep
 
