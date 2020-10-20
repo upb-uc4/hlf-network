@@ -4,6 +4,28 @@
 
 source ./scripts/util.sh
 
+
+print_usage() {
+  printf "Usage: ./restart -d\n"
+  printf "Use -d to reset all clusters\n"
+}
+
+
+while getopts 'd' flag; do
+  case "${flag}" in
+    d) printf "🗑 Reset clusters"
+       set +e
+       kind delete clusters --all
+       sudo rm -rf /data/development
+       sudo rm -rf /data/development-2
+       printf "🥳 Done"
+       exit 1 ;;
+    ?) print_usage
+       exit 1 ;;
+  esac
+done
+
+
 function createCluster() {
   set +e
   sudo rm -rf $1
@@ -14,8 +36,7 @@ function createCluster() {
     --name "cluster-$3" \
     --kubeconfig $(mktemp) \
     >>log.txt 2>&1
-  sudo mkdir -p $1/hyperledger
-  sudo chmod -R 777 $1
+  echo "Successfully created cluster $3" >> log.txt
 }
 
 function createCluster1() {
@@ -27,7 +48,7 @@ function createCluster2() {
 }
 
 # Prompt password
-header "Fast restart script (for development only)"
+header "🤖 Fast restart script (for development only)"
 sudo echo ""
 
 CURRENT_CONTEXT=$(kubectl config current-context)
@@ -37,16 +58,14 @@ if [[ "$CURRENT_CONTEXT" == *"2" ]]
 then
   CURRENT=2
   NEXT=1
-  CURRENT_CONFIG_FILE=assets/kind-2.yaml
   NEXT_PATH=/data/development
 else
   CURRENT=1
   NEXT=2
-  CURRENT_CONFIG_FILE=assets/kind.yaml
   NEXT_PATH=/data/development-2
 fi
 
-echo "Creating missing clusters"
+printf "Creating missing clusters"
 CLUSTERS=$(kind get clusters)
 {
   if [[ "$CLUSTERS" != *"cluster-1"* ]]
@@ -62,6 +81,11 @@ CLUSTERS=$(kind get clusters)
 } &
 wait
 
+sudo mkdir -p /data/development/hyperledger
+sudo chmod -R 777 /data/development
+sudo mkdir -p /data/development-2/hyperledger
+sudo chmod -R 777 /data/development-2
+
 echo "Clusters ready!"
 echo "Deploy network on current cluster and restart old cluster"
 
@@ -75,9 +99,8 @@ set -e
     createCluster2
   fi
 } &
-{
-  header "Deploy network on cluster $NEXT"
-  kind export kubeconfig --name "cluster-$NEXT"
-  ./deploy.sh -c $NEXT_PATH/hyperledger
-} &
-wait
+
+header "Deploy network on cluster $NEXT"
+kind export kubeconfig --name "cluster-$NEXT"
+./deploy.sh -c $NEXT_PATH/hyperledger
+printf "🥳 Done"
