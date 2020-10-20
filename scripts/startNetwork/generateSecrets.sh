@@ -3,6 +3,12 @@
 source ./scripts/util.sh
 source ./scripts/env.sh
 
+function generatePassword() {
+  openssl rand -base64 64 | tr -dc A-Za-y0-9 | head -c 32 ; echo ''
+}
+
+
+
 header "Generate credentials and store in secrets"
 
 # Ensure lagom namespace exists
@@ -46,6 +52,11 @@ kubectl create secret generic cert.tls-ca -n uc4-lagom --from-file=cert.pem=$TMP
 
 cp $TMP_CERT-cert.pem /tmp/hyperledger/ca-cert.pem
 cp $TMP_CERT-cert.pem $HL_MOUNT/api/ca-cert.pem
+
+echo "Generate admin credentials"
+kubectl create secret generic credentials.tls-ca -n hlf \
+      --from-literal=username=admin \ 
+      --from-literal=password=$(generatePassword)
 
 sep
 
