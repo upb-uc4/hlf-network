@@ -77,6 +77,16 @@ spec:
           env:
             - name: FABRIC_CA_SERVER_DEBUG
               value: "true"
+            - name: ORDERER_TLS_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.orderer-org0
+                  key: username
+            - name: ORDERER_TLS_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.tls.orderer-org0
+                  key: password
         - name: fabric-tools
           image: hyperledger/fabric-tools:2.2.1
           imagePullPolicy: IfNotPresent
