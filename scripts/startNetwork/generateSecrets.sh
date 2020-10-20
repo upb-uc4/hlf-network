@@ -55,7 +55,7 @@ cp $TMP_CERT-cert.pem $HL_MOUNT/api/ca-cert.pem
 
 echo "Generate admin credentials"
 kubectl create secret generic credentials.tls-ca -n hlf \
-      --from-literal=username=admin \ 
+      --from-literal=username=admin \
       --from-literal=password=$(generatePassword)
 
 sep
