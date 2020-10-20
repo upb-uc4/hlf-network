@@ -53,12 +53,14 @@ kubectl create secret generic cert.tls-ca -n uc4-lagom --from-file=cert.pem=$TMP
 cp $TMP_CERT-cert.pem /tmp/hyperledger/ca-cert.pem
 cp $TMP_CERT-cert.pem $HL_MOUNT/api/ca-cert.pem
 
-echo "Generate admin credentials"
+echo "Generate admin credentials for tls ca"
 kubectl create secret generic credentials.tls-ca -n hlf \
       --from-literal=username=admin \
       --from-literal=password=$(generatePassword)
 
 sep
+
+
 
 echo "Generate Orderer Org root certificate and private key"
 TMP_CERT=$(mktemp)
@@ -78,7 +80,14 @@ kubectl create secret generic cert.rca-org0 -n uc4-lagom --from-file=cert.pem=$T
 cp $TMP_CERT-cert.pem /tmp/hyperledger/org0/msp/cacerts/org0-ca-cert.pem
 cp $TMP_CERT-cert.pem $HL_MOUNT/api/org0/msp/cacerts/org0-ca-cert.pem
 
+echo "Generate admin credentials for orderer rca"
+kubectl create secret generic credentials.rca-org0 -n hlf \
+      --from-literal=username=admin \
+      --from-literal=password=$(generatePassword)
+
 sep
+
+
 
 echo "Generate Org1 root certificate and private key"
 TMP_CERT=$(mktemp)
@@ -100,6 +109,8 @@ cp $TMP_CERT-cert.pem $HL_MOUNT/api/org1/msp/cacerts/org1-ca-cert.pem
 
 
 sep
+
+
 
 echo "Generate Org2 root certificate and private key"
 TMP_CERT=$(mktemp)
