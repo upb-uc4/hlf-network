@@ -10,8 +10,10 @@ header "Generate credentials and store in secrets"
 mkdir -p $HL_MOUNT/api/org0/msp/cacerts/
 mkdir -p $HL_MOUNT/api/org1/msp/cacerts/
 mkdir -p $HL_MOUNT/api/org2/msp/cacerts/
-# Copy connection_profile_kuberntes.yaml
+# Copy connection_profile_kuberntes.yaml for legacy
 cp assets/connection_profile_kubernetes.yaml $HL_MOUNT/api
+# Provide connection profile via secret for Lagom
+kubectl create configmap connection-profile --from-file=assets/connection_profile_kubernetes.yaml -n hlf
 
 # Use for testing without lagom
 rm -rf /tmp/hyperledger/
