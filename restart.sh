@@ -13,12 +13,12 @@ print_usage() {
 
 while getopts 'd' flag; do
   case "${flag}" in
-    d) printf "🗑 Reset clusters"
+    d) printf "🐼 Delete all clusters and files\n"
        set +e
        kind delete clusters --all
        sudo rm -rf /data/development
        sudo rm -rf /data/development-2
-       printf "🥳 Done"
+       printf "🥳 Done!\n"
        exit 1 ;;
     ?) print_usage
        exit 1 ;;
@@ -49,7 +49,7 @@ function createCluster2() {
 
 # Prompt password
 header "🤖 Fast restart script (for development only)"
-sudo echo ""
+sudo printf ""
 
 CURRENT_CONTEXT=$(kubectl config current-context)
 
@@ -65,8 +65,8 @@ else
   NEXT_PATH=/data/development-2
 fi
 
-printf "Creating missing clusters"
 CLUSTERS=$(kind get clusters)
+printf "🐨 Creating missing clusters\n"
 {
   if [[ "$CLUSTERS" != *"cluster-1"* ]]
   then
@@ -103,4 +103,4 @@ set -e
 header "Deploy network on cluster $NEXT"
 kind export kubeconfig --name "cluster-$NEXT"
 ./deploy.sh -c $NEXT_PATH/hyperledger
-printf "🥳 Done"
+printf "🥳 Done!\n"
