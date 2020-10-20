@@ -90,6 +90,16 @@ kubectl create secret generic credentials.tls.orderer-org0 -n hlf \
       --from-literal=username=orderer-org0 \
       --from-literal=password=$(generatePassword)
 
+echo "Generate credentials for orderer identity"
+kubectl create secret generic credentials.orderer-org0 -n hlf \
+      --from-literal=username=orderer-org0 \
+      --from-literal=password=$(generatePassword)
+
+echo "Generate credentials for orderer admin identity"
+kubectl create secret generic credentials.admin-org0 -n hlf \
+      --from-literal=username=admin-org0 \
+      --from-literal=password=$(generatePassword)
+
 sep
 
 
