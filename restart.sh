@@ -4,13 +4,34 @@
 
 source ./scripts/util.sh
 
-# Prompt password
-sudo printf ""
-header "Fast restart script (for development only)"
+function createCluster() {
+  set +e
+  sudo rm -rf $1
+  set -e
 
-echo "Get current context"
-kubectl config current-context
+  kind create cluster \
+    --config $2 \
+    --name "cluster-$3" \
+    --kubeconfig $(mktemp) \
+    >>log.txt 2>&1
+  sudo mkdir -p $1/hyperledger
+  sudo chmod -R 777 $1
+}
+
+function createCluster1() {
+  createCluster /data/development assets/kind.yaml 1
+}
+
+function createCluster2() {
+  createCluster /data/development-2 assets/kind-2.yaml 2
+}
+
+# Prompt password
+header "Fast restart script (for development only)"
+sudo echo ""
+
 CURRENT_CONTEXT=$(kubectl config current-context)
+
 # Check if cluster 1 or cluster 2 is currently used, defaults to 1
 if [[ "$CURRENT_CONTEXT" == *"2" ]]
 then
@@ -26,48 +47,37 @@ else
 fi
 
 echo "Creating missing clusters"
-kind get clusters
 CLUSTERS=$(kind get clusters)
 {
   if [[ "$CLUSTERS" != *"cluster-1"* ]]
   then
-    echo "Create cluster 1"
-    kind create cluster --config assets/kind.yaml --name "cluster-1"
+    createCluster1
   fi
 } &
 {
   if [[ "$CLUSTERS" != *"cluster-2"* ]]
   then
-    echo "Create cluster 2"
-    kind create cluster --config assets/kind-2.yaml --name "cluster-2"
+    createCluster2
   fi
 } &
 wait
 
-echo "Clusters created"
-
-echo "Remove old cluster and deploy network"
-kind delete clusters cluster-$CURRENT
+echo "Clusters ready!"
+echo "Deploy network on current cluster and restart old cluster"
 
 set -e
 {
-  set +e
-  rm log.txt
-  kind create cluster --config assets/kind.yaml --name "cluster-$CURRENT" --kubeconfig $(mktemp) >>log.txt 2>&1
+  kind delete clusters cluster-$CURRENT >>log.txt 2>&1
+  if [[ "$CURRENT" == "1" ]]
+  then
+    createCluster1
+  else
+    createCluster2
+  fi
 } &
 {
-  set +e
-  sudo rm -rf $NEXT_PATH
-
-  echo "Use cluster $NEXT for deployment"
+  header "Deploy network on cluster $NEXT"
   kind export kubeconfig --name "cluster-$NEXT"
-
-  set -e
-  sudo mkdir -p $NEXT_PATH/hyperledger
-  sudo chmod -R 777 $NEXT_PATH
-
   ./deploy.sh -c $NEXT_PATH/hyperledger
 } &
 wait
-
-echo "Finished!"
