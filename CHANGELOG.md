@@ -1,3 +1,14 @@
+# [v.0.11.0](https://github.com/upb-uc4/hlf-network/compare/v0.10.0...v0.11.0) (Draft) 
+
+## Refactor
+ 
+ - Generate usernames and passwords of CAs into k8s secrets
+ - Replace Jobs by initContainers to keep data on the same Pod (e.g. enrollment and use of credentials)
+ - Remove templating behavior by moving functionality in the network
+ - Generate genesis block in the orderers Pod instead of the start script
+ - Reduce shared mounts to a minimum
+ 
+
 # [v.0.10.0](https://github.com/upb-uc4/hlf-network/compare/v0.9.0...v0.10.0) (2015-10-13) 
 
 ## Documentation
