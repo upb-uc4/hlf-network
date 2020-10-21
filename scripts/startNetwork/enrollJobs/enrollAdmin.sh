@@ -4,7 +4,7 @@ source "/tmp/hyperledger/scripts/util.sh"
 
 set -e
 
-export CA_ORG_HOST=rca-org${ORG_NUM}.hlf:${ORG_CA_PORT}
+export CA_ORG_HOST=_ca._tcp.rca-org${ORG_NUM}.hlf
 
 echo "Enroll admin identity"
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org${ORG_NUM}/admin

@@ -4,8 +4,8 @@ source "/tmp/hyperledger/scripts/util.sh"
 
 set -e
 
-export CA_ORDERER_HOST=rca-org0.hlf:7053
-export CA_TLS_HOST=tls-ca.hlf:7052
+export CA_ORDERER_HOST=_https._tcp.rca-org0.hlf
+export CA_TLS_HOST=_https._tcp.tls-ca.hlf
 
 
 log "Enroll Orderer at Org0 enrollment ca"

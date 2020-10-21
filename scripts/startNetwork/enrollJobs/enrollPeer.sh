@@ -4,8 +4,8 @@ source "/tmp/hyperledger/scripts/util.sh"
 
 set -e
 
-export CA_ORG_HOST=rca-org${ORG_NUM}.hlf:${ORG_CA_PORT}
-export CA_TLS_HOST=tls-ca.hlf:7052
+export CA_ORG_HOST=_https._tcp.rca-org${ORG_NUM}.hlf
+export CA_TLS_HOST=_https._tcp.tls-ca.hlf
 
 
 log "Enroll Peer at Org-CA"

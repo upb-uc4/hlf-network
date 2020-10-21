@@ -1,13 +1,13 @@
 peer lifecycle chaincode commit \
-    -o orderer-org0:7050 \
+    -o grpcs://orderer-org0.hlf:7050 \
     --channelID mychannel \
     --name uc4-cc \
     --version 1.0 \
     --sequence 1 \
     --tls \
     --cafile /tmp/secrets/tls-ca/cert.pem \
-    --peerAddresses peer1-org1:7051 \
+    --peerAddresses grpcs://peer1-org1.hlf:7051 \
     --tlsRootCertFiles /tmp/secrets/tls-ca/cert.pem  \
-    --peerAddresses peer1-org2:7051 \
-    --tlsRootCertFiles /tmp/secrets/tls-ca/cert.pem  \
+    --peerAddresses grpcs://peer1-org2.hlf:7051 \
+    --tlsRootCertFiles /tmp/screts/tls-ca/cert.pem  \
     --collections-config /tmp/hyperledger/chaincode/collections_config.json
