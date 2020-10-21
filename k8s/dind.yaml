@@ -34,6 +34,6 @@ spec:
   selector:
     app: dind
   ports:
-    - protocol: TCP
-      targetPort: 2375
+    - name: host
+      protocol: TCP
       port: 2375

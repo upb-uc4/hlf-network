@@ -18,7 +18,7 @@ spec:
         - name: rca-org1
           image: hyperledger/fabric-ca:1.4.7
           imagePullPolicy: IfNotPresent
-          command: ["fabric-ca-server", "start", "-b", "$(BOOTSTRAP_USER):$(BOOTSTRAP_PASSWORD)", "--port", "7054"]
+          command: ["fabric-ca-server", "start", "-b", "$(BOOTSTRAP_USER):$(BOOTSTRAP_PASSWORD)", "--port", "7052"]
           volumeMounts:
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
@@ -128,7 +128,7 @@ spec:
   selector:
     app: rca-org1
   ports:
-    - protocol: TCP
+    - name: https
+      protocol: TCP
       nodePort: 30907
-      targetPort: 7054
-      port: 7054
+      port: 7052

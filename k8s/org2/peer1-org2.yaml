@@ -81,7 +81,7 @@ spec:
             - name: ORG_NUM
               value: "2"
             - name: ORG_CA_PORT
-              value: "7055"
+              value: "7052"
             - name: PEER_TLS_IDENTITY_USER
               valueFrom:
                 secretKeyRef:
@@ -132,11 +132,9 @@ spec:
   ports:
     - name: core
       protocol: TCP
-      targetPort: 7051
       port: 7051
       nodePort: 30211
     - name: chaincode
       protocol: TCP
-      targetPort: 7052
       port: 7052
       nodePort: 30212
