@@ -95,6 +95,7 @@ function restartOldClusterInBackground() {
   else
     createCluster2 quiet
   fi
+  echo "😎 Backup cluster is ready! You can now fast restart the cluster!"
 }
 
 
