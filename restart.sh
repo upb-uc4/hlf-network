@@ -6,17 +6,25 @@ source ./scripts/util.sh
 
 
 print_usage() {
-  printf "Usage: ./restart -d\n"
+  printf "🧙 Usage: ./restart [-d] [-v] [-b <branch or tag>]\n"
+  printf "Use -v for verbose output\n"
+  printf "Use -b to specify a chaincode branch or tag (default develop)\n"
   printf "Use -d to reset all clusters\n"
 }
 
+PARAMS=""
 
-while getopts 'd' flag; do
+while getopts 'vdb:' flag; do
   case "${flag}" in
+    b) BRANCH_TAG="${OPTARG}"
+       PARAMS="$PARAMS -b $BRANCH_TAG"
+       printf 'Using chaincode branch or tag "%s"\n' "$BRANCH_TAG" ;;
+    v) PARAMS="$PARAMS -v"
+       printf 'Using verbose mode\n' ;;
     d) printf "🐼 Delete all clusters and files\n"
        set +e
-       kind delete clusters --all
-       sudo rm -rf /data/development
+       kind delete clusters cluster-1 cluster-2
+       sudo rm -rf /data/development-1
        sudo rm -rf /data/development-2
        printf "🥳 Done!\n"
        exit 1 ;;
@@ -25,15 +33,7 @@ while getopts 'd' flag; do
   esac
 done
 
-
-####################################################################################################
-# Variables
-####################################################################################################
-
-NEXT=1
-LAST=2
-NEXT_PATH=/data/development
-
+echo $PARAMS
 
 ####################################################################################################
 # Functions
@@ -41,31 +41,23 @@ NEXT_PATH=/data/development
 
 function createCluster() {
   set +e
-  sudo rm -rf $1
+  sudo rm -rf /data/development-$1
   set -e
 
-  if [[ "$4" == "quiet" ]]
+  if [[ "$2" == "quiet" ]]
   then
     kind create cluster \
-      --config $2 \
-      --name "cluster-$3" \
+      --config assets/kind-$1.yaml \
+      --name "cluster-$1" \
       --kubeconfig $(mktemp)\
       >>log.txt 2>&1
-    echo "Successfully created cluster $3" >> log.txt
+    echo "Successfully created cluster $1" >> log.txt
   else
     kind create cluster \
-      --config $2 \
-      --name "cluster-$3" \
+      --config assets/kind-$1.yaml \
+      --name "cluster-$1" \
       --kubeconfig $(mktemp)
   fi
-}
-
-function createCluster1() {
-  createCluster /data/development assets/kind.yaml 1 $1
-}
-
-function createCluster2() {
-  createCluster /data/development-2 assets/kind-2.yaml 2 $1
 }
 
 function createNextCluster() {
@@ -80,20 +72,21 @@ function createNextCluster() {
 
   if [[ "$NEXT" == "1" ]]
   then
-    createCluster1
+    createCluster 1
   else
-    createCluster2
+    createCluster 2
   fi
 }
 
 function restartOldClusterInBackground() {
   echo "🤯 Restart old cluster in background..."
   kind delete clusters cluster-$LAST>>log.txt 2>&1
+
   if [[ "$LAST" == "1" ]]
   then
-    createCluster1 quiet
+    createCluster 1 quiet
   else
-    createCluster2 quiet
+    createCluster 2 quiet
   fi
   printf  "\n--------------------------------------------------------------------------------\n😎 Backup cluster is ready!\n👉 You can now fast restart the cluster!\n--------------------------------------------------------------------------------\n"
 }
@@ -111,13 +104,17 @@ rm log.txt
 
 LAST_CONTEXT=$(kubectl config current-context)
 
+NEXT=1
+LAST=2
+
 # Check if cluster 1 was last used
 if [[ "$LAST_CONTEXT" == *"1" ]]
 then
   LAST=1
   NEXT=2
-  NEXT_PATH=/data/development-2
 fi
+
+NEXT_PATH=/data/development-$NEXT
 
 restartOldClusterInBackground &
 # For better ux
@@ -153,7 +150,7 @@ small_sep
 echo "🦥 Cluster ready!"
 echo "😎 Deploy network..."
 small_sep
-./deploy.sh -c $NEXT_PATH/hyperledger
+./deploy.sh -c $NEXT_PATH/hyperledger $PARAMS
 
 wait
 printf "🥳 Done!\n"

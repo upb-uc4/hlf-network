@@ -53,7 +53,8 @@ To delete the cluster, run ```kind delete cluster```, to remove all files ```sud
 To deploy the network, execute ```./deploy.sh -v -b [chaincode branch or tag] -c [cluster mount]```.
 The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default). Use the ```-v``` for verbose output. The ```-c``` option allows to specify the mount path for hyperledger. The default folder matches the configuration of the development cluster.
 
-You can use ```kubectl get all -n hlf``` to check the status of the network.
+For development, you can use ```./restart.sh``` for fast deployment and restarting, the script uses two clusters which are created in the background and restarted automatically to reduce startup times.
+The script offers the same flags as ```deploy.sh```.
 
 ### Kubernetes Dashboard
 
