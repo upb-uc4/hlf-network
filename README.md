@@ -10,6 +10,7 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
 ## Table of Contents
 
   * [Introduction](#introduction)
+  * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
     * [Kubernetes Cluster](#kubernetes-cluster)
     * [Deploy the Network](#deploy-the-network)
@@ -35,6 +36,70 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   * [Troubleshooting](#troubleshooting)
 
 ---
+  
+## Getting Started
+
+### Kubernetes Cluster 
+
+For setting up our project, you need to install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
+
+We provide a KinD cluster configuration for local development. To create the cluster, run ```./overwriteKindCluster.sh```. You can also use this script to delete the old cluster and files and create a new cluster.
+
+To delete the cluster, run ```kind delete cluster```, to remove all files ```sudo rm -rf /data/development/hyperledger/```. 
+
+### Deploy the Network
+
+To deploy the network, execute ```./deploy.sh -v -b [chaincode branch or tag] -c [cluster mount]```.
+The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default). Use the ```-v``` for verbose output. The ```-c``` option allows to specify the mount path for hyperledger. The default folder matches the configuration of the development cluster.
+
+For development, you can use ```./restart.sh``` for fast deployment and restarting, the script uses two clusters which are created in the background and restarted automatically to reduce startup times.
+The script offers the same flags as ```deploy.sh```.
+
+### Kubernetes Dashboard
+
+Kubernetes provides a [dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/) which helps with debugging and controlling the cluster. To install the dasboard, run `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml`. Execute `kubectl proxy` to make the dashboard available under http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.
+
+To access the dashboard, you need to generate a Bearer Token. To do so, just run the follwing commands ([reference](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md)) in your command line:
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF
+```
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF
+```
+You can then execute `kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+` to see your freshly generated Bearer Token and log into the dashboard.
+
+
+## Network Topology
+
+The initial network topology suggested by the [operations guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html) implements the most interesting use cases of hyperledger fabric. For using multiple orderers later, we would have to use the [raft protocol](https://raft.github.io/) since kafka is deprecated.
+
+The network consists of three organizations, one providing the orderer service and two hosting two peers each communicating on a shared channel. 
+We deploy an external TLS CA which provides TLS certificates for all containers.
+We freshly generate and distribute all certificates for this.
+The following figure visualizes the implemented network.
+![Network Topology](https://hyperledger-fabric-ca.readthedocs.io/en/latest/_images/network_topology.png)
+Note: Network Topology. Reprinted from the [Fabric CA operations guide](https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
+<!---TODO: Note or Fig?-->
 
 ## Deployment Steps
 In this part, we conceptually explain the steps of our deployment and the implemented network entities.
