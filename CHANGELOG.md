@@ -1,9 +1,18 @@
+# [v.0.11.0](https://github.com/upb-uc4/hlf-network/compare/v0.10.2...v0.11.0) (Draft) 
+
+## Feature
+ 
+ - Add credentials stored in k8s secrets for usernames and passwords
+ - Add development script with faster restart times that uses alternating clusters 
+
+
 # [v.0.10.2](https://github.com/upb-uc4/hlf-network/compare/v0.10.1...v0.10.2) (2020-10-20) 
 
 ## Refactor
  
  - Provide secrets and configmap to lagom namespace
  - Change paths in connection_profile_kubernetes
+ 
  
 # [v.0.10.1](https://github.com/upb-uc4/hlf-network/compare/v0.10.0...v0.10.1) (2020-10-20) 
 
