@@ -30,7 +30,4 @@ fabric-ca-client register \
   --id.type user \
   -u https://$CA_ORG2_HOST
 
-#TODO
-#fabric-ca-client register --id.name user-org2 --id.secret org2UserPW --id.type user -u https://$CA_ORG2_HOST
-
 log "Finished registering users"

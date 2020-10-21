@@ -12,7 +12,6 @@ mkdir -p $MSP_DIR/cacerts
 mkdir -p $MSP_DIR/tlscacerts
 mkdir -p $MSP_DIR/users
 cp /tmp/hyperledger/shared/org0/msp/admincerts/cert.pem $MSP_DIR/admincerts/admin-org0-cert.pem
-# TODO copy from secrets
 cp /tmp/secrets/rca-org0/cert.pem $MSP_DIR/cacerts/org0-ca-cert.pem
 cp /tmp/secrets/tls-ca/cert.pem $MSP_DIR/tlscacerts/cert.pem
 
