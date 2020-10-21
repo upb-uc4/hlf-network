@@ -95,7 +95,7 @@ function restartOldClusterInBackground() {
   else
     createCluster2 quiet
   fi
-  printf  "\n😎 Backup cluster is ready!\n👉 You can now fast restart the cluster!/n"
+  printf  "\n--------------------------------------------------------------------------------\n😎 Backup cluster is ready!\n👉 You can now fast restart the cluster!\n--------------------------------------------------------------------------------\n"
 }
 
 
