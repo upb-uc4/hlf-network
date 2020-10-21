@@ -81,7 +81,7 @@ spec:
             - name: ORG_NUM
               value: "2"
             - name: ORG_CA_PORT
-              value: "7055"
+              value: "7052"
             - name: PEER_TLS_IDENTITY_USER
               valueFrom:
                 secretKeyRef:

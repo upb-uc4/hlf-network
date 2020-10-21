@@ -6,7 +6,7 @@ set -e
 
 log "Use CA-client to enroll admin"
 
-export CA_ORG2_HOST=0.0.0.0:7055
+export CA_ORG2_HOST=0.0.0.0:7052
 export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/cert.pem
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/ca-client/
 
