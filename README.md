@@ -9,34 +9,33 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
 
 ## Table of Contents
 
-- [Hyperledger Fabric Network on Kubernetes](#hyperledger-fabric-network-on-kubernetes)
   * [Introduction](#introduction)
   * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
-    + [Kubernetes Cluster](#kubernetes-cluster)
-    + [Deploy the Network](#deploy-the-network)
-    + [Kubernetes Dashboard](#kubernetes-dashboard)
+    * [Kubernetes Cluster](#kubernetes-cluster)
+    * [Deploy the Network](#deploy-the-network)
+    * [Kubernetes Dashboard](#kubernetes-dashboard)
   * [Network Topology](#network-topology)
   * [Deployment Steps](#deployment-steps)
-    + [TLS-CA](#tls-ca)
-    + [Organizations and Enrollment-CAs](#organizations-and-enrollment-cas)
-    + [Orderer](#orderer)
-    + [CLIs and Channel Creation](#clis-and-channel-creation)
-    + [Install and Invoke Chaincode](#install-and-invoke-chaincode)
-    + [Further Readings](#further-readings)
+    * [TLS-CA](#tls-ca)
+    * [Organizations and Enrollment-CAs](#organizations-and-enrollment-cas)
+    * [Orderer](#orderer)
+    * [CLIs and Channel Creation](#clis-and-channel-creation)
+    * [Install and Invoke Chaincode](#install-and-invoke-chaincode)
+    * [Further Readings](#further-readings)
   * [For Developers](#for-developers)
-    + [Project Structure](#project-structure)
-      - [Main Scripts](#main-scripts)
-      - [MSP Directories](#msp-directories)
-    + [Implementation Details](#implementation-details)
-    + [Using kubectl](#using-kubectl)
-    + [Debugging](#debugging)
+    * [Project Structure](#project-structure)
+      * [Main Scripts](#main-scripts)
+      * [MSP Directories](#msp-directories)
+    * [Implementation Details](#implementation-details)
+    * [Using kubectl](#using-kubectl)
+    * [Debugging](#debugging)
   * [Changelog](#changelog)
   * [Versions](#versions)
   * [License](#license)
   * [Troubleshooting](#troubleshooting)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+---
   
 ## Getting Started
 
