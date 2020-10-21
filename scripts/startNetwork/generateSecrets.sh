@@ -179,7 +179,7 @@ kubectl create secret generic cert.rca-org2 -n uc4-lagom --from-file=cert.pem=$T
 cp $TMP_CERT-cert.pem /tmp/hyperledger/org2/msp/cacerts/org2-ca-cert.pem
 cp $TMP_CERT-cert.pem $HL_MOUNT/api/org2/msp/cacerts/org2-ca-cert.pem
 
-echo "Generate admin credentials for org1 rca"
+echo "Generate admin credentials for org2 rca"
 kubectl create secret generic credentials.rca-org2 -n hlf \
       --from-literal=username=admin \
       --from-literal=password=$(generatePassword)
