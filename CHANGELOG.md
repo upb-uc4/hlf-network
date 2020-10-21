@@ -5,6 +5,7 @@
  - Add credentials stored in k8s secrets for usernames and passwords
  - Add secrets containing credentials to lagom namespace (credentials.scala-admin-org1, credentials.scala-registration-admin-org1)
  - Add development script with faster restart times that uses alternating clusters 
+ - Add dind container to each peer's Pod
 
 
 # [v.0.10.2](https://github.com/upb-uc4/hlf-network/compare/v0.10.1...v0.10.2) (2020-10-20) 
