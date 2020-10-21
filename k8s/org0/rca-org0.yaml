@@ -18,7 +18,7 @@ spec:
         - name: rca-org0
           image: hyperledger/fabric-ca:1.4.7
           imagePullPolicy: IfNotPresent
-          command: ["fabric-ca-server", "start", "-b", "rca-org0-admin:rca-org0-adminpw", "--port", "7053"]
+          command: ["fabric-ca-server", "start", "-b", "$(BOOTSTRAP_USER):$(BOOTSTRAP_PASSWORD)", "--port", "7053"]
           volumeMounts:
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
@@ -48,6 +48,36 @@ spec:
               value: "/tmp/secrets/cert.pem"
             - name: FABRIC_CA_SERVER_CA_KEYFILE
               value: "/tmp/secrets/key.pem"
+            - name: BOOTSTRAP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.rca-org0
+                  key: username
+            - name: BOOTSTRAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.rca-org0
+                  key: password
+            - name: ORDERER_ORG0_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.orderer-org0
+                  key: username
+            - name: ORDERER_ORG0_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.orderer-org0
+                  key: password
+            - name: ADMIN_ORG0_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.admin-org0
+                  key: username
+            - name: ADMIN_ORG0_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.admin-org0
+                  key: password
       volumes:
         - name: scripts
           hostPath:

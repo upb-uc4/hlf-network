@@ -72,6 +72,16 @@ spec:
               value: "2"
             - name: ORG_CA_PORT
               value: "7055"
+            - name: ADMIN_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.admin-org2
+                  key: username
+            - name: ADMIN_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.admin-org2
+                  key: password
       volumes:
         - name: shared-volume
           hostPath:
