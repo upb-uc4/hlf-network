@@ -70,8 +70,6 @@ spec:
               value: "true"
             - name: ORG_NUM
               value: "1"
-            - name: ORG_CA_PORT
-              value: "7054"
             - name: ADMIN_IDENTITY_USER
               valueFrom:
                 secretKeyRef:
