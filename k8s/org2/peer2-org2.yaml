@@ -132,7 +132,7 @@ spec:
   selector:
     app: peer2-org2
   ports:
-    - name: core
+    - name: grcps
       protocol: TCP
       targetPort: 7051
       port: 7051

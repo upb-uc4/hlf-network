@@ -105,7 +105,8 @@ spec:
   selector:
     app: rca-org0
   ports:
-    - protocol: TCP
+    - name: https
+      protocol: TCP
       nodePort: 30906
       targetPort: 7053
       port: 7053

@@ -128,7 +128,8 @@ spec:
   selector:
     app: tls-ca
   ports:
-    - protocol: TCP
+    - name: https
+      protocol: TCP
       nodePort: 30905
       targetPort: 7052
       port: 7052
