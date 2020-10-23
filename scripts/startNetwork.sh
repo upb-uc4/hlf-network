@@ -32,7 +32,6 @@ source ./scripts/startNetwork/setupOrg2Ca.sh
 source ./scripts/startNetwork/startClis.sh
 source ./scripts/startNetwork/setupPeers.sh
 source ./scripts/startNetwork/setupOrderer.sh
-source ./scripts/startNetwork/setupDind.sh
 # Wait to ensure peers and database are communicating as expected
 sleep 10
 source ./scripts/startNetwork/setupChannel.sh

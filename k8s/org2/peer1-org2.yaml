@@ -28,7 +28,7 @@ spec:
             - name: CORE_PEER_MSPCONFIGPATH
               value: "/tmp/hyperledger/org2/peer1/msp"
             - name: CORE_VM_ENDPOINT
-              value: "tcp://dind:2375"
+              value: "tcp://localhost:2375"
             - name: FABRIC_LOGGING_SPEC
               value: "debug:gossip,msp=info"
             - name: CORE_PEER_TLS_ENABLED
@@ -55,6 +55,12 @@ spec:
           image: hyperledger/fabric-couchdb:latest
           ports:
             - containerPort: 5984
+        - name: dind
+          image: "docker:18.05.0-dind"
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 2375
       initContainers:
         - name: fabric-ca
           image: hyperledger/fabric-ca:1.4.7
@@ -134,7 +140,4 @@ spec:
       protocol: TCP
       port: 7051
       nodePort: 30211
-    - name: chaincode
-      protocol: TCP
-      port: 7052
-      nodePort: 30212
+

@@ -5,6 +5,7 @@
  - Add credentials stored in k8s secrets for usernames and passwords
  - Add secrets containing credentials to lagom namespace (credentials.scala-admin-org1, credentials.scala-registration-admin-org1)
  - Add development script with faster restart times that uses alternating clusters 
+ - Add dind container to each peer's Pod
 
 ## Refactor 
  

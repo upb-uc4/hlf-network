@@ -35,3 +35,5 @@ mv /tmp/hyperledger/org${ORG_NUM}/peer${PEER_NUM}/tls-msp/keystore/*_sk /tmp/hyp
 mkdir -p /tmp/hyperledger/org${ORG_NUM}/peer${PEER_NUM}/msp/admincerts
 cp /tmp/hyperledger/shared/org${ORG_NUM}/msp/admincerts/cert.pem /tmp/hyperledger/org${ORG_NUM}/peer${PEER_NUM}/msp/admincerts/org${ORG_NUM}-admin-cert.pem
 
+log "Successfully enrolled peer"
+
