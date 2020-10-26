@@ -9,18 +9,21 @@ print_usage() {
   printf "🧙 Usage: ./restart [-d] [-v] [-b <branch or tag>]\n"
   printf "Use -v for verbose output\n"
   printf "Use -b to specify a chaincode branch or tag (default develop)\n"
+  printf "Use -t for test mode\n"
   printf "Use -d to reset all clusters\n"
 }
 
 PARAMS=""
 
-while getopts 'vdb:' flag; do
+while getopts 'vtdb:' flag; do
   case "${flag}" in
     b) BRANCH_TAG="${OPTARG}"
        PARAMS="$PARAMS -b $BRANCH_TAG"
        printf 'Using chaincode branch or tag "%s"\n' "$BRANCH_TAG" ;;
     v) PARAMS="$PARAMS -v"
        printf 'Using verbose mode\n' ;;
+    t) PARAMS="$PARAMS -t"
+       printf 'Using test mode\n' ;;
     d) printf "🐼 Delete all clusters and files\n"
        set +e
        kind delete clusters cluster-1 cluster-2
