@@ -8,18 +8,6 @@
 # hostPath volume.
 
 set +e
-mkdir -p $HL_MOUNT/org0/admin/msp
-chmod 777 $HL_MOUNT/org0/admin/msp
-mkdir -p $HL_MOUNT/org1/admin/msp
-chmod 777 $HL_MOUNT/org1/admin/msp
-mkdir -p $HL_MOUNT/org2/admin/msp
-chmod 777 $HL_MOUNT/org2/admin/msp
-mkdir -p $HL_MOUNT/org0/orderer
-chmod 777 $HL_MOUNT/org0/orderer
-mkdir -p $HL_MOUNT/org1/peer1/assets
-chmod 777 $HL_MOUNT/org1/peer1/assets
-mkdir -p $HL_MOUNT/org2/peer1/assets
-chmod 777 $HL_MOUNT/org2/peer1/assets
 mkdir -p $HL_MOUNT/uc4
 chmod 777 $HL_MOUNT/uc4
 mkdir -p $HL_MOUNT/uc4/chaincode

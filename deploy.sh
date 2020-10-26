@@ -4,7 +4,7 @@
 [[ -e scripts/util.sh ]] || { echo >&2 "Please cd into repositories main directory before running this script."; exit 1; }
 
 BRANCH_TAG="develop"
-CLUSTER_MOUNT="/data/development/hyperledger/"
+CLUSTER_MOUNT="/data/development/hyperledger"
 VERBOSE=""
 
 print_usage() {
@@ -36,7 +36,6 @@ printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER
 
 # Start network and deploy chaincode
 
-./scripts/setMountFolder.sh
 ./scripts/startNetwork.sh $VERBOSE
 
 if test -z "$BRANCH_TAG"

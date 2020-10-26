@@ -1,4 +1,38 @@
-# [v.0.10.0](https://github.com/upb-uc4/hlf-network/compare/v0.9.0...v0.10.0) (2015-10-13) 
+# [v.0.11.0](https://github.com/upb-uc4/hlf-network/compare/v0.10.2...v0.11.0) (2020-10-26) 
+
+## Feature
+ 
+ - Add credentials stored in k8s secrets for usernames and passwords
+ - Add secrets containing credentials to lagom namespace (credentials.scala-admin-org1, credentials.scala-registration-admin-org1)
+ - Add development script with faster restart times that uses alternating clusters 
+ - Add dind container to each peer's Pod
+
+## Refactor 
+ 
+ - Name service ports
+ - Change https listen ports of tls-ca, rca-org0, rca-org1, rca-org2 to 7052
+
+
+# [v.0.10.2](https://github.com/upb-uc4/hlf-network/compare/v0.10.1...v0.10.2) (2020-10-20) 
+
+## Refactor
+ 
+ - Provide secrets and configmap to lagom namespace
+ - Change paths in connection_profile_kubernetes
+ 
+ 
+# [v.0.10.1](https://github.com/upb-uc4/hlf-network/compare/v0.10.0...v0.10.1) (2020-10-20) 
+
+## Refactor
+ 
+ - Generate usernames and passwords of CAs into k8s secrets
+ - Replace Jobs by initContainers to keep data on the same Pod (e.g. enrollment and use of credentials)
+ - Remove templating behavior by moving functionality in the network
+ - Generate genesis block in the orderers Pod instead of the start script
+ - Reduce shared mounts to a minimum
+ 
+
+# [v.0.10.0](https://github.com/upb-uc4/hlf-network/compare/v0.9.0...v0.10.0) (2020-10-13) 
 
 ## Documentation
 

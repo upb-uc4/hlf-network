@@ -1,47 +1,100 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: rca-org2
-    namespace: hlf
-    labels:
-        app: rca-org2
+  name: rca-org2
+  namespace: hlf
+  labels:
+    app: rca-org2
 spec:
-    selector:
-        matchLabels:
-            app: rca-org2
-    template:
-        metadata: 
-            labels:
-                app: rca-org2
-        spec:
-            containers:
-              - name: rca-org2
-                image: hyperledger/fabric-ca:1.4.7
-                imagePullPolicy: IfNotPresent
-                command: ["fabric-ca-server", "start", "-b", "rca-org2-admin:rca-org2-adminpw", "--port", "7055"]
-                volumeMounts:
-                  - mountPath: /tmp/hyperledger/fabric-ca
-                    name: ca-mount
-                  - mountPath: /tmp/hyperledger/scripts
-                    name: scripts
-                env:
-                - name: FABRIC_CA_HOME
-                  value: "/tmp/hyperledger/fabric-ca/crypto"
-                - name: FABRIC_CA_SERVER_TLS_ENABLED
-                  value: "true"
-                - name: FABRIC_CA_SERVER_CSR_CN
-                  value: "rca-org2"
-                - name: FABRIC_CA_SERVER_CSR_HOSTS
-                  value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org2.hlf"
-                - name: FABRIC_CA_SERVER_DEBUG
-                  value: "true"
-            volumes:
-              - name: ca-mount
-                hostPath:
-                  path: /mnt/hyperledger/org2/ca
-              - name: scripts
-                hostPath:
-                  path: /mnt/hyperledger/scripts
+  selector:
+    matchLabels:
+      app: rca-org2
+  template:
+    metadata:
+      labels:
+        app: rca-org2
+    spec:
+      containers:
+        - name: rca-org2
+          image: hyperledger/fabric-ca:1.4.7
+          imagePullPolicy: IfNotPresent
+          command: ["fabric-ca-server", "start", "-b", "$(BOOTSTRAP_USER):$(BOOTSTRAP_PASSWORD)", "--port", "7052"]
+          volumeMounts:
+            - mountPath: /tmp/hyperledger/scripts
+              name: scripts
+            - mountPath: /tmp/secrets/cert.pem
+              name: cert
+              subPath: cert.pem
+              readOnly: true
+            - mountPath: /tmp/secrets/key.pem
+              name: key
+              subPath: key.pem
+              readOnly: true
+          env:
+            - name: FABRIC_CA_HOME
+              value: "/tmp/hyperledger/fabric-ca/crypto"
+            - name: FABRIC_CA_SERVER_TLS_ENABLED
+              value: "true"
+            - name: FABRIC_CA_SERVER_CSR_CN
+              value: "rca-org2"
+            - name: FABRIC_CA_SERVER_CSR_HOSTS
+              value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org2.hlf"
+            - name: FABRIC_CA_SERVER_DEBUG
+              value: "true"
+            - name: FABRIC_CA_SERVER_CA_CERTFILE
+              value: "/tmp/secrets/cert.pem"
+            - name: FABRIC_CA_SERVER_CA_KEYFILE
+              value: "/tmp/secrets/key.pem"
+            - name: BOOTSTRAP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.rca-org2
+                  key: username
+            - name: BOOTSTRAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.rca-org2
+                  key: password
+            - name: PEER1_ORG2_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer1-org2
+                  key: username
+            - name: PEER1_ORG2_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer1-org2
+                  key: password
+            - name: PEER2_ORG2_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer2-org2
+                  key: username
+            - name: PEER2_ORG2_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.peer2-org2
+                  key: password
+            - name: ADMIN_ORG2_IDENTITY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.admin-org2
+                  key: username
+            - name: ADMIN_ORG2_IDENTITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.admin-org2
+                  key: password
+      volumes:
+        - name: scripts
+          hostPath:
+            path: /mnt/hyperledger/scripts
+        - name: cert
+          secret:
+            secretName: cert.rca-org2
+        - name: key
+          secret:
+            secretName: key.rca-org2
 ---
 apiVersion: v1
 kind: Service
@@ -55,7 +108,7 @@ spec:
   selector:
     app: rca-org2
   ports:
-    - protocol: TCP
+    - name: https
+      protocol: TCP
       nodePort: 30908
-      targetPort: 7055
-      port: 7055
+      port: 7052
