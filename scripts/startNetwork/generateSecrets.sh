@@ -7,6 +7,13 @@ function generatePassword() {
   openssl rand -base64 64 | tr -dc A-Za-z0-9 | head -c 32 ; echo ''
 }
 
+TEST_MODE=""
+while getopts 't' flag; do
+  case "${flag}" in
+    t) TEST_MODE="-t" ;;
+    ?) printf 'Invalid flag!' ;;
+  esac
+done
 
 
 header "Generate credentials and store in secrets"
@@ -16,24 +23,17 @@ set +e
 kubectl create namespace uc4-lagom
 set -e
 
-# For use in api: prepare folders
-# Use in lagom:
-mkdir -p $HL_MOUNT/api/org0/msp/cacerts/
-mkdir -p $HL_MOUNT/api/org1/msp/cacerts/
-mkdir -p $HL_MOUNT/api/org2/msp/cacerts/
-# Copy connection_profile_kuberntes.yaml for legacy
-cp assets/connection_profile_kubernetes.yaml $HL_MOUNT/api
+if [[ TEST_MODE == "-t" ]]; then
+  # Use for testing without lagom
+  rm -rf /tmp/hyperledger/
+  mkdir -p /tmp/hyperledger/
+  mkdir -p /tmp/hyperledger/org0/msp/cacerts
+  mkdir -p /tmp/hyperledger/org1/msp/cacerts
+  mkdir -p /tmp/hyperledger/org2/msp/cacerts
+fi
+
 # Provide connection profile via secret for Lagom
 kubectl create configmap connection-profile --from-file=assets/connection_profile_kubernetes.yaml -n uc4-lagom
-
-# Use for testing without lagom
-rm -rf /tmp/hyperledger/
-mkdir -p /tmp/hyperledger/
-mkdir -p /tmp/hyperledger/org0/msp/cacerts
-mkdir -p /tmp/hyperledger/org1/msp/cacerts
-mkdir -p /tmp/hyperledger/org2/msp/cacerts
-
-
 
 echo "Generate TLS CA root certificate and private key"
 TMP_CERT=$(mktemp)
@@ -50,8 +50,9 @@ kubectl create secret generic key.tls-ca -n hlf --from-file=key.pem=$TMP_CERT-ke
 kubectl create secret generic cert.tls-ca -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 kubectl create secret generic cert.tls-ca -n uc4-lagom --from-file=cert.pem=$TMP_CERT-cert.pem
 
-cp $TMP_CERT-cert.pem /tmp/hyperledger/ca-cert.pem
-cp $TMP_CERT-cert.pem $HL_MOUNT/api/ca-cert.pem
+if [[ TEST_MODE == "-t" ]]; then
+  cp $TMP_CERT-cert.pem /tmp/hyperledger/ca-cert.pem
+fi
 
 echo "Generate admin credentials for tls ca"
 kubectl create secret generic credentials.tls-ca -n hlf \
@@ -77,8 +78,9 @@ kubectl create secret generic key.rca-org0 -n hlf --from-file=key.pem=$TMP_CERT-
 kubectl create secret generic cert.rca-org0 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 kubectl create secret generic cert.rca-org0 -n uc4-lagom --from-file=cert.pem=$TMP_CERT-cert.pem
 
-cp $TMP_CERT-cert.pem /tmp/hyperledger/org0/msp/cacerts/org0-ca-cert.pem
-cp $TMP_CERT-cert.pem $HL_MOUNT/api/org0/msp/cacerts/org0-ca-cert.pem
+if [[ TEST_MODE == "-t" ]]; then
+  cp $TMP_CERT-cert.pem /tmp/hyperledger/org0/msp/cacerts/org0-ca-cert.pem
+fi
 
 echo "Generate admin credentials for orderer rca"
 kubectl create secret generic credentials.rca-org0 -n hlf \
@@ -119,8 +121,9 @@ kubectl create secret generic key.rca-org1 -n hlf --from-file=key.pem=$TMP_CERT-
 kubectl create secret generic cert.rca-org1 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 kubectl create secret generic cert.rca-org1 -n uc4-lagom --from-file=cert.pem=$TMP_CERT-cert.pem
 
-cp $TMP_CERT-cert.pem /tmp/hyperledger/org1/msp/cacerts/org1-ca-cert.pem
-cp $TMP_CERT-cert.pem $HL_MOUNT/api/org1/msp/cacerts/org1-ca-cert.pem
+if [[ TEST_MODE == "-t" ]]; then
+  cp $TMP_CERT-cert.pem /tmp/hyperledger/org1/msp/cacerts/org1-ca-cert.pem
+fi
 
 echo "Generate admin credentials for org1 rca"
 kubectl create secret generic credentials.rca-org1 -n hlf \
@@ -188,8 +191,9 @@ kubectl create secret generic key.rca-org2 -n hlf --from-file=key.pem=$TMP_CERT-
 kubectl create secret generic cert.rca-org2 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 kubectl create secret generic cert.rca-org2 -n uc4-lagom --from-file=cert.pem=$TMP_CERT-cert.pem
 
-cp $TMP_CERT-cert.pem /tmp/hyperledger/org2/msp/cacerts/org2-ca-cert.pem
-cp $TMP_CERT-cert.pem $HL_MOUNT/api/org2/msp/cacerts/org2-ca-cert.pem
+if [[ TEST_MODE == "-t" ]]; then
+  cp $TMP_CERT-cert.pem /tmp/hyperledger/org2/msp/cacerts/org2-ca-cert.pem
+fi
 
 echo "Generate admin credentials for org2 rca"
 kubectl create secret generic credentials.rca-org2 -n hlf \
