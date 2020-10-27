@@ -27,10 +27,6 @@ spec:
               value: "0.0.0.0:7051"
             - name: CORE_PEER_ADDRESS
               value: "peer2-org1:7051"
-            - name: CORE_PEER_CHAINCODELISTENADDRESS
-              value: "0.0.0.0:7052"
-            - name: CORE_PEER_CHAINCODEADDRESS
-              value: "peer2-org1:7052"
             - name: CORE_PEER_LOCALMSPID
               value: "org1MSP"
             - name: CORE_PEER_MSPCONFIGPATH
@@ -53,26 +49,24 @@ spec:
               value: "false"
             - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
               value: "peer2-org1:7051"
+            - name: CORE_PEER_BOOTSTRAP
+              value: "peer2-org1:7051"
             - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
               value: "true"
-            - name: CORE_PEER_GOSSIP_BOOTSTRAP
-              value: "peer1-org1:7051"
+            - name: CORE_PEER_CHAINCODEADDRESS
+              value: "peer2-org1:7052"
+            - name: CORE_PEER_CHAINCODELISTENADDRESS
+              value: "0.0.0.0:7052"
             - name: CORE_LEDGER_STATE_STATEDATABASE
               value: "CouchDB"
             - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
               value: "localhost:5984"
-          ports:
-            - containerPort: 7052
         - name: couchdb
           image: hyperledger/fabric-couchdb:latest
-          ports:
-            - containerPort: 5984
         - name: dind
           image: "docker:18.05.0-dind"
           securityContext:
             privileged: true
-          ports:
-            - containerPort: 2375
       initContainers:
         - name: fabric-ca
           image: hyperledger/fabric-ca:1.4.7
@@ -120,6 +114,7 @@ spec:
                 secretKeyRef:
                   name: credentials.peer2-org1
                   key: password
+
       volumes:
         - name: peer2-org1-mount
           emptyDir: {}
