@@ -5,23 +5,25 @@
 
 BRANCH_TAG="develop"
 CLUSTER_MOUNT="/data/development/hyperledger"
-VERBOSE=""
+TEST_MODE=""
 
 print_usage() {
   printf "Usage: ./deploy -v -b [branch or tag] -c [custom config file]\n"
-  printf "Use -v for verbose output and -b to specify a branch or tag (default develop)\n"
+  printf "Use -b to specify a branch or tag (default develop)\n"
+  printf "Use -t to activate test mode (do not use in production)\n"
   printf "Use -c to specify a cluster mount path (default %s)\n" "$CLUSTER_MOUNT"
 }
 
 
-while getopts 'vb:c:' flag; do
+while getopts 'vtb:c:' flag; do
   case "${flag}" in
     b) BRANCH_TAG="${OPTARG}"
        printf 'Using branch or tag "%s"\n' "$BRANCH_TAG" ;;
-    v) VERBOSE="-d"
-       printf 'Using verbose mode\n' ;;
     c) CLUSTER_MOUNT="${OPTARG}"
        printf 'Using hyperledger mount path "%s"\n' "$CLUSTER_MOUNT";;
+    t) TEST_MODE="-t"
+       printf 'Using test mode'
+       printf 'Do not use this mode in production!' ;;
     ?) print_usage
        exit 1 ;;
   esac
@@ -36,7 +38,7 @@ printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER
 
 # Start network and deploy chaincode
 
-./scripts/startNetwork.sh $VERBOSE
+./scripts/startNetwork.sh $TEST_MODE
 
 if test -z "$BRANCH_TAG"
 then

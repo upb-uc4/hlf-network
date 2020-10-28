@@ -61,16 +61,13 @@ spec:
               value: "CouchDB"
             - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
               value: "localhost:5984"
+            
         - name: couchdb
           image: hyperledger/fabric-couchdb:latest
-          ports:
-            - containerPort: 5984
         - name: dind
           image: "docker:18.05.0-dind"
           securityContext:
             privileged: true
-          ports:
-            - containerPort: 2375
       initContainers:
         - name: fabric-ca
           image: hyperledger/fabric-ca:1.4.7
@@ -151,4 +148,6 @@ spec:
       protocol: TCP
       port: 7051
       nodePort: 30111
-
+    - name: chaincode
+      protocol: TCP
+      port: 7052
