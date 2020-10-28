@@ -54,7 +54,7 @@ spec:
             - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
               value: "true"
             - name: CORE_PEER_CHAINCODEADDRESS
-              value: "peer1-org1:7052"
+              value: "peer2-org1:7052"
             - name: CORE_PEER_CHAINCODELISTENADDRESS
               value: "0.0.0.0:7052"
             - name: CORE_LEDGER_STATE_STATEDATABASE
