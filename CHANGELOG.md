@@ -1,3 +1,9 @@
+# [v.0.11.2](https://github.com/upb-uc4/hlf-network/compare/v0.11.1...v0.11.2) (2020-10-28) 
+
+## Bug Fixes 
+
+ - Wrong address in peer configuration caused chaincode registration failure
+
 # [v.0.11.1](https://github.com/upb-uc4/hlf-network/compare/v0.11.0...v0.11.1) (2020-10-28) 
 
 ## Bug Fixes 
