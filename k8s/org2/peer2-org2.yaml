@@ -144,4 +144,6 @@ spec:
       protocol: TCP
       port: 7051
       nodePort: 30221
-
+    - name: chaincode                                                            
+      protocol: TCP                                                                 
+      port: 7052
