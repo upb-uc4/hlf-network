@@ -1,3 +1,19 @@
+# [v.0.11.1](https://github.com/upb-uc4/hlf-network/compare/v0.11.0...v0.11.1) (2020-10-28) 
+
+## Bug Fixes 
+
+ - Fix bug that chaincode containers cannot send messages to their peer
+
+## Feature
+ 
+ - Add `-t` tag for testing that copies certificates to the filesystem and registers a testing admin for running local test
+
+## Refactor 
+ 
+ - Remove `-d` debug flag since it was not used anymore
+ - Remove legacy support for providing certifcates through the filesystem instead of secrets in lagom
+
+
 # [v.0.11.0](https://github.com/upb-uc4/hlf-network/compare/v0.10.2...v0.11.0) (2020-10-26) 
 
 ## Feature
