@@ -2,21 +2,15 @@
 
 source ./scripts/util.sh
 
-header "Setting up channel using CLI1 on Org1 Peer1"
+header "Channel Setup"
 
+msg "Creating channel via cli-org1"
 CLI1=$(get_pods "cli-org1")
-
-# Use CLI shell to create channel
-
 kubectl exec -n hlf $CLI1 -i -- sh < scripts/startNetwork/setupChannel/createChannel.sh
 
-sep
-
-echo "Joining channel using CLI1 on Org1 Peer1 and Peer2"
+msg "Joining channel with peer1-org1 and peer2-org1"
 kubectl exec -n hlf $CLI1 -i -- sh < scripts/startNetwork/setupChannel/joinChannelOrg1.sh
 
-sep
-
-echo "Joining channel using CLI2 on Org2 Peer1"
+msg "Joining channel with peer1-org2 and peer2-org2"
 CLI2=$(get_pods "cli-org2")
 kubectl exec -n hlf $CLI2 -i -- sh < scripts/startNetwork/setupChannel/joinChannelOrg2.sh
