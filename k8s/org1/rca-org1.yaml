@@ -22,7 +22,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "/tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrg1CaUsers.sh"]
+                command: ["/bin/bash", "-c", "/tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrg1CaUsers.sh"]
           volumeMounts:
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
