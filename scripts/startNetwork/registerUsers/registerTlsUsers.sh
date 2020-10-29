@@ -4,6 +4,8 @@ source "/tmp/hyperledger/scripts/util.sh"
 
 set -e
 
+sleep 10
+
 log "Use CA-client to enroll admin"
 
 export TLS_CA_HOST=0.0.0.0:7052
