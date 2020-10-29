@@ -210,4 +210,3 @@ kubectl create secret generic credentials.peer2-org2 -n hlf \
 kubectl create secret generic credentials.admin-org2 -n hlf \
       --from-literal=username=admin-org2 \
       --from-literal=password=$(generatePassword)
-
