@@ -16,7 +16,7 @@ while getopts 't' flag; do
 done
 
 
-header "Generate credentials and store in secrets"
+header "Generate certificate and credentials and provide them as secrets"
 
 # Ensure lagom namespace exists
 set +e
