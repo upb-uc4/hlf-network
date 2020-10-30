@@ -16,8 +16,7 @@ print_usage() {
 
 while getopts 'b:' flag; do
   case "${flag}" in
-    b) BRANCH_TAG="${OPTARG}"
-       printf "Branch / Tag: %s selected\n" "$BRANCH_TAG" ;;
+    b) BRANCH_TAG="${OPTARG}" ;;
     ?) print_usage
        exit 1 ;;
   esac
@@ -26,6 +25,7 @@ done
 source ./scripts/env.sh
 
 header "Downloading chaincode"
+msg "Downloading branch or tag $BRANCH_TAG"
 mkdir -p $HL_MOUNT/uc4
 wget -c https://github.com/upb-uc4/hlf-chaincode/archive/"$BRANCH_TAG".tar.gz -O - | tar -xz -C $HL_MOUNT/uc4 --strip-components=1
 

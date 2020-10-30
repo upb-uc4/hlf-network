@@ -40,6 +40,8 @@ printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER
 
 ./scripts/startNetwork.sh $TEST_MODE
 
+echo -e "\n\n"
+
 if test -z "$BRANCH_TAG"
 then
   ./scripts/installChaincode.sh
