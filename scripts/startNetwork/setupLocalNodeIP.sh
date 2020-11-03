@@ -2,9 +2,12 @@
 
 [[ -e scripts/util.sh ]] || { echo >&2 "Please cd into repositories main directory before running this script."; exit 1; }
 
+source ./scripts/util.sh
+
 # For local testing only!
 
 # Get internal of current worker node
-export NODE_IP=$(kubectl get nodes -l uc4.cs.upb.de/kind-worker -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}')
+export UC4_KIND_NODE_IP=$(get_worker_ip)
+printf "export UC4_KIND_NODE_IP=%s\n" "$UC4_KIND_NODE_IP"
 
-envsubst '${NODE_IP}' < assets/connection_profile_kubernetes_template.yaml > assets/connection_profile_kubernetes_local.yaml
+envsubst '${UC4_KIND_NODE_IP}' < assets/connection_profile_kubernetes_template.yaml > assets/connection_profile_kubernetes_local.yaml
