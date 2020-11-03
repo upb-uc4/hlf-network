@@ -46,9 +46,3 @@ source ./scripts/startNetwork/setupChannel.sh
 
 sep
 msg "Done!"
-
-if [[ $TEST_MODE == "-t" ]]; then
-  export UC4_KIND_NODE_IP=$(get_worker_ip)
-  printf "Use the following command to set the node ip:\n"
-  printf "export UC4_KIND_NODE_IP=%s\n" "$UC4_KIND_NODE_IP"
-fi

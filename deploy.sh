@@ -3,6 +3,8 @@
 # Ensure PWD is correct http://mywiki.wooledge.org/BashFAQ/028
 [[ -e scripts/util.sh ]] || { echo >&2 "Please cd into repositories main directory before running this script."; exit 1; }
 
+source ./scripts/util.sh
+
 BRANCH_TAG="develop"
 CLUSTER_MOUNT="/data/development/hyperledger"
 TEST_MODE=""
@@ -47,4 +49,10 @@ then
   ./scripts/installChaincode.sh
 else
   ./scripts/installChaincode.sh -b $BRANCH_TAG
+fi
+
+if [[ $TEST_MODE == "-t" ]]; then
+  export UC4_KIND_NODE_IP=$(get_worker_ip)
+  printf "Use the following command to set the node ip:\n"
+  printf "export UC4_KIND_NODE_IP=%s\n" $UC4_KIND_NODE_IP
 fi
