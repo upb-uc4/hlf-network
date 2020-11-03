@@ -6,14 +6,19 @@ set -e
 TEST_MODE=""
 while getopts 't' flag; do
   case "${flag}" in
-    t) TEST_MODE="-t" ;;
-    ?) printf 'Invalid flag!' ;;
+  t) TEST_MODE="-t" ;;
+  ?) printf 'Invalid flag!' ;;
   esac
 done
 
 # Set environment variables
 source ./scripts/env.sh
 source ./scripts/util.sh
+{
+  if [[ $TEST_MODE == "-t" ]]; then
+    source ./scripts/startNetwork/setupLocalNodeIP.sh
+  fi
+} &
 
 # Provide scripts via mount
 echo $HL_MOUNT
