@@ -30,7 +30,7 @@ while getopts 'vtb:c:' flag; do
 done
 
 set -e
-# Remove old CLUSTER_MOUNT value
+#TODO Remove old CLUSTER_MOUNT value
 sed -i '/.$/a\' scripts/env.sh                                          # Newline at end of file
 sed -i "/\bHL_MOUNT\b/d" scripts/env.sh                            # Remove line with CLUSTER_MOUNT
 printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER_MOUNT environment variable
@@ -39,6 +39,8 @@ printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER
 # Start network and deploy chaincode
 
 ./scripts/startNetwork.sh $TEST_MODE
+
+echo -e "\n\n"
 
 if test -z "$BRANCH_TAG"
 then

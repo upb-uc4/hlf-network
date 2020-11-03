@@ -41,4 +41,4 @@ sleep 10
 source ./scripts/startNetwork/setupChannel.sh
 
 sep
-echo "Done!"
+msg "Done!"

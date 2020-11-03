@@ -19,6 +19,10 @@ spec:
           image: hyperledger/fabric-ca:1.4.7
           imagePullPolicy: IfNotPresent
           command: ["fabric-ca-server", "start", "-b", "$(BOOTSTRAP_USER):$(BOOTSTRAP_PASSWORD)", "--port", "7052"]
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/bash", "-c", "/tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrdererOrgUsers.sh"]
           volumeMounts:
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
