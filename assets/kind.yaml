@@ -5,6 +5,12 @@ nodes:
     extraMounts:
       - hostPath: /data/development/hyperledger
         containerPath: /mnt/hyperledger
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "uc4.cs.upb.de/kind-worker"
   - role: control-plane
     extraMounts:
       - hostPath: /data/development/hyperledger
