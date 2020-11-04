@@ -62,7 +62,13 @@ This has the following side-effects:
  - We generate a connection profile at `assets/connection_profile_kubernetes_local.yaml` that can be used to access the network from outside the cluster on your machine.
  - We register a test user with the fixed credentials: `test-admin:test-admin-pw`.
  - We provide all root certificates at `/tmp/hyperledger/`.
- - You can export the internal worker node ip as `UC4_KIND_UC4_KIND_NODE_IP` using the command at the last line of the output.
+ - You can export the internal worker node ip as `UC4_KIND_UC4_KIND_NODE_IP`. The last line of the output will look something like this:
+   ```
+   Use the following command to set the node ip:
+   export UC4_KIND_NODE_IP=172.18.0.3
+   ```
+   Use the export command to use the network with the hlf-api.
+   
 
 ### Kubernetes Dashboard
 
