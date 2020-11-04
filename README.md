@@ -57,7 +57,7 @@ The script offers the same flags as ```deploy.sh```.
 
 ### Local Testing from Outside the Cluster
 
-To test your application locally without deploying it to the cluster, deploy the network (and cluster) with the testing flag: ```source ./restart -t``` (you need to source to keep the node ip environment variable).
+To test your application locally without deploying it to the cluster, deploy the network (and cluster) with the testing flag: ```./restart -t```.
 This has the following side-effects: 
  - We generate a connection profile at `assets/connection_profile_kubernetes_local.yaml` that can be used to access the network from outside the cluster on your machine.
  - We register a test user with the fixed credentials: `test-admin:test-admin-pw`.
