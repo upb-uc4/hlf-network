@@ -103,7 +103,9 @@ function restartOldClusterInBackground() {
 header "🤖 Fast restart script (for development only)"
 sudo printf ""
 
+set +e
 rm log.txt
+set -e
 
 LAST_CONTEXT=$(kubectl config current-context)
 
