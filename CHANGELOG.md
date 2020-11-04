@@ -1,3 +1,11 @@
+# [v.0.11.3](https://github.com/upb-uc4/hlf-network/compare/v0.11.2...v0.11.3) (2020-11-04) 
+
+## Refactoring
+
+ - Call the "registerUsers" scripts from the kubernetes PostStart lifecycle hook.
+ - Clean up output of the deployment scripts
+ - Make the coding style more consistent
+
 # [v.0.11.2](https://github.com/upb-uc4/hlf-network/compare/v0.11.1...v0.11.2) (2020-10-28) 
 
 ## Bug Fixes 
