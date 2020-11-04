@@ -10,10 +10,10 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
 ## Table of Contents
 
   * [Introduction](#introduction)
-  * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
     * [Kubernetes Cluster](#kubernetes-cluster)
     * [Deploy the Network](#deploy-the-network)
+    * [Local Testing from Outside the Cluster](#local-testing-from-outside-the-cluster)
     * [Kubernetes Dashboard](#kubernetes-dashboard)
   * [Network Topology](#network-topology)
   * [Deployment Steps](#deployment-steps)
@@ -54,6 +54,21 @@ The ```-b``` tag can be used to specify a chaincode tag or branch (develop is de
 
 For development, you can use ```./restart.sh``` for fast deployment and restarting, the script uses two clusters which are created in the background and restarted automatically to reduce startup times.
 The script offers the same flags as ```deploy.sh```.
+
+### Local Testing from Outside the Cluster
+
+To test your application locally without deploying it to the cluster, deploy the network (and cluster) with the testing flag: ```./restart -t```.
+This has the following side-effects: 
+ - We generate a connection profile at `assets/connection_profile_kubernetes_local.yaml` that can be used to access the network from outside the cluster on your machine.
+ - We register a test user with the fixed credentials: `test-admin:test-admin-pw`.
+ - We provide all root certificates at `/tmp/hyperledger/`.
+ - You can export the internal worker node ip as `UC4_KIND_NODE_IP`. The last line of the output will look something like this:
+   ```
+   Use the following command to set the node ip:
+   export UC4_KIND_NODE_IP=172.18.0.3
+   ```
+   Use the export command to use the network with the hlf-api.
+   
 
 ### Kubernetes Dashboard
 

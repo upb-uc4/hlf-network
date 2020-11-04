@@ -24,6 +24,10 @@ get_pods() {
   kubectl get pods -l app=$1 --field-selector status.phase=Running -n hlf --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | head -n 1
 }
 
+get_worker_ip() {
+  kubectl get nodes -l uc4.cs.upb.de/kind-worker -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'
+}
+
 small_sep() {
   msg '--------------------------------------------------------------------------------'
 }
