@@ -1,5 +1,9 @@
 # [v.0.11.3](https://github.com/upb-uc4/hlf-network/compare/v0.11.2...v0.11.3) (2020-11-04) 
 
+## Feature
+ - Add templating of *connection_profile_kubernetes_local.yaml* for local testing and development
+ - Output kubernetes worker port of dev clusters when using `-t` flag
+ 
 ## Refactoring
 
  - Call the "registerUsers" scripts from the kubernetes PostStart lifecycle hook.
