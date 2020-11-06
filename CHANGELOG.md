@@ -1,3 +1,14 @@
+# [v.0.12.0](https://github.com/upb-uc4/hlf-network/compare/v0.11.3...v0.12.0) (2020-11-06) 
+
+## Feature
+ 
+ - Copy *connection_profile_kubernetes_local* to `/tmp/hyperledger` when using `-t` flag
+
+## Bug Fixes 
+
+ - Fix restart script failing if no cluster exists
+ - Catch wait for peers failing if resources are not registered yet, wait and retry
+
 # [v.0.11.3](https://github.com/upb-uc4/hlf-network/compare/v0.11.2...v0.11.3) (2020-11-04) 
 
 ## Feature
