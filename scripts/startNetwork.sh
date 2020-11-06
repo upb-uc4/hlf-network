@@ -17,7 +17,6 @@ source ./scripts/util.sh
 
 if [[ $TEST_MODE == "-t" ]]; then
   ./scripts/startNetwork/setupLocalNodeIP.sh
-  cp ./assets/connection_profile_kubernetes_local.yaml /tmp/hyperledger/
 fi
 
 # Provide scripts via mount
@@ -36,6 +35,7 @@ source ./scripts/startNetwork/setupOrdererOrgCa.sh
 source ./scripts/startNetwork/setupOrg1Ca.sh
 if [[ $TEST_MODE == "-t" ]]; then
   source ./scripts/startNetwork/registerOrg1TestAdmin.sh
+  cp ./assets/connection_profile_kubernetes_local.yaml /tmp/hyperledger/
 fi
 source ./scripts/startNetwork/setupOrg2Ca.sh
 source ./scripts/startNetwork/startClis.sh
