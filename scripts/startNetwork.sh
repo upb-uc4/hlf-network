@@ -17,6 +17,7 @@ source ./scripts/util.sh
 
 if [[ $TEST_MODE == "-t" ]]; then
   ./scripts/startNetwork/setupLocalNodeIP.sh
+  cp ./assets/connection_profile_kubernetes_local.yaml /tmp/hyperledger/
 fi
 
 # Provide scripts via mount
