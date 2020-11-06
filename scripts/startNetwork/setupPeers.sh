@@ -17,13 +17,14 @@ kubectl create -f k8s/org2/peer1-org2.yaml
 msg "Starting org2-peer2"
 kubectl create -f k8s/org2/peer2-org2.yaml
 
-msg "Waiting for pods"
 (
+msg "Waiting for pods"
 kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
 kubectl wait --for=condition=ready pod -l app=peer2-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
 kubectl wait --for=condition=ready pod -l app=peer1-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
 kubectl wait --for=condition=ready pod -l app=peer2-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
 ) || (
+msg "Waiting error, wait longer for pods"
 sleep 2
 kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
 kubectl wait --for=condition=ready pod -l app=peer2-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
@@ -31,6 +32,7 @@ kubectl wait --for=condition=ready pod -l app=peer1-org2 --timeout=${CONTAINER_T
 kubectl wait --for=condition=ready pod -l app=peer2-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
 )
 ) || (
+msg "Another waiting error, wait even longer for pods"
 sleep 10
 kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
 kubectl wait --for=condition=ready pod -l app=peer2-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
