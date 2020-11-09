@@ -92,7 +92,7 @@ spec:
             path: /mnt/hyperledger/scripts
         - name: chaincode-mount
           hostPath:
-            path: /mnt/hyperledger/uc4/chaincode
+            path: /mnt/hyperledger/uc4/UC4-chaincode
         - name: pod-data
           emptyDir: {}
         - name: docker-mount
