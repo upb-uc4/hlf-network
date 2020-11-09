@@ -33,7 +33,7 @@ header "Build"
 pushd $HL_MOUNT/uc4
 msg "$(ls -la)"
 msg "Building chaincode using gradle"
-pushd chaincode
+pushd UC4-chaincode
 ./gradlew installDist
 popd
 popd
