@@ -6,7 +6,7 @@ source ./scripts/util.sh
 set -e
 
 # Set default branch
-export BRANCH_TAG="develop"
+export BRANCH_TAG="feature/publish_to_maven"
 
 print_usage() {
   printf "Usage: ./installChaincode.sh -b [branch or tag]\n"
@@ -31,7 +31,7 @@ wget -c https://github.com/upb-uc4/hlf-chaincode/archive/"$BRANCH_TAG".tar.gz -O
 
 header "Build"
 msg "Building chaincode using gradle"
-pushd $HL_MOUNT/uc4/chaincode
+pushd $HL_MOUNT/uc4/UC4-chaincode
 ./gradlew installDist
 popd
 
