@@ -3,27 +3,38 @@
 source ./scripts/util.sh
 source ./scripts/env.sh
 
+header "Peers"
 
-header "Starting Peers"
-
-echo "org1-peer1"
+msg "Starting org1-peer1"
 kubectl create -f k8s/org1/peer1-org1.yaml
-small_sep
 
-echo "org1-peer2"
+msg "Starting org1-peer2"
 kubectl create -f k8s/org1/peer2-org1.yaml
-small_sep
 
-echo "org2-peer1"
+msg "Starting org2-peer1"
 kubectl create -f k8s/org2/peer1-org2.yaml
-small_sep
 
-echo "org2-peer2"
+msg "Starting org2-peer2"
 kubectl create -f k8s/org2/peer2-org2.yaml
-small_sep
 
-echo "Wait until pods of all peers are ready"
+(
+msg "Waiting for pods"
 kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
 kubectl wait --for=condition=ready pod -l app=peer2-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
 kubectl wait --for=condition=ready pod -l app=peer1-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
 kubectl wait --for=condition=ready pod -l app=peer2-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
+) || (
+msg "Waiting error, wait longer for pods"
+sleep 2
+kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
+kubectl wait --for=condition=ready pod -l app=peer2-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
+kubectl wait --for=condition=ready pod -l app=peer1-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
+kubectl wait --for=condition=ready pod -l app=peer2-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
+) || (
+msg "Another waiting error, wait even longer for pods"
+sleep 10
+kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
+kubectl wait --for=condition=ready pod -l app=peer2-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
+kubectl wait --for=condition=ready pod -l app=peer1-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
+kubectl wait --for=condition=ready pod -l app=peer2-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
+)

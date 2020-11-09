@@ -4,6 +4,8 @@ source "/tmp/hyperledger/scripts/util.sh"
 
 set -e
 
+sleep 10
+
 log "Use CA-client to enroll admin"
 
 export CA_ORG2_HOST=0.0.0.0:7052

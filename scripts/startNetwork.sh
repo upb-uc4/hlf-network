@@ -3,16 +3,21 @@
 # Exit on errors
 set -e
 
-# Debug commands using -d flag
-export DEBUG=""
-if [[ $1 == "-d" ]]; then
-  echo "Debug mode activated"
-  export DEBUG="-d"
-fi
+TEST_MODE=""
+while getopts 't' flag; do
+  case "${flag}" in
+  t) TEST_MODE="-t" ;;
+  ?) printf 'Invalid flag!' ;;
+  esac
+done
 
 # Set environment variables
 source ./scripts/env.sh
 source ./scripts/util.sh
+
+if [[ $TEST_MODE == "-t" ]]; then
+  ./scripts/startNetwork/setupLocalNodeIP.sh
+fi
 
 # Provide scripts via mount
 echo $HL_MOUNT
@@ -24,10 +29,14 @@ source ./scripts/startNetwork/fixPrepareHostPath.sh
 small_sep
 kubectl create -f k8s/namespace.yaml
 
-faketime -m -f -1d /bin/bash -c scripts/startNetwork/generateSecrets.sh
+faketime -m -f -1d /bin/bash -c "scripts/startNetwork/generateSecrets.sh $TEST_MODE"
 source ./scripts/startNetwork/setupTlsCa.sh
 source ./scripts/startNetwork/setupOrdererOrgCa.sh
 source ./scripts/startNetwork/setupOrg1Ca.sh
+if [[ $TEST_MODE == "-t" ]]; then
+  source ./scripts/startNetwork/registerOrg1TestAdmin.sh
+  cp ./assets/connection_profile_kubernetes_local.yaml /tmp/hyperledger/
+fi
 source ./scripts/startNetwork/setupOrg2Ca.sh
 source ./scripts/startNetwork/startClis.sh
 source ./scripts/startNetwork/setupPeers.sh
@@ -37,4 +46,4 @@ sleep 10
 source ./scripts/startNetwork/setupChannel.sh
 
 sep
-echo "Done!"
+msg "Done!"

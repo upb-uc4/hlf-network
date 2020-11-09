@@ -1,3 +1,48 @@
+# [v.0.12.0](https://github.com/upb-uc4/hlf-network/compare/v0.11.3...v0.12.0) (2020-11-06) 
+
+## Feature
+ 
+ - Copy *connection_profile_kubernetes_local* to `/tmp/hyperledger` when using `-t` flag
+
+## Bug Fixes 
+
+ - Fix restart script failing if no cluster exists
+ - Catch wait for peers failing if resources are not registered yet, wait and retry
+
+# [v.0.11.3](https://github.com/upb-uc4/hlf-network/compare/v0.11.2...v0.11.3) (2020-11-04) 
+
+## Feature
+ - Add templating of *connection_profile_kubernetes_local.yaml* for local testing and development
+ - Output kubernetes worker port of dev clusters when using `-t` flag
+ 
+## Refactoring
+
+ - Call the "registerUsers" scripts from the kubernetes PostStart lifecycle hook.
+ - Clean up output of the deployment scripts
+ - Make the coding style more consistent
+
+# [v.0.11.2](https://github.com/upb-uc4/hlf-network/compare/v0.11.1...v0.11.2) (2020-10-28) 
+
+## Bug Fixes 
+
+ - Wrong address in peer configuration caused chaincode registration failure
+
+# [v.0.11.1](https://github.com/upb-uc4/hlf-network/compare/v0.11.0...v0.11.1) (2020-10-28) 
+
+## Bug Fixes 
+
+ - Fix bug that chaincode containers cannot send messages to their peer
+
+## Feature
+ 
+ - Add `-t` tag for testing that copies certificates to the filesystem and registers a testing admin for running local test
+
+## Refactor 
+ 
+ - Remove `-d` debug flag since it was not used anymore
+ - Remove legacy support for providing certifcates through the filesystem instead of secrets in lagom
+
+
 # [v.0.11.0](https://github.com/upb-uc4/hlf-network/compare/v0.10.2...v0.11.0) (2020-10-26) 
 
 ## Feature

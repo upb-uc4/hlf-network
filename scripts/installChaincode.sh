@@ -16,8 +16,7 @@ print_usage() {
 
 while getopts 'b:' flag; do
   case "${flag}" in
-    b) BRANCH_TAG="${OPTARG}"
-       printf "Branch / Tag: %s selected\n" "$BRANCH_TAG" ;;
+    b) BRANCH_TAG="${OPTARG}" ;;
     ?) print_usage
        exit 1 ;;
   esac
@@ -25,32 +24,37 @@ done
 
 source ./scripts/env.sh
 
-echo "Download chaincode"
+header "Downloading chaincode"
+msg "Downloading branch or tag $BRANCH_TAG"
 mkdir -p $HL_MOUNT/uc4
 wget -c https://github.com/upb-uc4/hlf-chaincode/archive/"$BRANCH_TAG".tar.gz -O - | tar -xz -C $HL_MOUNT/uc4 --strip-components=1
 
-echo "Build chaincode using gradle"
+header "Build"
+msg "Building chaincode using gradle"
 pushd $HL_MOUNT/uc4/chaincode
 ./gradlew installDist
 popd
 
-echo "Package chaincode on CLI1"
+header "Installation"
+msg "Packaging chaincode on CLI1"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/packageChaincode.sh
 
-echo "Install chaincode on Org1 Peers"
+msg "Installing chaincode on Org1 Peers"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/installChaincodeOrg1.sh
 
-echo "Install chaincode on Org2 Peers"
+msg "Installing chaincode on Org2 Peers"
 kubectl exec -n hlf $(get_pods "cli-org2") -i -- sh < scripts/installChaincode/installChaincodeOrg2.sh
 
-echo "Approve chaincode on Org1"
+header "Approval"
+msg "Approve chaincode on Org1"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/approveChaincodeOrg1.sh
 
-echo "Approve chaincode on Org2"
+msg "Approve chaincode on Org2"
 kubectl exec -n hlf $(get_pods "cli-org2") -i -- sh < scripts/installChaincode/approveChaincodeOrg2.sh
 
-echo "Check Commit Readiness for channel chaincode"
+msg "Commit"
+header "Check Commit Readiness for channel chaincode"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/checkCommitReadiness.sh
 
-echo "Commit chaincode"
+msg "Commit chaincode"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/commitChaincode.sh
