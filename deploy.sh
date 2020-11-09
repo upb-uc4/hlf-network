@@ -5,7 +5,7 @@
 
 source ./scripts/util.sh
 
-BRANCH_TAG="develop"
+BRANCH_TAG="feature/publish_to_maven"
 CLUSTER_MOUNT="/data/development/hyperledger"
 TEST_MODE=""
 

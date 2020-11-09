@@ -27,7 +27,7 @@ source ./scripts/env.sh
 header "Downloading chaincode"
 msg "Downloading branch or tag $BRANCH_TAG"
 mkdir -p $HL_MOUNT/uc4
-wget -c https://github.com/upb-uc4/hlf-chaincode/archive/feature/publish_to_maven.tar.gz -O - | tar -xz -C $HL_MOUNT/uc4 --strip-components=1
+wget -c https://github.com/upb-uc4/hlf-chaincode/archive/"$BRANCH_TAG" -O - | tar -xz -C $HL_MOUNT/uc4 --strip-components=1
 
 header "Build"
 pushd $HL_MOUNT/uc4/UC4-chaincode
