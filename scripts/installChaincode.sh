@@ -41,8 +41,6 @@ msg "Building chaincode using gradle"
 ./gradlew installDist
 popd
 
-popd
-
 header "Installation"
 msg "Packaging chaincode on CLI1"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/packageChaincode.sh
