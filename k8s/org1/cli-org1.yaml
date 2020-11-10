@@ -20,11 +20,11 @@ spec:
           imagePullPolicy: IfNotPresent
           tty: true
           command: ["sh"]
-          workingDir: /tmp/hyperledger/UC4-chaincode
+          workingDir: /tmp/hyperledger/chaincode
           volumeMounts:
             - mountPath: /tmp/hyperledger/shared
               name: shared-volume
-            - mountPath: /tmp/hyperledger/UC4-chaincode
+            - mountPath: /tmp/hyperledger/chaincode
               name: chaincode-mount
             - mountPath: /tmp/hyperledger/org1/admin
               name: pod-data
@@ -92,7 +92,7 @@ spec:
             path: /mnt/hyperledger/scripts
         - name: chaincode-mount
           hostPath:
-            path: /mnt/hyperledger/uc4/UC4-chaincode
+            path: /mnt/hyperledger/uc4/hlf-chaincode
         - name: pod-data
           emptyDir: {}
         - name: docker-mount
