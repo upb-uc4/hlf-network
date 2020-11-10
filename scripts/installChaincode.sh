@@ -27,12 +27,20 @@ source ./scripts/env.sh
 header "Downloading chaincode"
 msg "Downloading branch or tag $BRANCH_TAG"
 mkdir -p $HL_MOUNT/uc4
-wget -c https://github.com/upb-uc4/hlf-chaincode/archive/"$BRANCH_TAG" -O - | tar -xz -C $HL_MOUNT/uc4 --strip-components=1
+pushd $HL_MOUNT/uc4
+git clone https://github.com/upb-uc4/hlf-chaincode.git 
+pushd ./hlf-chaincode
+git checkout $BRANCH_TAG
+git pull
+popd
+popd
 
 header "Build"
-pushd $HL_MOUNT/uc4/UC4-chaincode
+pushd $HL_MOUNT/uc4/hlf-chaincode/UC4-chaincode
 msg "Building chaincode using gradle"
 ./gradlew installDist
+popd
+
 popd
 
 header "Installation"

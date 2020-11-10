@@ -6,4 +6,4 @@ peer lifecycle chaincode checkcommitreadiness \
     --tls \
     --cafile /tmp/secrets/tls-ca/cert.pem \
     --output json \
-    --collections-config /tmp/hyperledger/chaincode/assets/collections_config.json
+    --collections-config /tmp/hyperledger/chaincode/UC4-chaincode/assets/collections_config.json

@@ -12,4 +12,4 @@ peer lifecycle chaincode approveformyorg \
   --sequence 1 \
   --tls \
   --cafile /tmp/secrets/tls-ca/cert.pem \
-  --collections-config /tmp/hyperledger/chaincode/assets/collections_config.json
+  --collections-config /tmp/hyperledger/chaincode/UC4-chaincode/assets/collections_config.json
