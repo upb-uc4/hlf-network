@@ -28,7 +28,7 @@ header "Downloading chaincode"
 msg "Downloading branch or tag $BRANCH_TAG"
 mkdir -p $HL_MOUNT/uc4
 wget -c https://github.com/upb-uc4/hlf-chaincode/releases/download/"$CHAINCODE_VERSION"/UC4-chaincode.tar.gz -O "$HL_MOUNT/uc4/UC4-chaincode.tar.gz"
-wget -c https://github.com/upb-uc4/hlf-chaincode/releases/download/"$CHAINCODE_VERSION"/assets.zip -O - | unzip -d ./assets
+wget -c https://github.com/upb-uc4/hlf-chaincode/releases/download/"$CHAINCODE_VERSION"/assets.zip -O assets.zip && unzip assets.zip -d ./assets
 
 msg "Installing chaincode on Org1 Peers"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/installChaincodeOrg1.sh
