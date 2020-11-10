@@ -5,7 +5,7 @@
 
 source ./scripts/util.sh
 
-CHAINCODE_VERSION="v0.12.1"
+CHAINCODE_VERSION="v0.12.2"
 CLUSTER_MOUNT="/data/development/hyperledger"
 TEST_MODE=""
 
