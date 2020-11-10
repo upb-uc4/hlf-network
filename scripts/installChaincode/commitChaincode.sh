@@ -10,4 +10,4 @@ peer lifecycle chaincode commit \
     --tlsRootCertFiles /tmp/secrets/tls-ca/cert.pem  \
     --peerAddresses peer1-org2:7051 \
     --tlsRootCertFiles /tmp/secrets/tls-ca/cert.pem  \
-    --collections-config /tmp/hyperledger/chaincode/UC4-chaincode/assets/collections_config.json
+    --collections-config /tmp/hyperledger/chaincode/hlf-chaincode/UC4-chaincode/assets/collections_config.json
