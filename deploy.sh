@@ -5,7 +5,7 @@
 
 source ./scripts/util.sh
 
-BRANCH_TAG="feature/publish_to_maven"
+CHAINCODE_VERSION="v0.12.1"
 CLUSTER_MOUNT="/data/development/hyperledger"
 TEST_MODE=""
 
@@ -19,7 +19,7 @@ print_usage() {
 
 while getopts 'vtb:c:' flag; do
   case "${flag}" in
-    b) BRANCH_TAG="${OPTARG}"
+    b) CHAINCODE_VERSION="${OPTARG}"
        printf 'Using branch or tag "%s"\n' "$BRANCH_TAG" ;;
     c) CLUSTER_MOUNT="${OPTARG}"
        printf 'Using hyperledger mount path "%s"\n' "$CLUSTER_MOUNT";;
@@ -44,11 +44,11 @@ printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER
 
 echo -e "\n\n"
 
-if test -z "$BRANCH_TAG"
+if test -z "$CHAINCODE_VERSION"
 then
   ./scripts/installChaincode.sh
 else
-  ./scripts/installChaincode.sh -b $BRANCH_TAG
+  ./scripts/installChaincode.sh -b $CHAINCODE_VERSION
 fi
 
 if [[ $TEST_MODE == "-t" ]]; then

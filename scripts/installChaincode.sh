@@ -6,7 +6,7 @@ source ./scripts/util.sh
 set -e
 
 # Set default branch
-export BRANCH_TAG="feature/publish_to_maven"
+export CHAINCODE_VERSION="v0.12.1"
 
 print_usage() {
   printf "Usage: ./installChaincode.sh -b [branch or tag]\n"
@@ -16,7 +16,7 @@ print_usage() {
 
 while getopts 'b:' flag; do
   case "${flag}" in
-    b) BRANCH_TAG="${OPTARG}" ;;
+    b) CHAINCODE_VERSION="${OPTARG}" ;;
     ?) print_usage
        exit 1 ;;
   esac
@@ -27,23 +27,8 @@ source ./scripts/env.sh
 header "Downloading chaincode"
 msg "Downloading branch or tag $BRANCH_TAG"
 mkdir -p $HL_MOUNT/uc4
-pushd $HL_MOUNT/uc4
-git clone https://github.com/upb-uc4/hlf-chaincode.git 
-pushd ./hlf-chaincode
-git checkout $BRANCH_TAG
-git pull
-popd
-popd
-
-header "Build"
-pushd $HL_MOUNT/uc4/hlf-chaincode/UC4-chaincode
-msg "Building chaincode using gradle"
-./gradlew installDist
-popd
-
-header "Installation"
-msg "Packaging chaincode on CLI1"
-kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/packageChaincode.sh
+wget -c https://github.com/upb-uc4/hlf-chaincode/releases/download/"$CHAINCODE_VERSION"/UC4-chaincode.tar.gz -O "$HL_MOUNT/uc4/UC4-chaincode.tar.gz"
+wget -c https://github.com/upb-uc4/hlf-chaincode/releases/download/"$CHAINCODE_VERSION"/assets.zip -O - | tar -xz -C $HL_MOUNT/uc4/assets
 
 msg "Installing chaincode on Org1 Peers"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/installChaincodeOrg1.sh
