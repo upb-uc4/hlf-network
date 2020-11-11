@@ -6,9 +6,8 @@ source ./scripts/util.sh
 
 
 print_usage() {
-  printf "🧙 Usage: ./restart [-d] [-v] [-b <branch or tag>]\n"
-  printf "Use -v for verbose output\n"
-  printf "Use -b to specify a chaincode branch or tag (default develop)\n"
+  printf "🧙 Usage: ./restart [-d] [-t] [-b <version|release>]\n"
+  printf "Use -b to specify the version|release to use (default is latest)\n"
   printf "Use -t for test mode\n"
   printf "Use -d to reset all clusters\n"
 }
@@ -17,11 +16,9 @@ PARAMS=""
 
 while getopts 'vtdb:' flag; do
   case "${flag}" in
-    b) BRANCH_TAG="${OPTARG}"
-       PARAMS="$PARAMS -b $BRANCH_TAG"
-       printf 'Using chaincode branch or tag "%s"\n' "$BRANCH_TAG" ;;
-    v) PARAMS="$PARAMS -v"
-       printf 'Using verbose mode\n' ;;
+    b) CHAINCODE_VERSION_PARAM="${OPTARG}"
+       PARAMS="$PARAMS -b $CHAINCODE_VERSION_PARAM"
+       printf 'Using chaincode version|release "%s"\n' "$CHAINCODE_VERSION_PARAM" ;;
     t) PARAMS="$PARAMS -t"
        printf 'Using test mode\n' ;;
     d) printf "🐼 Delete all clusters and files\n"

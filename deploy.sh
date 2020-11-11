@@ -5,22 +5,22 @@
 
 source ./scripts/util.sh
 
-CHAINCODE_VERSION="v0.12.2"
+CHAINCODE_VERSION_PARAM=""
 CLUSTER_MOUNT="/data/development/hyperledger"
 TEST_MODE=""
 
 print_usage() {
-  printf "Usage: ./deploy -v -b [branch or tag] -c [custom config file]\n"
-  printf "Use -b to specify a branch or tag (default develop)\n"
+  printf "Usage: ./deploy.sh [-b <version|release>] [-c <custom config file>] [-t]\n"
+  printf "Use -b to specify the version|release to use (default is latest)\n"
   printf "Use -t to activate test mode (do not use in production)\n"
   printf "Use -c to specify a cluster mount path (default %s)\n" "$CLUSTER_MOUNT"
 }
 
 
-while getopts 'vtb:c:' flag; do
+while getopts 'tb:c:' flag; do
   case "${flag}" in
-    b) CHAINCODE_VERSION="${OPTARG}"
-       printf 'Using branch or tag "%s"\n' "$BRANCH_TAG" ;;
+    b) CHAINCODE_VERSION_PARAM="-b ${OPTARG}"
+       printf 'Using version|release "%s"\n' "$CHAINCODE_VERSION_PARAM" ;;
     c) CLUSTER_MOUNT="${OPTARG}"
        printf 'Using hyperledger mount path "%s"\n' "$CLUSTER_MOUNT";;
     t) TEST_MODE="-t"
@@ -44,12 +44,7 @@ printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER
 
 echo -e "\n\n"
 
-if test -z "$CHAINCODE_VERSION"
-then
-  ./scripts/installChaincode.sh
-else
-  ./scripts/installChaincode.sh -b $CHAINCODE_VERSION
-fi
+./scripts/installChaincode.sh $CHAINCODE_VERSION_PARAM
 
 if [[ $TEST_MODE == "-t" ]]; then
   export UC4_KIND_NODE_IP=$(get_worker_ip)
