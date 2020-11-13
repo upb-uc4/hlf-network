@@ -59,7 +59,7 @@ The script offers the same flags as ```deploy.sh```.
 
 To test your application locally without deploying it to the cluster, deploy the network (and cluster) with the testing flag: ```./restart -t```.
 This has the following side-effects: 
- - We generate a connection profile at `assets/connection_profile_kubernetes_local.yaml` that can be used to access the network from outside the cluster on your machine.
+ - We generate a connection profile at `/tmp/hyperledger/connection_profile_kubernetes_local.yaml` that can be used to access the network from outside the cluster on your machine.
  - We register a test user with the fixed credentials: `test-admin:test-admin-pw`.
  - We provide all root certificates at `/tmp/hyperledger/`.
  - You can export the internal worker node ip as `UC4_KIND_NODE_IP`. The last line of the output will look something like this:
