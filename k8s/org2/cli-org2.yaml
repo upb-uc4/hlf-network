@@ -88,7 +88,7 @@ spec:
             path: /mnt/hyperledger/shared
         - name: chaincode-mount
           hostPath:
-            path: /mnt/hyperledger/uc4/chaincode
+            path: /mnt/hyperledger/uc4
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts

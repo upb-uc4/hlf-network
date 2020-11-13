@@ -6,17 +6,17 @@ source ./scripts/util.sh
 set -e
 
 # Set default branch
-export BRANCH_TAG="develop"
+export CHAINCODE_VERSION_PATH="latest/download"
 
 print_usage() {
-  printf "Usage: ./installChaincode.sh -b [branch or tag]\n"
-  printf "Use -b to specify the branch or tag to use (default is develop)\n"
+  printf "Usage: ./installChaincode.sh -b [version|release]\n"
+  printf "Use -b to specify the version|release to use (default is latest)\n"
 }
 
 
 while getopts 'b:' flag; do
   case "${flag}" in
-    b) BRANCH_TAG="${OPTARG}" ;;
+    b) CHAINCODE_VERSION_PATH="download/${OPTARG}" ;;
     ?) print_usage
        exit 1 ;;
   esac
@@ -25,15 +25,12 @@ done
 source ./scripts/env.sh
 
 header "Downloading chaincode"
-msg "Downloading branch or tag $BRANCH_TAG"
-mkdir -p $HL_MOUNT/uc4
-wget -c https://github.com/upb-uc4/hlf-chaincode/archive/"$BRANCH_TAG".tar.gz -O - | tar -xz -C $HL_MOUNT/uc4 --strip-components=1
-
-header "Build"
-msg "Building chaincode using gradle"
-pushd $HL_MOUNT/uc4/chaincode
-./gradlew installDist
-popd
+msg "Downloading from target $CHAINCODE_VERSION_PATH"
+mkdir -p $HL_MOUNT/uc4/assets
+mkdir -p $HL_MOUNT/uc4/UC4-chaincode
+wget -q -c https://github.com/upb-uc4/hlf-chaincode/releases/"$CHAINCODE_VERSION_PATH"/UC4-chaincode.tar.gz -O - | tar -xz -C $HL_MOUNT/uc4/UC4-chaincode
+msg "Download assets"
+wget -q -c https://github.com/upb-uc4/hlf-chaincode/releases/"$CHAINCODE_VERSION_PATH"/collections_config.json -O "$HL_MOUNT/uc4/assets/collections_config.json"
 
 header "Installation"
 msg "Packaging chaincode on CLI1"
