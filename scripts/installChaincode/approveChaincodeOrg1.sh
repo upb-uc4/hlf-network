@@ -5,7 +5,7 @@ export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp
 
 export CHAINCODE_ID="$(peer lifecycle chaincode queryinstalled | sed -n '1!p' | sed 's/.*Package ID: \(.*\), Label.*/\1/')"
 
-export CHAINCODE_VERSION=$(cat /tmp/hyperledger/chaincode/assets/testversion.txt)
+export CHAINCODE_VERSION=$(cat /tmp/hyperledger/chaincode/assets/testversion.txt | tr -s '\n' '' | tr -s ' ' '')
 echo "CHAINCODE VERSION:: $CHAINCODE_VERSION"
 
 peer lifecycle chaincode approveformyorg \
