@@ -68,7 +68,7 @@ msg "Generating root certificate and private key for orderer organization"
 TMP_CERT=$(mktemp)
 openssl ecparam -name prime256v1 -genkey -noout -out $TMP_CERT-key.pem
 openssl req -new -key $TMP_CERT-key.pem -config assets/rca-org0-cert.cnf \
-      -out $TMP_CERT.csr -subj "/C=DE/ST=NRW/L=Paderborn/O=UC4/OU=UC4/CN=tls-ca"
+      -out $TMP_CERT.csr -subj "/C=DE/ST=NRW/L=Paderborn/O=UC4/OU=UC4/CN=rca-org0"
 openssl x509 -req -days 730  -in $TMP_CERT.csr -signkey $TMP_CERT-key.pem \
       -out $TMP_CERT-cert.pem -extensions v3_req \
       -extfile assets/rca-org0-cert.cnf 2> /dev/null
@@ -106,7 +106,7 @@ msg "Generating root certificate and private key for organization 1"
 TMP_CERT=$(mktemp)
 openssl ecparam -name prime256v1 -genkey -noout -out $TMP_CERT-key.pem
 openssl req -new -key $TMP_CERT-key.pem -config assets/rca-org1-cert.cnf \
-      -out $TMP_CERT.csr -subj "/C=DE/ST=NRW/L=Paderborn/O=UC4/OU=UC4/CN=tls-ca"
+      -out $TMP_CERT.csr -subj "/C=DE/ST=NRW/L=Paderborn/O=UC4/OU=UC4/CN=rca-org1"
 openssl x509 -req -days 730 -in $TMP_CERT.csr -signkey $TMP_CERT-key.pem \
       -out $TMP_CERT-cert.pem -extensions v3_req \
       -extfile assets/rca-org1-cert.cnf 2> /dev/null
@@ -172,7 +172,7 @@ msg "Generating root certificate and private key for organization 2"
 TMP_CERT=$(mktemp)
 openssl ecparam -name prime256v1 -genkey -noout -out $TMP_CERT-key.pem
 openssl req -new -key $TMP_CERT-key.pem -config assets/rca-org2-cert.cnf \
-      -out $TMP_CERT.csr -subj "/C=DE/ST=NRW/L=Paderborn/O=UC4/OU=UC4/CN=tls-ca"
+      -out $TMP_CERT.csr -subj "/C=DE/ST=NRW/L=Paderborn/O=UC4/OU=UC4/CN=rca-org2"
 openssl x509 -req -days 730 -in $TMP_CERT.csr -signkey $TMP_CERT-key.pem \
       -out $TMP_CERT-cert.pem -extensions v3_req \
       -extfile assets/rca-org2-cert.cnf 2> /dev/null
