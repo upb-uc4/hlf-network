@@ -1,5 +1,4 @@
 chaincode_version=cat /tmp/hyperledger/chaincode/assets/testversion.txt
-msg "CHAINCODE VERSION: $chaincode_version"
 
 peer lifecycle chaincode checkcommitreadiness \
     --channelID mychannel \

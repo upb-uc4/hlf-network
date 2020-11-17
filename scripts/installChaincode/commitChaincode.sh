@@ -1,5 +1,4 @@
 chaincode_version=cat /tmp/hyperledger/chaincode/assets/testversion.txt
-msg "CHAINCODE VERSION: $chaincode_version"
 
 peer lifecycle chaincode commit \
     -o orderer-org0:7050 \
