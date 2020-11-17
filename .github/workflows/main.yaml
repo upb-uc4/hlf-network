@@ -10,6 +10,7 @@ on:
     branches:
       - master
       - develop
+      - feature/read_chaincode_version_from_jar
     paths-ignore:
       - README.md
       - LICENSE
@@ -46,4 +47,4 @@ jobs:
 
       - name: Deploy network using deployment script
         run:
-          ./deploy.sh
+          ./deploy.sh -b v0.12.3
