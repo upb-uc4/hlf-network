@@ -7,7 +7,7 @@ peer lifecycle chaincode commit \
     -o orderer-org0:7050 \
     --channelID mychannel \
     --name uc4-cc \
-    --version "$CHAINCODE_VERSION" \
+    --version $CHAINCODE_VERSION \
     --sequence 1 \
     --tls \
     --cafile /tmp/secrets/tls-ca/cert.pem \
