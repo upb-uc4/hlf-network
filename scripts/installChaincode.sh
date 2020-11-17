@@ -35,7 +35,7 @@ wget -q -c https://github.com/upb-uc4/hlf-chaincode/releases/"$CHAINCODE_VERSION
 jarPath=$HL_MOUNT/uc4/UC4-chaincode/UC4-chaincode/UC4-chaincode*.jar
 unzip -q -c $jarPath META-INF/MANIFEST.MF | grep 'Implementation-Version' | cut -d ':' -f2>>$HL_MOUNT/uc4/assets/testversion.txt
 # print
-chaincode_version=cat /tmp/hyperledger/chaincode/assets/testversion.txt
+chaincode_version=cat $HL_MOUNT/uc4/assets/testversion.txt
 msg "CHAINCODE VERSION: $chaincode_version"
 
 header "Installation"
