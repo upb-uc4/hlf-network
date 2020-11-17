@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export CHAINCODE_VERSION=$(</tmp/hyperledger/chaincode/assets/testversion.txt)
+echo "CHAINCODE VERSION:: $CHAINCODE_VERSION"
 
 peer lifecycle chaincode commit \
     -o orderer-org0:7050 \
