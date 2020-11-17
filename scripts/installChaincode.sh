@@ -32,6 +32,16 @@ wget -q -c https://github.com/upb-uc4/hlf-chaincode/releases/"$CHAINCODE_VERSION
 msg "Download assets"
 wget -q -c https://github.com/upb-uc4/hlf-chaincode/releases/"$CHAINCODE_VERSION_PATH"/collections_config.json -O "$HL_MOUNT/uc4/assets/collections_config.json"
 
+jarPath=/tmp/hyperledger/chaincode/UC4-chaincode/UC4-chaincode*
+unzip -q -c $jarPath META-INF/MANIFEST.MF | grep 'Implementation-Version' | cut -d ':' -f2>>testversion.txt
+chaincode_version=cat testversion.txt
+msg "CHAINCODE VERSION: $chaincode_version"
+msg "CHAINCODE VERSION: $chaincode_version"
+msg "CHAINCODE VERSION: $chaincode_version"
+msg "CHAINCODE VERSION: $chaincode_version"
+msg "CHAINCODE VERSION: $chaincode_version"
+msg "CHAINCODE VERSION: $chaincode_version"
+
 header "Installation"
 msg "Packaging chaincode on CLI1"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/packageChaincode.sh
