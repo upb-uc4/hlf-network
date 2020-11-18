@@ -1,5 +1,9 @@
 # [v.0.13.0](https://github.com/upb-uc4/hlf-network/compare/v0.12.0...v0.13.0) (Draft) 
 
+## Feature
+ 
+ - Set chaincode version during install as defined in chaincode sources
+
 ## Refactoring
 
  - Add necessary environment variables to output when using `-t` flag and fix wrong CA names [#104](https://github.com/upb-uc4/hlf-network/pull/104)
