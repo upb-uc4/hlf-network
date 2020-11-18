@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Test network on kind
     strategy:
+        fail-fast: false
         matrix:
             we_just_want_to_repeat: [1, 2, 3, 4, 5]
     steps:
