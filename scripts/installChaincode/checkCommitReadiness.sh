@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CHAINCODE_VERSION=$(cat /tmp/hyperledger/chaincode/assets/testversion.txt)
+export CHAINCODE_VERSION=$(</tmp/hyperledger/chaincode/assets/testversion.txt)
 echo "CHAINCODE VERSION:: $CHAINCODE_VERSION"
 
 peer lifecycle chaincode checkcommitreadiness \
