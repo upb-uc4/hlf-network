@@ -1,3 +1,10 @@
+# [v.0.13.0](https://github.com/upb-uc4/hlf-network/compare/v0.12.0...v0.13.0) (Draft) 
+
+## Refactoring
+
+ - Add necessary environment variables to output when using `-t` flag and fix wrong CA names [#104](https://github.com/upb-uc4/hlf-network/pull/104)
+ - Update scripts to support chaincode published as jar instead of building it ourselves [#100](https://github.com/upb-uc4/hlf-network/pull/100)
+
 # [v.0.12.0](https://github.com/upb-uc4/hlf-network/compare/v0.11.3...v0.12.0) (2020-11-06) 
 
 ## Feature
