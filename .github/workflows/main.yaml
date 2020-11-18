@@ -22,7 +22,7 @@ on:
       - develop
 jobs:
   test:
-    continue-on-error: [true]
+    continue-on-error: true
     runs-on: ubuntu-latest
     name: Test network on kind
     strategy:
