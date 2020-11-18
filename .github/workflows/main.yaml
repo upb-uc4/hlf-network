@@ -48,4 +48,4 @@ jobs:
 
       - name: Deploy network using deployment script
         run:
-          ./deploy.sh -b v0.12.3
+          ./deploy.sh
