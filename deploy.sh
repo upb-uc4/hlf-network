@@ -47,7 +47,9 @@ echo -e "\n\n"
 ./scripts/installChaincode.sh $CHAINCODE_VERSION_PARAM
 
 if [[ $TEST_MODE == "-t" ]]; then
-  export UC4_KIND_NODE_IP=$(get_worker_ip)
-  printf "Use the following command to set the node ip:\n"
-  printf "export UC4_KIND_NODE_IP=%s\n" $UC4_KIND_NODE_IP
+  UC4_KIND_NODE_IP=$(get_worker_ip)
+  printf "Use the following commands to configure your testing suite:\n"
+  msg "export UC4_KIND_NODE_IP=$UC4_KIND_NODE_IP"
+  msg "export UC4_CONNECTION_PROFILE=/tmp/hyperledger/connection_profile_kubernetes_local.yaml"
+  msg "export UC4_TESTBASE_TARGET=PRODUCTION_NETWORK"
 fi
