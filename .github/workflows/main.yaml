@@ -22,11 +22,13 @@ on:
       - develop
 jobs:
   test:
+    continue-on-error: [true]
     runs-on: ubuntu-latest
     name: Test network on kind
     strategy:
         matrix:
             we_just_want_to_repeat: [1, 2, 3, 4, 5]
+        fail-fast: [false]
     steps:
       - uses: actions/checkout@v2
 
