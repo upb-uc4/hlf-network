@@ -12,7 +12,7 @@ peer lifecycle chaincode approveformyorg \
   -o orderer-org0:7050 \
   --channelID mychannel \
   --name uc4-cc \
-  --version 0.12.3 \
+  --version "0.12.3" \
   --package-id "$CHAINCODE_ID" \
   --sequence 1 \
   --tls \
