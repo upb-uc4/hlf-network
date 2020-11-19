@@ -48,8 +48,12 @@ echo -e "\n\n"
 
 if [[ $TEST_MODE == "-t" ]]; then
   UC4_KIND_NODE_IP=$(get_worker_ip)
-  printf "Use the following commands to configure your testing suite:\n"
-  msg "export UC4_KIND_NODE_IP=$UC4_KIND_NODE_IP"
-  msg "export UC4_CONNECTION_PROFILE=/tmp/hyperledger/connection_profile_kubernetes_local.yaml"
-  msg "export UC4_TESTBASE_TARGET=PRODUCTION_NETWORK"
+  sep
+  msg "Use the following commands to configure your testing suite:"
+  echo "export UC4_KIND_NODE_IP=$UC4_KIND_NODE_IP"
+  echo "export UC4_CONNECTION_PROFILE=/tmp/hyperledger/connection_profile_kubernetes_local.yaml"
+  echo "export UC4_TESTBASE_TARGET=PRODUCTION_NETWORK"
+  small_sep
+  msg "For testing directly in intellij, paste this line to your test environment variables:"
+  echo "UC4_KIND_NODE_IP=$UC4_KIND_NODE_IP;UC4_CONNECTION_PROFILE=/tmp/hyperledger/connection_profile_kubernetes_local.yaml;UC4_TESTBASE_TARGET=PRODUCTION_NETWORK"
 fi
