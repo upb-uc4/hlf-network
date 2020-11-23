@@ -32,6 +32,11 @@ wget -q -c https://github.com/upb-uc4/hlf-chaincode/releases/"$CHAINCODE_VERSION
 msg "Download assets"
 wget -q -c https://github.com/upb-uc4/hlf-chaincode/releases/"$CHAINCODE_VERSION_PATH"/collections_config.json -O "$HL_MOUNT/uc4/assets/collections_config.json"
 
+jarPath=$HL_MOUNT/uc4/UC4-chaincode/UC4-chaincode/UC4-chaincode*.jar
+unzip -q -c $jarPath META-INF/MANIFEST.MF | grep "Implementation-Version" | grep -oE "([0-9]{1,}\.)+[0-9]{1,}" >$HL_MOUNT/uc4/assets/testversion.txt
+# add access rights to file for everyone
+chmod 777 $HL_MOUNT/uc4/assets/testversion.txt
+
 header "Installation"
 msg "Packaging chaincode on CLI1"
 kubectl exec -n hlf $(get_pods "cli-org1") -i -- sh < scripts/installChaincode/packageChaincode.sh

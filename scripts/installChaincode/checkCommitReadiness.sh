@@ -1,7 +1,12 @@
+#!/bin/bash
+
+export CHAINCODE_VERSION=$(cat /tmp/hyperledger/chaincode/assets/testversion.txt)
+echo "CHAINCODE VERSION:: $CHAINCODE_VERSION"
+
 peer lifecycle chaincode checkcommitreadiness \
     --channelID mychannel \
     --name uc4-cc \
-    --version 1.0 \
+    --version $CHAINCODE_VERSION \
     --sequence 1 \
     --tls \
     --cafile /tmp/secrets/tls-ca/cert.pem \
