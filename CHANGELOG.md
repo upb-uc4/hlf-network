@@ -2,7 +2,7 @@
 
 ## Feature
  
- - Set chaincode version during install as defined in chaincode sources
+ - Set chaincode version during install as defined in chaincode source package
 
 ## Refactoring
 
