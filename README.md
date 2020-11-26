@@ -55,7 +55,7 @@ Deploy the network with these steps:
     ```
     The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default).
     
-    Use the ```-t``` for local testing with the scala API and provides certificates through the filesystem and registers a admin with fixed password.
+    Use ```-t``` for local testing with the scala API, providing certificates through the filesystem and registering an admin with a fixed password.
     
     The ```-c``` option allows to specify the mount path for hyperledger. The default folder matches the configuration of the development cluster.
  3. To delete the cluster, run ```kind delete cluster```, to remove all files ```sudo rm -rf /data/development/hyperledger/```. 
