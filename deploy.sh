@@ -5,22 +5,22 @@
 
 source ./scripts/util.sh
 
-BRANCH_TAG="develop"
+CHAINCODE_VERSION_PARAM=""
 CLUSTER_MOUNT="/data/development/hyperledger"
 TEST_MODE=""
 
 print_usage() {
-  printf "Usage: ./deploy -v -b [branch or tag] -c [custom config file]\n"
-  printf "Use -b to specify a branch or tag (default develop)\n"
+  printf "Usage: ./deploy.sh [-b <version|release>] [-c <custom config file>] [-t]\n"
+  printf "Use -b to specify the version|release to use (default is latest)\n"
   printf "Use -t to activate test mode (do not use in production)\n"
   printf "Use -c to specify a cluster mount path (default %s)\n" "$CLUSTER_MOUNT"
 }
 
 
-while getopts 'vtb:c:' flag; do
+while getopts 'tb:c:' flag; do
   case "${flag}" in
-    b) BRANCH_TAG="${OPTARG}"
-       printf 'Using branch or tag "%s"\n' "$BRANCH_TAG" ;;
+    b) CHAINCODE_VERSION_PARAM="-b ${OPTARG}"
+       printf 'Using version|release "%s"\n' "$CHAINCODE_VERSION_PARAM" ;;
     c) CLUSTER_MOUNT="${OPTARG}"
        printf 'Using hyperledger mount path "%s"\n' "$CLUSTER_MOUNT";;
     t) TEST_MODE="-t"
@@ -44,15 +44,16 @@ printf 'export HL_MOUNT="%s"' "$CLUSTER_MOUNT" >> scripts/env.sh   # Add CLUSTER
 
 echo -e "\n\n"
 
-if test -z "$BRANCH_TAG"
-then
-  ./scripts/installChaincode.sh
-else
-  ./scripts/installChaincode.sh -b $BRANCH_TAG
-fi
+./scripts/installChaincode.sh $CHAINCODE_VERSION_PARAM
 
 if [[ $TEST_MODE == "-t" ]]; then
-  export UC4_KIND_NODE_IP=$(get_worker_ip)
-  printf "Use the following command to set the node ip:\n"
-  printf "export UC4_KIND_NODE_IP=%s\n" $UC4_KIND_NODE_IP
+  UC4_KIND_NODE_IP=$(get_worker_ip)
+  sep
+  msg "Use the following commands to configure your testing suite:"
+  echo "export UC4_KIND_NODE_IP=$UC4_KIND_NODE_IP"
+  echo "export UC4_CONNECTION_PROFILE=/tmp/hyperledger/connection_profile_kubernetes_local.yaml"
+  echo "export UC4_TESTBASE_TARGET=PRODUCTION_NETWORK"
+  small_sep
+  msg "For testing directly in intellij, paste this line to your test environment variables:"
+  echo "UC4_KIND_NODE_IP=$UC4_KIND_NODE_IP;UC4_CONNECTION_PROFILE=/tmp/hyperledger/connection_profile_kubernetes_local.yaml;UC4_TESTBASE_TARGET=PRODUCTION_NETWORK"
 fi

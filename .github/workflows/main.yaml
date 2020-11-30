@@ -20,103 +20,31 @@ on:
       - master
       - develop
 jobs:
-  job1:
+  test:
     runs-on: ubuntu-latest
     name: Test network on kind
+    strategy:
+        fail-fast: false
+        matrix:
+            we_just_want_to_repeat: [1, 2, 3, 4, 5]
     steps:
       - uses: actions/checkout@v2
+
       - name: Create folder for mounts of default cluster
         run: |
           sudo mkdir -p /data/development/hyperledger
           sudo chmod -R 777 /data/development
+
       - name: Start KinD with default cluster config
-        uses: engineerd/setup-kind@v0.4.0
+        uses: engineerd/setup-kind@v0.5.0
         with:
           version: "v0.7.0"
           config: assets/kind.yaml
+
       - name: (Temporary) install faketime to prevent clockdrifts
         run:
           sudo apt-get install faketime
-      - name: Deploy network using deployment script
-        run:
-          ./deploy.sh
-  job2:
-    runs-on: ubuntu-latest
-    name: Test network on kind
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create folder for mounts of default cluster
-        run: |
-          sudo mkdir -p /data/development/hyperledger
-          sudo chmod -R 777 /data/development
-      - name: Start KinD with default cluster config
-        uses: engineerd/setup-kind@v0.4.0
-        with:
-          version: "v0.7.0"
-          config: assets/kind.yaml
-      - name: (Temporary) install faketime to prevent clockdrifts
-        run:
-          sudo apt-get install faketime
-      - name: Deploy network using deployment script
-        run:
-          ./deploy.sh
-  job3:
-    runs-on: ubuntu-latest
-    name: Test network on kind
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create folder for mounts of default cluster
-        run: |
-          sudo mkdir -p /data/development/hyperledger
-          sudo chmod -R 777 /data/development
-      - name: Start KinD with default cluster config
-        uses: engineerd/setup-kind@v0.4.0
-        with:
-          version: "v0.7.0"
-          config: assets/kind.yaml
-      - name: (Temporary) install faketime to prevent clockdrifts
-        run:
-          sudo apt-get install faketime
-      - name: Deploy network using deployment script
-        run:
-          ./deploy.sh
-  job4:
-    runs-on: ubuntu-latest
-    name: Test network on kind
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create folder for mounts of default cluster
-        run: |
-          sudo mkdir -p /data/development/hyperledger
-          sudo chmod -R 777 /data/development
-      - name: Start KinD with default cluster config
-        uses: engineerd/setup-kind@v0.4.0
-        with:
-          version: "v0.7.0"
-          config: assets/kind.yaml
-      - name: (Temporary) install faketime to prevent clockdrifts
-        run:
-          sudo apt-get install faketime
-      - name: Deploy network using deployment script
-        run:
-          ./deploy.sh
-  job5:
-    runs-on: ubuntu-latest
-    name: Test network on kind
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create folder for mounts of default cluster
-        run: |
-          sudo mkdir -p /data/development/hyperledger
-          sudo chmod -R 777 /data/development
-      - name: Start KinD with default cluster config
-        uses: engineerd/setup-kind@v0.4.0
-        with:
-          version: "v0.7.0"
-          config: assets/kind.yaml
-      - name: (Temporary) install faketime to prevent clockdrifts
-        run:
-          sudo apt-get install faketime
+
       - name: Deploy network using deployment script
         run:
           ./deploy.sh
