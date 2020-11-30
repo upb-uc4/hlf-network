@@ -11,7 +11,8 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
 
   * [Introduction](#introduction)
   * [Getting Started](#getting-started)
-    * [Kubernetes Cluster](#kubernetes-cluster)
+    * [TL;DR](#tl;dr)
+    * [Setup](#setup)
     * [Deploy the Network](#deploy-the-network)
     * [Local Testing from Outside the Cluster](#local-testing-from-outside-the-cluster)
     * [Kubernetes Dashboard](#kubernetes-dashboard)
@@ -23,13 +24,6 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
     * [CLIs and Channel Creation](#clis-and-channel-creation)
     * [Install and Invoke Chaincode](#install-and-invoke-chaincode)
     * [Further Readings](#further-readings)
-  * [For Developers](#for-developers)
-    * [Project Structure](#project-structure)
-      * [Main Scripts](#main-scripts)
-      * [MSP Directories](#msp-directories)
-    * [Implementation Details](#implementation-details)
-    * [Using kubectl](#using-kubectl)
-    * [Debugging](#debugging)
   * [Changelog](#changelog)
   * [Versions](#versions)
   * [License](#license)
@@ -39,36 +33,52 @@ https://hyperledger-fabric-ca.readthedocs.io/en/latest/operations_guide.html).
   
 ## Getting Started
 
-### Kubernetes Cluster 
+### TL;DR
+
+ 1. Install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+ 2. Run `./restart.sh`
+
+### Setup
 
 For setting up our project, you need to install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes. 
 
-We provide a KinD cluster configuration for local development. To create the cluster, run ```./overwriteKindCluster.sh```. You can also use this script to delete the old cluster and files and create a new cluster.
-
-To delete the cluster, run ```kind delete cluster```, to remove all files ```sudo rm -rf /data/development/hyperledger/```. 
-
 ### Deploy the Network
 
-To deploy the network, execute ```./deploy.sh -b [chaincode branch or tag] -c [cluster mount] -t```.
-The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default). Use the ```-t``` for local testing with the scala API and provides certificates through the filesystem and registers a admin with fixed password. The ```-c``` option allows to specify the mount path for hyperledger. The default folder matches the configuration of the development cluster.
+Deploy the network with these steps:
+ 1. Create a local kubernetes cluster: 
+    ```
+    ./overwriteKindCluster.sh
+    ```
+ 2. Deploy the network:
+    ```
+    ./deploy.sh [-b <chaincode release/tag>] [-c <cluster mount>] [-t]
+    ```
+    The ```-b``` tag can be used to specify a chaincode tag or branch (develop is default).
+    
+    Use ```-t``` for local testing with the scala API, providing certificates through the filesystem and registering an admin with a fixed password.
+    
+    The ```-c``` option allows to specify the mount path for hyperledger. The default folder matches the configuration of the development cluster.
+ 3. To delete the cluster, run ```kind delete cluster```, to remove all files ```sudo rm -rf /data/development/hyperledger/```. 
 
-For development, you can use ```./restart.sh``` for fast deployment and restarting, the script uses two clusters which are created in the background and restarted automatically to reduce startup times.
-The script offers the same flags as ```deploy.sh```.
+For faster development, you can use 
+```
+./restart.sh [-b <chaincode branch or tag>] [-c <cluster mount>] [-t] [-d]
+```
+This script deploys two clusters to which the network is deployed alternating to reduce startup times. You can use `-d` to delete the clusters. The other flags are identical to the deploy script
 
 ### Local Testing from Outside the Cluster
 
-To test your application locally without deploying it to the cluster, deploy the network (and cluster) with the testing flag: ```./restart -t```.
+To test your application locally without deploying it to the cluster, deploy the network (and cluster) with the testing flag: ```./restart.sh -t```.
 This has the following side-effects: 
  - We generate a connection profile at `/tmp/hyperledger/connection_profile_kubernetes_local.yaml` that can be used to access the network from outside the cluster on your machine.
  - We register a test user with the fixed credentials: `test-admin:test-admin-pw`.
  - We provide all root certificates at `/tmp/hyperledger/`.
- - You can export the internal worker node ip as `UC4_KIND_NODE_IP`. The last line of the output will look something like this:
+ - We output all environment variables needed to test the scala api. Just export the last three lines that look similar to:
    ```
-   Use the following command to set the node ip:
    export UC4_KIND_NODE_IP=172.18.0.3
+   export UC4_CONNECTION_PROFILE=/tmp/hyperledger/connection_profile_kubernetes_local.yaml
+   export UC4_TESTBASE_TARGET=PRODUCTION_NETWORK
    ```
-   Use the export command to use the network with the hlf-api.
-   
 
 ### Kubernetes Dashboard
 
@@ -148,10 +158,8 @@ Launching the orderer service allows us to...\-->
 CLI containers are required to administrate the network and enable communication with the peers.
 Therefore, we use one CLI container for each organization that has the respective admin rights.\
 The CLI containers are started in the same host machine as peer1 for each organization.
-Using these CLIs, we can create a channel and let peers join it. For this, the following command can be used to execute shell scripts in the CLIs:
-```
-kubectl exec -n hlf $CLI1 -i -- sh < $someScript.sh
-``` 
+Using these CLIs, we can create a channel and let peers join it. 
+
 This command generates the mychannel.block on peer1 which can be used by other peers in the network to join the channel:
 ```
 channel create \
@@ -178,7 +186,7 @@ The chaincode lifecycle includes the following deployment steps:
 1. Build the chaincode using gradle.
 2. The chaincode is packaged in the CLI container, which directly builds the chaincode container image.
 3. The chaincode is installed in this format on selected peers. (This installation process will take a few minutes since a java environment for the chaincode is downloaded and each peer builds its own chaincode docker image.)
-4. The instantiating process of version v1.4 is replaced by an approvement given by the peers for their organization. 
+4. The instantiating process of version v1.4 is replaced by an approval given by the peers for their organization. 
 5. After organizations have approved, the chaincode definition is committed to the channel. 
 
 After this chaincode deployment the chaincode containers are running, hence, the chaincode can be invoked and queried by the peers.
@@ -193,182 +201,17 @@ This guide serves as a starting point. If you are interested in more details, we
 * [Channel Configuration](https://hyperledger-fabric.readthedocs.io/en/release-2.2/configtx.html?channel-configuration-configtx)
 * [Chaincode Lifecycle](https://hyperledger-fabric.readthedocs.io/en/release-2.2/chaincode_lifecycle.html)
 
-
-## For Developers 
-
-This section contains useful information for developers who are new to this project.
-
-### Project Structure
-<!---TODO: can be improved and extended and maybe separated-->
-```
-| k8s-templates                     # template definitions of all deployments and services for the network components 
-    +-- dind                        # container for the chaincode deployment 
-    +-- orderer
-    +-- orderer-org-ca
-    +-- org1-ca
-    +-- org1-peer1
-    +-- org1-peer2
-    +-- org2-ca 
-    +-- org2-peer1
-    +-- org2-peer2
-    +-- tls-ca
-    +-- namespace.yaml
-    +-- org1-cli.yaml
-    +-- org2-cli.yaml
-| scripts
-|   +-- debug
-        +-- TODO
-    +-- installChaincodeOrg1.sh
-    +-- installChaincodeOrg2.sh
-
-| tmp                                # temporary files available during network runtime mounting our certificates
-    +-- hyperledger
-        +-- chaincode
-            ...
-        +-- dind
-        +-- org0
-            +-- admin
-                +-- msp
-                    +-- cacerts
-                        +-- 172-17-0-2-30906.pem  
-                    +-- keystore       # private key
-                    +-- signcerts
-                        +-- cert.pem   # certificate after enrollment of Org0's admin
-                    +-- user
-                +-- fabric-ca-client-config.yaml
-            +-- ca
-                +-- admin
-                    +-- msp
-                        +-- cacerts
-                            +-- 172-17-0-2-30906.pem
-                        +-- keystore    # private key
-                        +-- signcerts
-                            +-- cert.pem
-                        +-- user
-                    +-- fabric-ca-client-config.yaml
-                +-- crypto
-                    +-- msp
-                    +-- ca-cert.pem
-                    +-- fabric-ca-server-config.yaml
-                    +-- tls-cert.pem
-            +-- msp
-                +-- admincerts
-                    +-- admin-org0-cert.pem   # certificate of the Org0's admin identity
-                +-- cacerts
-                    +-- org0-ca-cert.pem      # trusted root certificate of Org0 (organisation-level)
-                +-- tlscacerts
-                    +-- tls-ca-cert.pem       # trusted root certificate of the TLS CA
-                +-- users
-            +-- orderer
-                +-- assets
-                    +-- ca
-                        +-- org0-ca-cert.pem  # trusted root certificate for Org0
-                    +-- tls-ca
-                        +-- tls-ca-cert.pem   # certificate of the TLS CA
-                +-- msp
-                    +-- admincerts
-                        +-- orderer-admin-cert.pem  # certificate of Org0's admin
-                    +-- cacerts
-                        +-- 172-17-0-2-30906.pem
-                    +-- keystore                    # private key
-                    +-- signcerts
-                        +-- cert.pem
-                    +-- user
-                +-- tls-msp
-                    +-- cacerts
-                    +-- keystore
-                        +-- key.pem
-                    +-- signcerts
-                        +-- cert.pem
-                    +-- tlscacerts
-                        +-- tls-172-17-0-2-30905.pem
-                    +-- user
-                +-- channel.tx
-                +-- fabric-ca-client-config.yaml
-                +-- genesis.block
-        +-- org1
-            ...
-        +-- org2
-            ...
-        +-- tls-ca
-            +-- admin
-            +-- crypto
-        +-- uc4
-    +-- ca-cert.pem                        # the TLS certificate shared by all organizations
-| configtx.yaml                            # our channel configuration file 
-| deleteNetwork.sh                         # script to delete the network 
-| installChaincode.sh                      # script which processes the chaincode lifecycle
-| restartNetwork.sh                        # deletes and restarts the network
-| settings.sh 
-| startNetwork.sh                          # fundamental network deployment script
-| testInstalledChaincode.sh                # invokes a chaincode function for testing
-```
-
-#### Main Scripts
-The most fundamental script is <b>```startNetwork.sh```</b> where the network is deployed by creating and launching respective Deployments and Services in minikube as well as enrolling and registering users which involves the provision of respective certificates for all participating parties.\
-We first set up the TLS CA and the CAs for all organizations, respectively. Then we enroll the peers for the organizations Org1 and Org2 and start them by creating deployments in minikube. 
-In the next step, we set up the orderer which includes the enrollment of its admin identity, the generation of the genesis block as well as the launch of the deployment in minikube. For the orderer's MSP directory, we create MSP folders locally in order to store the respective certificates of all organizations in this ordering host explicitly. 
-Next, the CLIs are created in minikube, one for each organization Org1 and Org2. These can be used in the following to create the channel. \
-The file <b>```installChaincode.sh```</b> consists of the logic for installing chaincode on the channel processing all steps of the chaincode lifecycle. 
-
-#### MSP Directories
-The MSP directories include the material necessary for enrollment: the `ca` folder contains the enrollment certificate, the `tls-ca` folder contains the TLS certificate, the `admincerts` folder contains certificates of the administrators. 
-The folders keystore and signcerts are generated for the entities which sign or endorse transactions. 
-The private keys are stored in the folders keystore and are generated during the enrollment with TLS. The folders signcerts store the associated certificates for signing. Hence, these two files belong together since they provide the sensitive signing material.
-The structure of the organizations is very similar. Org0 has the extra folder `orderer`, Org1 and Org2 have the files `peer1` and `peer2` instead, each containing an msp folder again, and additional admin certificates. 
-
-<!---More advanced/ longer explanations on specific folders or files may come here?-->
-<!---The templating (and the environment variables for the IP addresses) are necessary to set the respective IP addresses on start of the network? It allows more manual configuration depending on the host machine without changing the tracked files.-->
-
-<!---### MSP folder structure-->
-<!---TODO: Does the same file structure apply to all organizations? Maybe separate the certificate file structure from the overall file structure.-->
-<!---wo welche Zertifikate, warum eigene msp Ordner, warum Kopieren von Zertifikaten (TLS signing certificates, i.e. signcerts, need to be available on each host which intends to run commands against the TLS CA.)?-->
-
-### Implementation Details
-
-The startNetwork script uses these filled configuration files and deploys the corresponding entities to kubernetes. We mount the temporary `/data/uc4/deployment` folder to kubernetes which allows us to easily copy certificates and provide resources to the containers.
-
-We deploy all kubernetes components to the same `hlf` namespace which separates our components from other components running in Kubernetes and allows us to easily and safely delete and restart the network from scratch.
-
-### Using kubectl
-
-List the name of all pods: `kubectl get pods -n hlf`.
-
-Get shell on CLI container `kubectl exec -n hlf {CLI-POD} -it -- sh`.
-
-Get logs of container `kubectl logs {POD} -n hlf`.
-
-You can omit the namespace parameter, if you set the context of kubectl `kubectl config set-context --current --namespace=hlf`.
-
-### Debugging
-
-For debugging, we provide a few scripts in the folder scripts/debug. When executing 
-```
-./podShell.sh deployment-name [container name]
-```
-in order to run a shell on the specific pod. For viewing the logs of a specific pod, execute 
-```
-./getLogs.sh deployment-name [container name]
-``` 
-with the respective deployment name. The optional parameter `container name` is needed, if there are two different containers running on the same pod.
-
 ## Changelog
 
 To get an overview of our developmental process, we tagged our releases and added a [Changelog](https://github.com/upb-uc4/hlf-network/blob/master/CHANGELOG.md) to our repository which reveals our different releases along with a respective description/ enumeration of our changes.
 
 ## Versions 
 
-We use the release 2.2 for all hyperledger fabric components besides the CA server and client where the latest release is 1.4. The binary files are compiled from these releases and might be incompatible to other versions.
+We use the release 2.2 for all hyperledger fabric components besides the CA server and client where the latest release is 1.4.
 
 ## License
 
 Our source code files are made available under the Apache License, Version 2.0 (Apache-2.0), located in the [LICENSE](LICENSE) file.
-
-The included binaries are built from
- - fabric-ca-client [Hyperledger Fabric CA, Release 1.4.7](https://github.com/hyperledger/fabric-ca)
- - configtxgen [Hyperledger Fabric, Release 2.2](https://github.com/hyperledger/fabric)
-
-both published under the Apache-2.0 license.
 
 ## Troubleshooting
 
@@ -382,4 +225,4 @@ both published under the Apache-2.0 license.
     service/dind created
     error: no matching resources found
     ```
-    try reinstalling the current version of kubectl (https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+    add `sleep 10` between creation and waiting for a pod. If this does not help, try reinstalling the current version of kubectl (https://kubernetes.io/docs/tasks/tools/install-kubectl/)
