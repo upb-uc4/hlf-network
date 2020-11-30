@@ -1,8 +1,12 @@
-# [v.0.13.0](https://github.com/upb-uc4/hlf-network/compare/v0.12.0...v0.13.0) (Draft) 
+# [v.0.13.0](https://github.com/upb-uc4/hlf-network/compare/v0.12.0...v0.13.0) (2020-11-30) 
 
+## Documentation
+
+ - Update REAMDE.md [#105](https://github.com/upb-uc4/hlf-network/pull/105)
+ 
 ## Feature
  
- - Set chaincode version during install as defined in chaincode source package
+ - Set chaincode version during install as defined in chaincode source package [#106](https://github.com/upb-uc4/hlf-network/pull/106)
 
 ## Refactoring
 
