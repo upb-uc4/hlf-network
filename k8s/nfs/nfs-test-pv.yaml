@@ -1,0 +1,19 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nfs-test-volume
+  labels:
+    name: nfs-test-volume
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy:
+    Delete
+  storageClassName:
+    manual
+  nfs:
+    server: 10.96.17.42
+    path: "/"
+    readOnly: false
