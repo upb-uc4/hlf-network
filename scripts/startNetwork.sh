@@ -50,6 +50,12 @@ kubectl -n hlf get pods
 kubectl delete pod -l app=peer1-org1 -n hlf
 sleep 5
 kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
+kubectl delete pod -l app=peer1-org2 -n hlf
+sleep 5
+kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
+kubectl delete pod -l app=peer2-org2 -n hlf
+sleep 5
+kubectl wait --for=condition=ready pod -l app=peer2-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
 kubectl -n hlf get pods
 # TODO just for testing
 # kubectl delete pod -l app=tls-ca -n hlf

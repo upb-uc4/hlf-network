@@ -1,0 +1,100 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: peer2-org2-pv
+  labels:
+    app: peer2-org2
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/hyperledger/storage/peer2-org2"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: peer2-org2-pvc
+  labels:
+    app: peer2-org2
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+      
+
+---
+
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: peer2-org2-couchdb-pv
+  labels:
+    app: peer2-org2
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/hyperledger/storage/peer2-org2-couchdb"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: peer2-org2-couchdb-pvc
+  labels:
+    app: peer2-org2
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+
+
+---
+
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: peer2-org2-dind-pv
+  labels:
+    app: peer2-org2
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/hyperledger/storage/peer2-org2-dind"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: peer2-org2-dind-pvc
+  labels:
+    app: peer2-org2
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
