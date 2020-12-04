@@ -20,6 +20,8 @@ spec:
           volumeMounts:
             - mountPath: /tmp/hyperledger/org1/peer1
               name: peer1-org1-mount
+            - mountPath: /var/hyperledger/production
+              name: peer-persistent-mount
           env:
             - name: CORE_PEER_ID
               value: "peer1-org1"
@@ -64,10 +66,16 @@ spec:
             
         - name: couchdb
           image: hyperledger/fabric-couchdb:latest
+          volumeMounts:
+            - mountPath: /opt/couchdb/data
+              name: couchdb-persistent-mount
         - name: dind
           image: "docker:18.05.0-dind"
           securityContext:
             privileged: true
+          volumeMounts:
+            - mountPath: /var/lib/docker
+              name: dind-persistent-mount
       initContainers:
         - name: fabric-ca
           image: hyperledger/fabric-ca:1.4.7
@@ -117,6 +125,15 @@ spec:
                   key: password
             
       volumes:
+        - name: peer-persistent-mount
+          persistentVolumeClaim:
+              claimName: peer1-org1-pvc
+        - name: couchdb-persistent-mount
+          persistentVolumeClaim:
+              claimName: peer1-org1-couchdb-pvc
+        - name: dind-persistent-mount
+          persistentVolumeClaim:
+              claimName: peer1-org1-dind-pvc
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
