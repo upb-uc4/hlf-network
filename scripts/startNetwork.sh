@@ -47,9 +47,9 @@ source ./scripts/startNetwork/startClis.sh
 source ./scripts/startNetwork/setupPeers.sh
 
 # TODO just for testing
-kubectl delete pod -l app=tls-ca -n hlf
-sleep 5
-kubectl wait --for=condition=ready pod -l app=tls-ca --timeout=${CONTAINER_TIMEOUT} -n hlf
+# kubectl delete pod -l app=tls-ca -n hlf
+# sleep 5
+# kubectl wait --for=condition=ready pod -l app=tls-ca --timeout=${CONTAINER_TIMEOUT} -n hlf
 
 source ./scripts/startNetwork/setupOrderer.sh
 # Wait to ensure peers and database are communicating as expected
@@ -58,3 +58,7 @@ source ./scripts/startNetwork/setupChannel.sh
 
 sep
 msg "Done!"
+
+msg "Killing orderer"
+kubectl delete pod -l app=orderer-org0 -n hlf
+
