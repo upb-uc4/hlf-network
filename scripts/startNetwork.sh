@@ -32,6 +32,7 @@ kubectl create -f k8s/namespace.yaml
 sleep 10     # To prevent service account error
 echo "set up nfs"
 source ./scripts/startNetwork/setupNfs.sh
+source ./scripts/startNetwork/setupStorage.sh
 echo "set up nfs done"
 faketime -m -f -1d /bin/bash -c "scripts/startNetwork/generateSecrets.sh $TEST_MODE"
 source ./scripts/startNetwork/setupTlsCa.sh
@@ -44,6 +45,12 @@ fi
 source ./scripts/startNetwork/setupOrg2Ca.sh
 source ./scripts/startNetwork/startClis.sh
 source ./scripts/startNetwork/setupPeers.sh
+
+# TODO just for testing
+kubectl delete pod -l app=tls-ca -n hlf
+sleep 5
+kubectl wait --for=condition=ready pod -l app=tls-ca --timeout=${CONTAINER_TIMEOUT} -n hlf
+
 source ./scripts/startNetwork/setupOrderer.sh
 # Wait to ensure peers and database are communicating as expected
 sleep 10
