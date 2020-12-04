@@ -1,0 +1,30 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: rca-org2-pv
+  labels:
+    app: rca-org2
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/hyperledger/storage/rca-org2"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: rca-org2-pvc
+  labels:
+    app: rca-org2
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
