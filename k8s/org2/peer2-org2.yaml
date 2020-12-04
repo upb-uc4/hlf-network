@@ -20,6 +20,8 @@ spec:
           volumeMounts:
             - mountPath: /tmp/hyperledger/org2/peer2
               name: peer2-org2-mount
+            - mountPath: /var/hyperledger/production
+              name: peer-persistent-mount
           env:
             - name: CORE_PEER_ID
               value: "peer2-org2"
@@ -53,18 +55,18 @@ spec:
               value: "CouchDB"
             - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
               value: "localhost:5984"
-          ports:
-            - containerPort: 7052
         - name: couchdb
           image: hyperledger/fabric-couchdb:latest
-          ports:
-            - containerPort: 5984
+          volumeMounts:
+            - mountPath: /opt/couchdb/data
+              name: couchdb-persistent-mount
         - name: dind
           image: "docker:18.05.0-dind"
           securityContext:
             privileged: true
-          ports:
-            - containerPort: 2375
+          volumeMounts:
+            - mountPath: /var/lib/docker
+              name: dind-persistent-mount
       initContainers:
         - name: fabric-ca
           image: hyperledger/fabric-ca:1.4.7
@@ -113,6 +115,15 @@ spec:
                   name: credentials.peer2-org2
                   key: password
       volumes:
+        - name: peer-persistent-mount
+          persistentVolumeClaim:
+              claimName: peer2-org2-pvc
+        - name: couchdb-persistent-mount
+          persistentVolumeClaim:
+              claimName: peer2-org2-couchdb-pvc
+        - name: dind-persistent-mount
+          persistentVolumeClaim:
+              claimName: peer2-org2-dind-pvc
         - name: shared-volume
           hostPath:
             path: /mnt/hyperledger/shared
