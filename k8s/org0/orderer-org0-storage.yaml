@@ -1,0 +1,66 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: orderer-org0-pv
+  labels:
+    app: orderer-org0
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/hyperledger/storage/orderer-org0"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: orderer-org0-pvc
+  labels:
+    app: orderer-org0
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+
+
+---
+
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: orderer-org0-shared-pv
+  labels:
+    app: orderer-org0
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/hyperledger/storage/orderer-org0-shared"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: hlf
+  name: orderer-org0-shared-pvc
+  labels:
+    app: orderer-org0
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+
