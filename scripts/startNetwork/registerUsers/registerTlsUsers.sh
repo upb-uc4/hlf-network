@@ -2,7 +2,8 @@
 
 source "/tmp/hyperledger/scripts/util.sh"
 
-set -e
+# +e to allow restarts
+set +e
 
 sleep 10
 

@@ -2,7 +2,7 @@
 
 source "/tmp/hyperledger/scripts/util.sh"
 
-set -e
+set +e
 
 sleep 10
 
