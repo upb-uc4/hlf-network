@@ -44,26 +44,6 @@ fi
 source ./scripts/startNetwork/setupOrg2Ca.sh
 source ./scripts/startNetwork/startClis.sh
 source ./scripts/startNetwork/setupPeers.sh
-
-kubectl -n hlf get pods
-kubectl delete pod -l app=peer1-org1 -n hlf
-sleep 5
-kubectl wait --for=condition=ready pod -l app=peer1-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
-kubectl delete pod -l app=peer2-org1 -n hlf
-sleep 5
-kubectl wait --for=condition=ready pod -l app=peer2-org1 --timeout=${CONTAINER_TIMEOUT} -n hlf
-kubectl delete pod -l app=peer1-org2 -n hlf
-sleep 5
-kubectl wait --for=condition=ready pod -l app=peer1-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
-kubectl delete pod -l app=peer2-org2 -n hlf
-sleep 5
-kubectl wait --for=condition=ready pod -l app=peer2-org2 --timeout=${CONTAINER_TIMEOUT} -n hlf
-kubectl -n hlf get pods
-# TODO just for testing
-# kubectl delete pod -l app=tls-ca -n hlf
-# sleep 5
-# kubectl wait --for=condition=ready pod -l app=tls-ca --timeout=${CONTAINER_TIMEOUT} -n hlf
-
 source ./scripts/startNetwork/setupOrderer.sh
 # Wait to ensure peers and database are communicating as expected
 sleep 10
