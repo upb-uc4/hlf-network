@@ -51,7 +51,3 @@ source ./scripts/startNetwork/setupChannel.sh
 
 sep
 msg "Done!"
-
-msg "Killing orderer"
-kubectl delete pod -l app=orderer-org0 -n hlf
-
