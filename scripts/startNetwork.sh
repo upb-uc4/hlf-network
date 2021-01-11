@@ -49,5 +49,8 @@ source ./scripts/startNetwork/setupOrderer.sh
 sleep 10
 source ./scripts/startNetwork/setupChannel.sh
 
+# Create secret containing the production network version
+kubectl create secret generic uc4-production-network-version -n uc4-lagom --from-literal=version="$HL_PRODUCTION_NETWORK_VERSION"
+
 sep
 msg "Done!"
