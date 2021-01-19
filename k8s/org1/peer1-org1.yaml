@@ -115,6 +115,11 @@ spec:
                 secretKeyRef:
                   name: credentials.peer1-org1
                   key: password
+            - name: HYPERLEDGER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.scala-admin-org1
+                  key: username
             
       volumes:
         - name: scripts
