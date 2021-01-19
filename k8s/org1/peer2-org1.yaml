@@ -115,7 +115,7 @@ spec:
                   name: credentials.peer2-org1
                   key: password
             - name: HYPERLEDGER_USERNAME
-                valueFrom:
+              valueFrom:
                 secretKeyRef:
                   name: credentials.scala-admin-org1
                   key: username
