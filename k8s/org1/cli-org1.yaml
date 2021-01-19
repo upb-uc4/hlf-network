@@ -50,6 +50,11 @@ spec:
               value: "/tmp/secrets/tls-ca/cert.pem"
             - name: CORE_PEER_MSPCONFIGPATH
               value: "/tmp/hyperledger/org1/admin/msp"
+            - name: HYPERLEDGER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: credentials.scala-admin-org1
+                  key: username
       initContainers:
         - name: fabric-ca
           image: hyperledger/fabric-ca:1.4.7
