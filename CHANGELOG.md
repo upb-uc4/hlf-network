@@ -1,9 +1,15 @@
+## [v.0.17.0](https://github.com/upb-uc4/hlf-network/compare/v0.16.0...v0.17.0) (Draft)
+
+## Feature
+
+ - Add `sysadmin=true:ecert` attribute to org1-admin, org2-admin and scala users. If added to an enrollment request, this attribute is written to the certificate of a user [#114](https://github.com/upb-uc4/hlf-network/pull/114)
+
 ## [v.0.16.0](https://github.com/upb-uc4/hlf-network/compare/v0.13.0...v0.16.0) (2021-01-21)
 
 ## Feature
 
-- Add secret containing the version of the hlf-network to uc4-lagom namespace [#110](https://github.com/upb-uc4/hlf-network/pull/110)
-- Reduce batch timeout to improve response times [#112](https://github.com/upb-uc4/hlf-network/pull/112)
+ - Add secret containing the version of the hlf-network to uc4-lagom namespace [#110](https://github.com/upb-uc4/hlf-network/pull/110)
+ - Reduce batch timeout to improve response times [#112](https://github.com/upb-uc4/hlf-network/pull/112)
 
 # [v.0.13.0](https://github.com/upb-uc4/hlf-network/compare/v0.12.0...v0.13.0) (2020-11-30) 
 
