@@ -30,6 +30,7 @@ fabric-ca-client register \
   --id.name $ADMIN_ORG2_IDENTITY_USER \
   --id.secret $ADMIN_ORG2_IDENTITY_PASSWORD \
   --id.type user \
+  --id.attrs "sysAdmin=true:ecert" \
   -u https://$CA_ORG2_HOST
 
 log "Finished registering users"
