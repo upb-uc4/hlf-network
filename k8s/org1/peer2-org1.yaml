@@ -20,6 +20,8 @@ spec:
           volumeMounts:
             - mountPath: /tmp/hyperledger/org1/peer2
               name: peer2-org1-mount
+            - mountPath: /var/hyperledger/production
+              name: peer-persistent-mount
           env:
             - name: CORE_PEER_ID
               value: "peer2-org1"
@@ -63,10 +65,16 @@ spec:
               value: "localhost:5984"
         - name: couchdb
           image: hyperledger/fabric-couchdb:latest
+          volumeMounts:
+            - mountPath: /opt/couchdb/data
+              name: couchdb-persistent-mount
         - name: dind
           image: "docker:18.05.0-dind"
           securityContext:
             privileged: true
+          volumeMounts:
+            - mountPath: /var/lib/docker
+              name: dind-persistent-mount
       initContainers:
         - name: fabric-ca
           image: hyperledger/fabric-ca:1.4.7
@@ -116,14 +124,23 @@ spec:
                   key: password
 
       volumes:
-        - name: peer2-org1-mount
-          emptyDir: {}
-        - name: shared-volume
-          hostPath:
-            path: /mnt/hyperledger/shared
+        - name: peer-persistent-mount
+          persistentVolumeClaim:
+            claimName: peer2-org1-pvc
+        - name: couchdb-persistent-mount
+          persistentVolumeClaim:
+            claimName: peer2-org1-couchdb-pvc
+        - name: dind-persistent-mount
+          persistentVolumeClaim:
+            claimName: peer2-org1-dind-pvc
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
+        - name: shared-volume
+          hostPath:
+            path: /mnt/hyperledger/shared
+        - name: peer2-org1-mount
+          emptyDir: {}
         - name: tls-ca-cert
           secret:
             secretName: cert.tls-ca

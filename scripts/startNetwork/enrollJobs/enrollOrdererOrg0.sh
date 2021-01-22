@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Do not try to re-enroll when restarted.
+if test -f "/tmp/hyperledger/org0/orderer/msp/admincerts/orderer-admin-cert.pem"; then
+    exit 0;
+fi
+
+
 source "/tmp/hyperledger/scripts/util.sh"
 
 set -e

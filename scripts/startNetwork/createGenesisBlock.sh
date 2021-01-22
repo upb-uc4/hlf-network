@@ -1,6 +1,10 @@
 #!/bin/bash
 
 
+# If pod restarts, don't overwrite genesis block 
+if test -f "/tmp/hyperledger/shared/channel/genesis.block"; then
+    exit 0;
+fi
 
 # Setup Orderer MSP
 # Create MSP directory for org0

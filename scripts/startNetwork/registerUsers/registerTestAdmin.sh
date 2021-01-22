@@ -2,7 +2,7 @@
 
 source "/tmp/hyperledger/scripts/util.sh"
 
-set -e
+set +e
 
 export CA_ORG1_HOST=0.0.0.0:7052
 export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/cert.pem

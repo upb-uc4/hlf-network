@@ -19,6 +19,8 @@ spec:
           image: hyperledger/fabric-orderer:2.2
           imagePullPolicy: IfNotPresent
           volumeMounts:
+            - mountPath: /var/hyperledger/production/orderer
+              name: orderer-persistent-mount
             - mountPath: /tmp/hyperledger/shared
               name: shared-volume
             - mountPath: /tmp/hyperledger/org0/orderer
@@ -132,14 +134,18 @@ spec:
               name: rca-org2-cert
               readOnly: true
       volumes:
+        - name: orderer-persistent-mount
+          persistentVolumeClaim:
+            claimName: orderer-org0-pvc
+        - name: orderer-mount
+          persistentVolumeClaim:
+            claimName: orderer-org0-shared-pvc
         - name: shared-volume
           hostPath:
             path: /mnt/hyperledger/shared
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
-        - name: orderer-mount
-          emptyDir: {}
         - name: configtx
           configMap:
             name: configtx

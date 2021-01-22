@@ -24,6 +24,8 @@ spec:
               exec:
                 command: ["/bin/bash", "-c", "/tmp/hyperledger/scripts/startNetwork/registerUsers/registerTlsUsers.sh"]
           volumeMounts:
+            - mountPath: /tmp/hyperledger/fabric-ca/crypto
+              name: tls-ca-persistent-mount
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
             - mountPath: /tmp/secrets/cert.pem
@@ -110,6 +112,9 @@ spec:
                   name: credentials.tls.peer2-org2
                   key: password
       volumes:
+        - name: tls-ca-persistent-mount 
+          persistentVolumeClaim:
+            claimName: tls-ca-pvc
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
