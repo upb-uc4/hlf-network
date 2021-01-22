@@ -14,7 +14,7 @@ fabric-ca-client register \
   --id.name "test-admin" \
   --id.secret "test-admin-pw" \
   --id.type admin \
-  --id.attrs "hf.Registrar.Roles=client,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert" \
+  --id.attrs "hf.Registrar.Roles=client,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,sysAdmin=true:ecert" \
   -u https://$CA_ORG1_HOST
 
 log "Finished registering test admin"

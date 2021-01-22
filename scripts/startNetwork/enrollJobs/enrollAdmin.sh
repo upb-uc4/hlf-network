@@ -11,7 +11,7 @@ export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org${ORG_NUM}/admin
 export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/secrets/rca-org${ORG_NUM}/cert.pem
 export FABRIC_CA_CLIENT_MSPDIR=msp
 
-fabric-ca-client enroll -u https://$ADMIN_IDENTITY_USER:$ADMIN_IDENTITY_PASSWORD@$CA_ORG_HOST
+fabric-ca-client enroll -u https://$ADMIN_IDENTITY_USER:$ADMIN_IDENTITY_PASSWORD@$CA_ORG_HOST --enrollment.attrs "sysAdmin"
 
 # Share admin certificate with other Pods
 mkdir -p /tmp/hyperledger/shared/org${ORG_NUM}/msp/admincerts

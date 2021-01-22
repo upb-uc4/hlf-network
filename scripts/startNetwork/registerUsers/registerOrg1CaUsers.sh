@@ -29,18 +29,20 @@ fabric-ca-client register \
 fabric-ca-client register \
   --id.name $ADMIN_ORG1_IDENTITY_USER \
   --id.secret $ADMIN_ORG1_IDENTITY_PASSWORD \
-  --id.type user \
+  --id.type admin \
+  --id.attrs "sysAdmin=true:ecert" \
   -u https://$CA_ORG1_HOST
 fabric-ca-client register \
   --id.name $SCALA_ADMIN_ORG1_IDENTITY_USER \
   --id.secret $SCALA_ADMIN_ORG1_IDENTITY_PASSWORD \
   --id.type admin \
+  --id.attrs "sysAdmin=true:ecert" \
   -u https://$CA_ORG1_HOST
 fabric-ca-client register \
   --id.name $SCALA_REGISTRATION_ADMIN_ORG1_IDENTITY_USER \
   --id.secret $SCALA_REGISTRATION_ADMIN_ORG1_IDENTITY_PASSWORD \
   --id.type admin \
-  --id.attrs "hf.Registrar.Roles=client,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert" \
+  --id.attrs "hf.Registrar.Roles=client,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,sysAdmin=true:ecert" \
   -u https://$CA_ORG1_HOST 
 
 log "Finished registering users"
