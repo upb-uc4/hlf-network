@@ -2,6 +2,7 @@
 
 ## Feature
 
+ - Allow admins to add arbitrary attributes when registering users by using the `hl.Registrar.Attributes` attribute [#118](https://github.com/upb-uc4/hlf-network/pull/118)
  - Add `sysadmin=true:ecert` attribute to org1-admin, org2-admin and scala users. If added to an enrollment request, this attribute is written to the certificate of a user [#114](https://github.com/upb-uc4/hlf-network/pull/114)
  - Remove matrix pipeline from workflow since non-deterministic pipeline behavior was eliminated [#116](https://github.com/upb-uc4/hlf-network/pull/116)
  - Add persistence to all pods [#109](https://github.com/upb-uc4/hlf-network/pull/109)
