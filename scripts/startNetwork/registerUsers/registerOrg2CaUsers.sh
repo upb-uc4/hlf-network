@@ -30,7 +30,7 @@ fabric-ca-client register \
   --id.name $ADMIN_ORG2_IDENTITY_USER \
   --id.secret $ADMIN_ORG2_IDENTITY_PASSWORD \
   --id.type user \
-  --id.attrs 'hf.Registrar.Attributes="*":ecert,sysAdmin=true:ecert' \
+  --id.attrs 'hf.Registrar.Attributes=*:ecert,sysAdmin=true:ecert' \
 
   -u https://$CA_ORG2_HOST
 
