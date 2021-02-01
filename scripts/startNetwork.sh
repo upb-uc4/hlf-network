@@ -29,6 +29,10 @@ source ./scripts/startNetwork/fixPrepareHostPath.sh
 small_sep
 kubectl create -f k8s/namespace.yaml
 
+sleep 10     # To prevent service account error
+msg "Create volumes"
+source ./scripts/startNetwork/setupStorage.sh
+
 faketime -m -f -1d /bin/bash -c "scripts/startNetwork/generateSecrets.sh $TEST_MODE"
 source ./scripts/startNetwork/setupTlsCa.sh
 source ./scripts/startNetwork/setupOrdererOrgCa.sh

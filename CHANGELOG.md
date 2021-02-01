@@ -1,9 +1,18 @@
+## [v.0.17.0](https://github.com/upb-uc4/hlf-network/compare/v0.16.0...v0.17.0) (2021-02-01)
+
+## Feature
+
+ - Allow admins to add arbitrary attributes when registering users by using the `hl.Registrar.Attributes` attribute [#118](https://github.com/upb-uc4/hlf-network/pull/118)
+ - Add `sysadmin=true:ecert` attribute to org1-admin, org2-admin and scala users. If added to an enrollment request, this attribute is written to the certificate of a user [#114](https://github.com/upb-uc4/hlf-network/pull/114)
+ - Remove matrix pipeline from workflow since non-deterministic pipeline behavior was eliminated [#116](https://github.com/upb-uc4/hlf-network/pull/116)
+ - Add persistence to all pods [#109](https://github.com/upb-uc4/hlf-network/pull/109)
+
 ## [v.0.16.0](https://github.com/upb-uc4/hlf-network/compare/v0.13.0...v0.16.0) (2021-01-21)
 
 ## Feature
 
-- Add secret containing the version of the hlf-network to uc4-lagom namespace [#110](https://github.com/upb-uc4/hlf-network/pull/110)
-- Reduce batch timeout to improve response times [#112](https://github.com/upb-uc4/hlf-network/pull/112)
+ - Add secret containing the version of the hlf-network to uc4-lagom namespace [#110](https://github.com/upb-uc4/hlf-network/pull/110)
+ - Reduce batch timeout to improve response times [#112](https://github.com/upb-uc4/hlf-network/pull/112)
 
 # [v.0.13.0](https://github.com/upb-uc4/hlf-network/compare/v0.12.0...v0.13.0) (2020-11-30) 
 

@@ -24,8 +24,8 @@ while getopts 'tb:c:' flag; do
     c) CLUSTER_MOUNT="${OPTARG}"
        printf 'Using hyperledger mount path "%s"\n' "$CLUSTER_MOUNT";;
     t) TEST_MODE="-t"
-       printf 'Using test mode'
-       printf 'Do not use this mode in production!' ;;
+       printf 'Using test mode\n'
+       printf 'Do not use this mode in production!\n' ;;
     ?) print_usage
        exit 1 ;;
   esac

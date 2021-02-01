@@ -24,6 +24,8 @@ spec:
               exec:
                 command: ["/bin/bash", "-c", "/tmp/hyperledger/scripts/startNetwork/registerUsers/registerOrg1CaUsers.sh"]
           volumeMounts:
+            - mountPath: /tmp/hyperledger/fabric-ca/crypto
+              name: rca-org1-persistent-mount
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
             - mountPath: /tmp/secrets/cert.pem
@@ -110,6 +112,9 @@ spec:
                   name: credentials.scala-registration-admin-org1
                   key: password
       volumes:
+        - name: rca-org1-persistent-mount 
+          persistentVolumeClaim:
+            claimName: rca-org1-pvc
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
