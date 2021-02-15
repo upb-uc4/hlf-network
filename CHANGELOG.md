@@ -1,3 +1,9 @@
+## [Next Release](https://github.com/upb-uc4/hlf-network/compare/v0.17.0...v0.18.0) (2021-02-XX)
+
+## Bugfix
+
+ - Fix bug in configuration of peer2-org2 [#120](https://github.com/upb-uc4/hlf-network/pull/120)
+
 ## [v.0.17.0](https://github.com/upb-uc4/hlf-network/compare/v0.16.0...v0.17.0) (2021-02-01)
 
 ## Feature
