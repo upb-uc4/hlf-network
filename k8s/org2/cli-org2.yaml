@@ -15,7 +15,7 @@ spec:
         app: cli-org2
     spec:
       containers:
-        - name: cli-org1
+        - name: cli-org2
           image: hyperledger/fabric-tools:2.2
           imagePullPolicy: IfNotPresent
           tty: true
@@ -82,21 +82,22 @@ spec:
                 secretKeyRef:
                   name: credentials.admin-org2
                   key: password
+
       volumes:
         - name: shared-volume
           hostPath:
             path: /mnt/hyperledger/shared
-        - name: chaincode-mount
-          hostPath:
-            path: /mnt/hyperledger/uc4
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
+        - name: chaincode-mount
+          hostPath:
+            path: /mnt/hyperledger/uc4
+        - name: pod-data
+          emptyDir: {}
         - name: docker-mount
           hostPath:
             path: /var/run/
-        - name: pod-data
-          emptyDir: {}
         - name: tls-ca-cert
           secret:
             secretName: cert.tls-ca

@@ -25,6 +25,10 @@ spec:
           env:
             - name: CORE_PEER_ID
               value: "peer1-org2"
+            - name: CORE_PEER_LISTENADDRESS
+              value: "0.0.0.0:7051"
+            - name: CORE_PEER_ADDRESS
+              value: "peer1-org2:7051"
             - name: CORE_PEER_LOCALMSPID
               value: "org2MSP"
             - name: CORE_PEER_MSPCONFIGPATH
@@ -47,8 +51,14 @@ spec:
               value: "false"
             - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
               value: "peer1-org2:7051"
+            - name: CORE_PEER_BOOTSTRAP
+              value: "peer1-org2:7051"
             - name: CORE_PEER_GOSSIP_SKIPHANDSHAKE
               value: "true"
+            - name: CORE_PEER_CHAINCODEADDRESS
+              value: "peer1-org2:7052"
+            - name: CORE_PEER_CHAINCODELISTENADDRESS
+              value: "0.0.0.0:7052"
             - name: CORE_LEDGER_STATE_STATEDATABASE
               value: "CouchDB"
             - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
@@ -73,6 +83,8 @@ spec:
           volumeMounts:
             - mountPath: /tmp/hyperledger/scripts
               name: scripts
+            - mountPath: /tmp/hyperledger/shared
+              name: shared-volume
             - mountPath: /tmp/hyperledger/org2/peer1
               name: peer1-org2-mount
             - mountPath: /tmp/secrets/tls-ca
@@ -81,8 +93,6 @@ spec:
             - mountPath: /tmp/secrets/rca-org2
               name: rca-org2-cert
               readOnly: true
-            - mountPath: /tmp/hyperledger/shared
-              name: shared-volume
           env:
             - name: FABRIC_CA_SERVER_DEBUG
               value: "true"
@@ -112,6 +122,7 @@ spec:
                 secretKeyRef:
                   name: credentials.peer1-org2
                   key: password
+            
       volumes:
         - name: peer-persistent-mount
           persistentVolumeClaim:
@@ -122,12 +133,12 @@ spec:
         - name: dind-persistent-mount
           persistentVolumeClaim:
               claimName: peer1-org2-dind-pvc
-        - name: shared-volume
-          hostPath:
-            path: /mnt/hyperledger/shared
         - name: scripts
           hostPath:
             path: /mnt/hyperledger/scripts
+        - name: shared-volume
+          hostPath:
+            path: /mnt/hyperledger/shared
         - name: peer1-org2-mount
           emptyDir: {}
         - name: tls-ca-cert
@@ -153,6 +164,6 @@ spec:
       protocol: TCP
       port: 7051
       nodePort: 30211
-    - name: chaincode                                                            
-      protocol: TCP                                                                 
+    - name: chaincode
+      protocol: TCP
       port: 7052
