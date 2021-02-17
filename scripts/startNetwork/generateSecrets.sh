@@ -21,6 +21,7 @@ header "Generation of Certificates and Credentials"
 # Ensure lagom namespace exists
 set +e
 kubectl create namespace uc4-lagom
+kubectl create namespace uc4-support
 set -e
 
 if [[ $TEST_MODE == "-t" ]]; then
