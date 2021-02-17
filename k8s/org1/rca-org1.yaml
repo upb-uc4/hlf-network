@@ -44,7 +44,7 @@ spec:
             - name: FABRIC_CA_SERVER_CSR_CN
               value: "rca-org1"
             - name: FABRIC_CA_SERVER_CSR_HOSTS
-              value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org1.hlf"
+              value: "172.17.0.2,172.17.0.3,0.0.0.0,rca-org1.hlf,uc4.cs.uni-paderborn.de"
             - name: FABRIC_CA_SERVER_DEBUG
               value: "true"
             - name: FABRIC_CA_SERVER_CA_CERTFILE
