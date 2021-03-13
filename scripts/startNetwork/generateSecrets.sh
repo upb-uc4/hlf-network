@@ -21,6 +21,7 @@ header "Generation of Certificates and Credentials"
 # Ensure lagom namespace exists
 set +e
 kubectl create namespace uc4-lagom
+kubectl create namespace uc4-support
 set -e
 
 if [[ $TEST_MODE == "-t" ]]; then
@@ -51,6 +52,7 @@ msg "Providing certificate and private key as kubernetes secret"
 kubectl create secret generic key.tls-ca -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.tls-ca -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 kubectl create secret generic cert.tls-ca -n uc4-lagom --from-file=cert.pem=$TMP_CERT-cert.pem
+kubectl create secret generic cert.tls-ca -n uc4-support --from-file=cert.pem=$TMP_CERT-cert.pem
 
 if [[ $TEST_MODE == "-t" ]]; then
   cp $TMP_CERT-cert.pem /tmp/hyperledger/ca-cert.pem
@@ -77,6 +79,7 @@ msg "Providing certificate and private key as kubernetes secret"
 kubectl create secret generic key.rca-org0 -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.rca-org0 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 kubectl create secret generic cert.rca-org0 -n uc4-lagom --from-file=cert.pem=$TMP_CERT-cert.pem
+kubectl create secret generic cert.rca-org0 -n uc4-support --from-file=cert.pem=$TMP_CERT-cert.pem
 
 if [[ $TEST_MODE == "-t" ]]; then
   cp $TMP_CERT-cert.pem /tmp/hyperledger/org0/msp/cacerts/org0-ca-cert.pem
@@ -115,6 +118,7 @@ msg "Providing certificate and private key as kubernetes secret"
 kubectl create secret generic key.rca-org1 -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.rca-org1 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 kubectl create secret generic cert.rca-org1 -n uc4-lagom --from-file=cert.pem=$TMP_CERT-cert.pem
+kubectl create secret generic cert.rca-org1 -n uc4-support --from-file=cert.pem=$TMP_CERT-cert.pem
 
 if [[ $TEST_MODE == "-t" ]]; then
   cp $TMP_CERT-cert.pem /tmp/hyperledger/org1/msp/cacerts/org1-ca-cert.pem
@@ -181,6 +185,7 @@ msg "Providing certificate and private key as kubernetes secret"
 kubectl create secret generic key.rca-org2 -n hlf --from-file=key.pem=$TMP_CERT-key.pem
 kubectl create secret generic cert.rca-org2 -n hlf --from-file=cert.pem=$TMP_CERT-cert.pem
 kubectl create secret generic cert.rca-org2 -n uc4-lagom --from-file=cert.pem=$TMP_CERT-cert.pem
+kubectl create secret generic cert.rca-org2 -n uc4-support --from-file=cert.pem=$TMP_CERT-cert.pem
 
 if [[ $TEST_MODE == "-t" ]]; then
   cp $TMP_CERT-cert.pem /tmp/hyperledger/org2/msp/cacerts/org2-ca-cert.pem
