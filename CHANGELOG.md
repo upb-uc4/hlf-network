@@ -1,3 +1,5 @@
+# v1.0.0 (2021-03-13)
+
 ## [v0.18.0](https://github.com/upb-uc4/hlf-network/compare/v0.17.0...v0.18.0) (2021-02-15)
 
 ## Bugfix
