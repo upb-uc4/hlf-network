@@ -37,15 +37,13 @@ This repository contains scripts and configuration files for a basic Hyperledger
 
 ### TL;DR
 
-1. Install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/)
-   and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+1. Install [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/), faketime and unzip (if not present).
 2. Run `./restart.sh`
 
 ### Requirements / Installation
 
 For using our scripts, you need a unix system with additional installation
-of [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/)
-and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). If you are new to Kubernetes, we suggest
+of [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/) (we use v0.8.1), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) (we recommend the latest stable release), faketime and unzip. If you are new to Kubernetes, we suggest
 the [interactive tutorials](https://kubernetes.io/docs/tutorials/) provided by Kubernetes.
 
 ### Deploy the Network
